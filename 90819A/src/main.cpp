@@ -183,9 +183,9 @@ void resetGlobal() {
 	newY = 0;
 }
 
-list < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY) {
+vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY) {
 	double spacing = 6.0;
-	list < vector<double> > pointsList;
+	vector < vector<double> > pointsList;
 	double changeVector[2] = { finalX - initX, finalY - initY };
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
 	double numPoints = ceil(magnitude / spacing);
@@ -201,9 +201,29 @@ list < vector<double> > generateLinearPath(double initX, double initY, double fi
 	return pointsList;
 }
 
+vector < vector<double> > smooth(vector < vector<double> > pointsList, double b) {
+	vector < vector<double> > newPointsList = pointsList;
+	double a = 1 - b;
+	double tolerance = 0.001;
+	double change = tolerance;
+	while (change >= tolerance) {
+		change = 0.0;
+		for (int i = 1; i < pointsList.size() - 1; i++) {
+			for (int j = 0; j < pointsList[i].size(); j++) {
+				double aux = newPointsList[i][j];
+				newPointsList[i][j] += a * (pointsList[i][j] - newPointsList[i][j]) + b *
+					(newPointsList[i - 1][j] + newPointsList[i + 1][j] - (2.0 * newPointsList[i][j]));
+				change += abs(aux - newPointsList[i][j]);
+			}
+		}
+	}
+	return newPointsList;
+}
+
 void PIDLinearMove(double initX, double initY, double initTheta, double finalX, double finalY, double finalTheta) {
-	list < vector<double> > pointsList = generateLinearPath(initX, initY, finalX, finalY);
-	if (theta > finalTheta + 180 || initTheta < finalTheta - 180) {
+	vector < vector<double> > pointsList = generateLinearPath(initX, initY, finalX, finalY);
+
+	/*if (theta > finalTheta + 180 || initTheta < finalTheta - 180) {
 		const bool direction = false;
 	}
 	else {
@@ -213,7 +233,7 @@ void PIDLinearMove(double initX, double initY, double initTheta, double finalX, 
 		if (theta < finalTheta) {
 
 		}
-	}
+	}*/
 }
 
 void autonomous() {
