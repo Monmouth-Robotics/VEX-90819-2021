@@ -184,21 +184,52 @@ void resetGlobal() {
 }
 
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY) {
-	double spacing = 6.0;
+	double spacing = 3.0;
 	vector < vector<double> > pointsList;
 	double changeVector[2] = { finalX - initX, finalY - initY };
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
 	double numPoints = ceil(magnitude / spacing);
 	changeVector[0] = changeVector[0] * spacing / magnitude;
 	changeVector[1] = changeVector[1] * spacing / magnitude;
-	int i;
-	for (i = 0; i < numPoints; i++) {
+	for (int i = 0; i < numPoints; i++) {
 		vector<double> newVector{ initX + changeVector[0] * i, initY + changeVector[1] * i };
 		pointsList.push_back(newVector);
 	}
 	vector<double> finalVector{ finalX, finalY };
 	pointsList.push_back(finalVector);
 	return pointsList;
+}
+
+vector <double> calculateDistance(vector < vector<double> > pointsList) {
+	vector<double> distanceList;
+	distanceList.push_back(0.0);
+	for (int i = 1; i < pointsList.size(); i++) {
+		distanceList.push_back(distanceList[i - 1] + sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
+	}
+	return distanceList;
+}
+
+vector <double> calculateCurve(vector < vector<double> > pointsList) {
+	vector<double> curveList;
+	curveList.push_back(0.0);
+	for (int i = 1; i < pointsList.size() - 1; i++) {
+		double x1 = pointsList[i][0];
+		double x2 = pointsList[i - 1][0];
+		if (x1 == x2) {
+			x1 += 0.001;
+		}
+		double x3 = pointsList[i + 1][0];
+		double y1 = pointsList[i][1];
+		double y2 = pointsList[i - 1][1];
+		double y3 = pointsList[i + 1][1];
+		double k1 = 0.5 * (pow(x1, 2) + pow(y1, 2) - pow(x2, 2) - pow(y2, 2)) / (x1 - x2);
+		double k2 = (y1 - y2) / (x1 - x2);
+		double b = 0.5 * (pow(x2, 2) - 2 * x2 * k1 + pow(y2, 2) - pow(x3, 2) + 2 * x2 * k1 - pow(y3, 2)) / (x3 * k2 - y3 + y2 - x2 * k2);
+		double a = k1 - k2 * b;
+		curveList.push_back(1 / sqrt(pow(x1 - a, 2) + pow(y1 - b, 2)));
+	}
+	curveList.push_back(0.0);
+	return curveList;
 }
 
 vector < vector<double> > smooth(vector < vector<double> > pointsList, double b) {
@@ -222,18 +253,19 @@ vector < vector<double> > smooth(vector < vector<double> > pointsList, double b)
 
 void PIDLinearMove(double initX, double initY, double initTheta, double finalX, double finalY, double finalTheta) {
 	vector < vector<double> > pointsList = generateLinearPath(initX, initY, finalX, finalY);
+	pointsList = smooth(pointsList, 0.85);
+	vector <double> distanceList = calculateDistance(pointsList);
+	vector <double> curveList = calculateCurve(pointsList);
+}
 
-	/*if (theta > finalTheta + 180 || initTheta < finalTheta - 180) {
-		const bool direction = false;
-	}
-	else {
-		const bool direction = true;
-	}
-	while (theta != finalTheta) {
-		if (theta < finalTheta) {
-
-		}
-	}*/
+void PIDCurveMove(double initX, double initY, double initTheta, double midX, double midY, double midTheta, double finalX, double finalY, double finalTheta) {
+	vector < vector<double> > pointsList1 = generateLinearPath(initX, initY, midX, midY);
+	vector < vector<double> > pointsList2 = generateLinearPath(midX, midY, finalX, finalY);
+	vector < vector<double> > pointsList(pointsList1);
+	pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
+	pointsList = smooth(pointsList, 0.85);
+	vector <double> distanceList = calculateDistance(pointsList);
+	vector <double> curveList = calculateCurve(pointsList);
 }
 
 void autonomous() {
