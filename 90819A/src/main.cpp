@@ -183,8 +183,8 @@ void resetGlobal() {
 	newY = 0;
 }
 
-vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY) {
-	double spacing = 3.0;
+vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
+	//spacing is in inches between points
 	vector < vector<double> > pointsList;
 	double changeVector[2] = { finalX - initX, finalY - initY };
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
@@ -281,27 +281,81 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	return velList;
 }
 
-void PIDMove(vector < vector<double> > initPoints) {
+double dot(vector <double> a, vector <double> b) {
+	return a[0] * b[0] + a[1] * b[1];
+}
+
+void PIDMove(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double radius, double lookAheadPointsNum) {
+	//spacing is in inches between points
+	//smoothVal should be a value between 0.75 and 0.98
+	//turnConstant should be between 1.0 and 5.0
+	//radius is look ahead distance for path prediction
+	//lookAheadPointsNum is the number of points to look ahead
 	vector < vector<double> > pointsList;
 	if (initPoints.size() == 0) {
 		return;
 	}
 	else if (initPoints.size() == 1) {
-		pointsList = generateLinearPath(positionVector[0], positionVector[1], initPoints[0][0], initPoints[0][1]);
+		pointsList = generateLinearPath(positionVector[0], positionVector[1], initPoints[0][0], initPoints[0][1], spacing);
 	}
 	else {
-		pointsList = generateLinearPath(initPoints[0][0], initPoints[0][1], initPoints[1][0], initPoints[1][1]);
+		pointsList = generateLinearPath(initPoints[0][0], initPoints[0][1], initPoints[1][0], initPoints[1][1], spacing);
 		if (initPoints.size() > 2) {
 			for (int i = 1; i < initPoints.size() - 1; i++) {
-				vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1]);
+				vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1], spacing);
 				pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
 			}
-			pointsList = smooth(pointsList, 0.85);
+			pointsList = smooth(pointsList, smoothVal);
 		}
 	}
 	vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
-	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
+	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
+	int closestPoint = 1;
+	bool running = true;
+	while (running) {
+		double x = positionVector[0];
+		double y = positionVector[1];
+		vector<double> lookAheadPoint;
+		double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
+		if (closestPoint != pointsList.size() - 1) {
+			for (int i = closestPoint + 1; i++; i < pointsList.size()) {
+				double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
+				if (smallestDistance > newDistance) {
+					smallestDistance = newDistance;
+					closestPoint = i;
+				}
+			}
+			vector<double> E = pointsList[closestPoint];
+			vector<double> L = pointsList[closestPoint + 1];
+			vector<double> C = { x, y };
+			vector<double> d = {L[0] - E[0], L[1] - E[1] };
+			vector<double> f = { E[0] - C[0], E[1] - C[1] };
+			double a = dot(d, d);
+			double b = 2 * dot(f,d);
+			double c = dot(f,f) - r * r;
+			double discriminant = b * b - 4 * a * c;
+			if (discriminant < 0) {
+				// no intersection
+			}
+			else {
+				double t1 = (-b - sqrt(discriminant)) / (2 * a);
+				double t2 = (-b + sqrt(discriminant)) / (2 * a);
+				if (t1 >= 0 && t1 <= 1) {
+					lookAheadPoint = {E[0] + t1*d[0], E[1] + t1 * d[1] };
+				}
+				else if (t2 >= 0 && t2 <= 1) {
+					lookAheadPoint = { E[0] + t2 * d[0], E[1] + t2 * d[1] };
+				}
+				else {
+					//no intersection found
+				}
+			}
+
+		}
+
+
+	}
 }
 
 void autonomous() {
