@@ -233,6 +233,7 @@ vector <double> calculateCurve(vector < vector<double> > pointsList) {
 }
 
 vector < vector<double> > smooth(vector < vector<double> > pointsList, double b) {
+	//b should be a value between 0.75 and 0.98
 	vector < vector<double> > newPointsList = pointsList;
 	double a = 1 - b;
 	double tolerance = 0.001;
@@ -251,11 +252,42 @@ vector < vector<double> > smooth(vector < vector<double> > pointsList, double b)
 	return newPointsList;
 }
 
+vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <double> curveList, double maxVelocity, double maxAccel, double turnConstant) {
+	//turnConstant should be between 1.0 and 5.0
+	vector<double> maxVelList;
+	for (int i = 0; i < curveList.size(); i++) {
+		if (curveList[i] == 0.0) {
+			curveList[i] = 0.001;
+		}
+		maxVelList.push_back(min(maxVelocity, (turnConstant / curveList[i])));
+	}
+
+	vector<double> targetVelList;
+	targetVelList.push_back(0.0);
+	double prevVel = 0.0;
+	for (int i = 1; i < maxVelList.size(); i++) {
+		prevVel = sqrt(pow(prevVel, 2) + 2 * maxAccel * sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
+		targetVelList.push_back(prevVel);
+	}
+
+
+	vector<double> velList;
+	velList[maxVelList.size() - 1] = 0.0;
+	double previousVel = 0.0;
+	for (int i = maxVelList.size() - 2; i <= 0; i--) {
+		double distance = sqrt(pow((pointsList[i + 1][0] - pointsList[i][0]), 2) + pow((pointsList[i + 1][1] - pointsList[i][1]), 2));
+		previousVel = min(targetVelList[i], sqrt(pow(previousVel, 2) + 2 * maxAccel * distance));
+		velList[i] = previousVel;
+	}
+	return velList;
+}
+
 void PIDLinearMove(double initX, double initY, double initTheta, double finalX, double finalY, double finalTheta) {
 	vector < vector<double> > pointsList = generateLinearPath(initX, initY, finalX, finalY);
-	pointsList = smooth(pointsList, 0.85);
+	//pointsList = smooth(pointsList, 0.85);
 	vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
+	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
 }
 
 void PIDCurveMove(double initX, double initY, double initTheta, double midX, double midY, double midTheta, double finalX, double finalY, double finalTheta) {
@@ -266,6 +298,7 @@ void PIDCurveMove(double initX, double initY, double initTheta, double midX, dou
 	pointsList = smooth(pointsList, 0.85);
 	vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
+	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
 }
 
 void autonomous() {
