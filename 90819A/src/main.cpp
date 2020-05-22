@@ -271,8 +271,7 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	}
 
 
-	vector<double> velList;
-	velList[maxVelList.size() - 1] = 0.0;
+	vector<double> velList(maxVelList.size(), 0.0);
 	double previousVel = 0.0;
 	for (int i = maxVelList.size() - 2; i <= 0; i--) {
 		double distance = sqrt(pow((pointsList[i + 1][0] - pointsList[i][0]), 2) + pow((pointsList[i + 1][1] - pointsList[i][1]), 2));
@@ -282,21 +281,24 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	return velList;
 }
 
-void PIDLinearMove(double initX, double initY, double initTheta, double finalX, double finalY, double finalTheta) {
-	vector < vector<double> > pointsList = generateLinearPath(initX, initY, finalX, finalY);
-	//pointsList = smooth(pointsList, 0.85);
-	vector <double> distanceList = calculateDistance(pointsList);
-	vector <double> curveList = calculateCurve(pointsList);
-	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
-}
-
-void PIDCurveMove(vector < vector<double> > initPoints) {
-	vector < vector<double> > pointsList = generateLinearPath(initPoints[0][0], initPoints[0][1], initPoints[1][0], initPoints[1][1]);
-	for (int i = 1; i < initPoints.size() - 1; i++) {
-		vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1]);
-		pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
+void PIDMove(vector < vector<double> > initPoints) {
+	vector < vector<double> > pointsList;
+	if (initPoints.size() == 0) {
+		return;
 	}
-	pointsList = smooth(pointsList, 0.85);
+	else if (initPoints.size() == 1) {
+		pointsList = generateLinearPath(positionVector[0], positionVector[1], initPoints[0][0], initPoints[0][1]);
+	}
+	else {
+		pointsList = generateLinearPath(initPoints[0][0], initPoints[0][1], initPoints[1][0], initPoints[1][1]);
+		if (initPoints.size() > 2) {
+			for (int i = 1; i < initPoints.size() - 1; i++) {
+				vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1]);
+				pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
+			}
+			pointsList = smooth(pointsList, 0.85);
+		}
+	}
 	vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
