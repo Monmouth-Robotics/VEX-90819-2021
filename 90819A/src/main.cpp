@@ -290,11 +290,12 @@ void PIDLinearMove(double initX, double initY, double initTheta, double finalX, 
 	vector <double> velList = calculateVelocity(pointsList, curveList, 10.0, 3.0, 1.0);
 }
 
-void PIDCurveMove(double initX, double initY, double initTheta, double midX, double midY, double midTheta, double finalX, double finalY, double finalTheta) {
-	vector < vector<double> > pointsList1 = generateLinearPath(initX, initY, midX, midY);
-	vector < vector<double> > pointsList2 = generateLinearPath(midX, midY, finalX, finalY);
-	vector < vector<double> > pointsList(pointsList1);
-	pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
+void PIDCurveMove(vector < vector<double> > initPoints) {
+	vector < vector<double> > pointsList = generateLinearPath(initPoints[0][0], initPoints[0][1], initPoints[1][0], initPoints[1][1]);
+	for (int i = 1; i < initPoints.size() - 1; i++) {
+		vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1]);
+		pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
+	}
 	pointsList = smooth(pointsList, 0.85);
 	vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
