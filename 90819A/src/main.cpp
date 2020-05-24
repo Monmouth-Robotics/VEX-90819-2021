@@ -318,7 +318,7 @@ void PIDMove(vector < vector<double> > initPoints, double spacing, double smooth
 		double y = positionVector[1];
 		vector<double> lookAheadPoint;
 		double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
-		if (closestPoint != pointsList.size() - 1) {
+		if (closestPoint != pointsList.size() - lookAheadPointsNum) {
 			for (int i = closestPoint + 1; i++; i < pointsList.size()) {
 				double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
 				if (smallestDistance > newDistance) {
@@ -327,7 +327,7 @@ void PIDMove(vector < vector<double> > initPoints, double spacing, double smooth
 				}
 			}
 			vector<double> E = pointsList[closestPoint];
-			vector<double> L = pointsList[closestPoint + 1];
+			vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
 			vector<double> C = { x, y };
 			vector<double> d = {L[0] - E[0], L[1] - E[1] };
 			vector<double> f = { E[0] - C[0], E[1] - C[1] };
@@ -348,7 +348,7 @@ void PIDMove(vector < vector<double> > initPoints, double spacing, double smooth
 					lookAheadPoint = { E[0] + t2 * d[0], E[1] + t2 * d[1] };
 				}
 				else {
-					//no intersection found
+					
 				}
 			}
 
