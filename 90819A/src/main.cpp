@@ -14,6 +14,11 @@ pros::Motor leftBackMotor(20, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor rightFrontMotor(12, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor rightBackMotor(19, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
+pros::Motor lowerStack(19, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(18, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeLeft(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeRight(16, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+
 pros::ADIEncoder leftEncoder('A', 'B', false);
 pros::ADIEncoder rightEncoder('C', 'D', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
@@ -229,7 +234,7 @@ double theta = 0;
 double newX = 0;
 double newY = 0;
 
-void runPIDTask() {
+void runPositionTask() {
 
 	leftEncoderDegrees = leftEncoder.get_value();
 	rightEncoderDegrees = rightEncoder.get_value();
@@ -411,7 +416,7 @@ double dot(vector <double> a, vector <double> b) {
 	return a[0] * b[0] + a[1] * b[1];
 }
 
-void PIDMove(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double radius, double lookAheadPointsNum) {
+void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double radius, double lookAheadPointsNum) {
 	//spacing is in inches between points
 	//smoothVal should be a value between 0.75 and 0.98
 	//turnConstant should be between 1.0 and 5.0
@@ -495,7 +500,7 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 
-	pros::Task runPID(runPIDTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "PID Task");
+	pros::Task runPositionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
 
 }
 
@@ -521,6 +526,32 @@ void opcontrol() {
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
+	while (true)
+	{
+		if (master.get_digital(DIGITAL_A))
+		{
+			intakeLeft = 127;
+			intakeRight = 127;
+			upperStack = 127;
+			lowerStack = 127;
+		}
+
+		else if (master.get_digital(DIGITAL_Y))
+		{
+			intakeLeft = -127;
+			intakeRight = -127;
+			upperStack = -127;
+			lowerStack = -127;
+		}
+
+		else if (master.get_digital(DIGITAL_B))
+		{
+			intakeLeft = 0;
+			intakeRight = 0;
+			upperStack = 0;
+			lowerStack = 0;
+		}
+	}
 	/*while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 						 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
