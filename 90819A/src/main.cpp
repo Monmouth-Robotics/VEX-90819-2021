@@ -40,6 +40,7 @@ void setAutonState() {
 	{
 		lv_label_set_text(text, "Current State: Red Easy Autonomous");
 	}
+
 	else if (autonCode == 4)
 	{
 		lv_label_set_text(text, "Current State: Red Hard Autonomous");
@@ -105,7 +106,6 @@ lv_res_t btn6_action(lv_obj_t* btn)
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
 }
 
 /**
