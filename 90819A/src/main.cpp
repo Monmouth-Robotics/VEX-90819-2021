@@ -500,7 +500,7 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 
-	pros::Task runPositionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
+	pros::Task runPosition(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
 
 }
 
