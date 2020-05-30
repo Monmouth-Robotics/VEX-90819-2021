@@ -9,15 +9,15 @@ using namespace std;
 
 pros::Controller controller(CONTROLLER_MASTER);
 
-pros::Motor leftFrontMotor(18, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(20, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor rightFrontMotor(12, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor rightBackMotor(19, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor leftFrontMotor(14, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(11, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor lowerStack(19, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor upperStack(18, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeLeft(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeRight(16, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor lowerStack(7, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorLeft(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorRight(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::ADIEncoder leftEncoder('A', 'B', false);
 pros::ADIEncoder rightEncoder('C', 'D', false);
@@ -521,46 +521,170 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
 
+void move2(float motorSpeed, float turnSpeed)
+{
+	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20)
+	{
+		leftFrontMotor = motorSpeed + turnSpeed;
+		leftBackMotor = motorSpeed + turnSpeed;
+		rightFrontMotor = motorSpeed - turnSpeed;
+		rightBackMotor = motorSpeed - turnSpeed;
+	}
+
+	// if only motorSpeed is beyond the minimum, just move
+	else if (abs(motorSpeed) > 20)
+	{
+		leftFrontMotor = motorSpeed;
+		leftBackMotor = motorSpeed;
+		rightFrontMotor = motorSpeed;
+		rightBackMotor = motorSpeed;
+	}
+
+	// if only turnSpeed is beyond the minimum, just turn
+	else if (abs(turnSpeed) > 20)
+	{
+		leftFrontMotor = turnSpeed;
+		leftBackMotor = turnSpeed;
+		rightFrontMotor = -turnSpeed;
+		rightBackMotor = -turnSpeed;
+	}
+
+	else
+	{
+		leftFrontMotor = 0;
+		leftBackMotor = 0;
+		rightFrontMotor = 0;
+		rightBackMotor = 0;
+	}
+}
+
+float exponential(float input, float output, float x)
+{
+	float base = pow((127 / output), (1 / (127 - input)));
+	float a = output / (pow(base, input));
+
+	return (a * (pow(base, abs(x))));
+}
+
+float driveInput = 25;
+float driveOutput = 10;
+float turnInput = 40;
+float turnOutput = 10;
+bool intakeMotor = true;
+
+void opcontrol()
+{
+
+	
+	// Break type for all motors
+	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
+	/*secondaryLiftMotor.move_relative(50, 70);
+while (!(secondaryLiftMotor.get_position() < 52) && !(secondaryLiftMotor.get_position() > 48)){
+pros::delay(2);
+}
+*/
 	while (true)
 	{
-		if (master.get_digital(DIGITAL_A))
+		float turnSpeed;
+
+		int motorSpeedRaw = controller.get_analog(ANALOG_LEFT_Y);
+		int turnSpeedRaw = controller.get_analog(ANALOG_RIGHT_X);
+
+		float motorSpeed = (motorSpeedRaw / abs(motorSpeedRaw) * (exponential(driveInput, driveOutput, motorSpeedRaw)));
+		if (turnSpeedRaw > 100)
+			turnSpeed = 127;
+		else if (turnSpeedRaw < -100)
+			turnSpeed = -127;
+		else
+			turnSpeed = (turnSpeedRaw / abs(turnSpeedRaw) * (exponential(turnInput, turnOutput, turnSpeedRaw)) * 0.5);
+
+
+		move2(motorSpeed, turnSpeed);
+
+		//
+		/*// fights gravity so lift doesn't fall
+else
+{
+liftMotorLeft = 5;
+liftMotorRight = 5;
+}*/
+/*if (controller.get_digital(DIGITAL_B)) {
+BPressed = true;
+}
+else if(BPressed) {
+intakeMotor = !intakeMotor;
+BPressed = false;
+}*/
+
+		if (controller.get_digital(DIGITAL_B))
 		{
-			intakeLeft = 127;
-			intakeRight = 127;
-			upperStack = 127;
-			lowerStack = 127;
+			intakeMotorLeft = 0;
+			intakeMotorRight = 0;
 		}
 
-		else if (master.get_digital(DIGITAL_Y))
+
+		else if (controller.get_digital(DIGITAL_A))
 		{
-			intakeLeft = -127;
-			intakeRight = -127;
+			intakeMotorLeft = 127;
+			intakeMotorRight = 127;
+		}
+		else if (controller.get_digital(DIGITAL_Y))
+		{
+			intakeMotorLeft = -127;
+			intakeMotorRight = -127;
+		}
+
+		else if (controller.get_digital(DIGITAL_X))
+		{
 			upperStack = -127;
 			lowerStack = -127;
 		}
 
-		else if (master.get_digital(DIGITAL_B))
+		if (controller.get_digital(DIGITAL_L1))
 		{
-			intakeLeft = 0;
-			intakeRight = 0;
-			upperStack = 0;
-			lowerStack = 0;
+			upperStack = 127;
+			/*char val[100];
+			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
+			lv_label_set_text(text, val);*/
 		}
-	}
-	/*while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-						 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-						 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
 
-		left_mtr = left;
-		right_mtr = right;
-		pros::delay(20);
-	}*/
+		else if (controller.get_digital(DIGITAL_L2))
+		{
+			upperStack = 0;
+			
+		}
+
+		if (controller.get_digital(DIGITAL_R1))
+		{
+			lowerStack = 127;
+			/*char val[100];
+			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
+			lv_label_set_text(text, val);*/
+		}
+
+		else if (controller.get_digital(DIGITAL_R2))
+		{
+			lowerStack = 0;
+			
+		}
+
+		
+
+		/*if (controller.get_digital(DIGITAL_R1))
+		{
+			deploy(chassis, profileController, trayController, liftController);
+		}*/
+
+		pros::delay(10);
+	}
 }
+
