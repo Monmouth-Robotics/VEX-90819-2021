@@ -148,7 +148,7 @@ void competition_initialize() {
 	lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, btn3_action);
 
 	lv_obj_t* label3 = lv_label_create(btn3, NULL);
-	lv_label_set_text(label3, "Red Easy"); 
+	lv_label_set_text(label3, "Red Easy");
 
 	lv_obj_t* btn4 = lv_btn_create(lv_scr_act(), NULL);
 	lv_obj_set_pos(btn4, 300, 100);
@@ -156,14 +156,14 @@ void competition_initialize() {
 	lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn4_action);
 
 	lv_obj_t* label4 = lv_label_create(btn4, NULL);
-	lv_label_set_text(label4, "Red Hard"); 
+	lv_label_set_text(label4, "Red Hard");
 
 	lv_obj_t* btn5 = lv_btn_create(lv_scr_act(), NULL);
 	lv_obj_set_pos(btn5, 50, 200);
 	lv_obj_set_size(btn5, 180, 50);
 	lv_btn_set_action(btn5, LV_BTN_ACTION_CLICK, btn5_action);
 
-	lv_obj_t* label5 = lv_label_create(btn5, NULL); 
+	lv_obj_t* label5 = lv_label_create(btn5, NULL);
 	lv_label_set_text(label5, "Programming Skills");
 
 	lv_obj_t* btn6 = lv_btn_create(lv_scr_act(), NULL);
@@ -439,16 +439,20 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 			return { E[0] + t2 * d[0], E[1] + t2 * d[1] };
 		}
 		else {
-			return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1);
+			if (closestPoint != pointsList.size() - lookAheadPointsNum - 1) {
+				return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1);
+			}
+			else {
+				return pointsList[pointsList.size() - 1];
+			}
 		}
 	}
 }
 
-void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double radius, double lookAheadPointsNum) {
+void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double lookAheadPointsNum) {
 	//spacing is in inches between points
 	//smoothVal should be a value between 0.75 and 0.98
 	//turnConstant should be between 1.0 and 5.0
-	//radius is look ahead distance for path prediction
 	//lookAheadPointsNum is the number of points to look ahead
 	vector < vector<double> > pointsList;
 	if (initPoints.size() == 0) {
@@ -471,8 +475,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
 	int closestPoint = 1;
-	bool running = true;
-	while (running) {
+	while (true) {
 		double x = positionVector[0];
 		double y = positionVector[1];
 		vector<double> lookAheadPoint;
@@ -487,8 +490,17 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 			}
 			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum);
 		}
-
-
+		else {
+			lookAheadPoint = pointsList[pointsList.size() - 1];
+		}
+		if (closestPoint = pointsList[pointsList.size() - 1]) {
+			break;
+		}
+		double curvature = (2 * (lookAheadPoint[0] - x)) / pow(sqrt(pow((lookAheadPoint[0] - x), 2) + pow((lookAheadPoint[1] - y), 2)), 2);
+		double angle = tanh((lookAheadPoint[1] - y)/(lookAheadPoint[0] - x));
+		double a = -1 * tan(angle);
+		double c = tan(angle) * x - y;
+		double newX = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / (sqrt(pow(a, 2) + 1));
 	}
 }
 
@@ -579,7 +591,7 @@ bool intakeMotor = true;
 void opcontrol()
 {
 
-	
+
 	// Break type for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -663,7 +675,7 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_L2))
 		{
 			upperStack = 0;
-			
+
 		}
 
 		if (controller.get_digital(DIGITAL_R1))
@@ -677,10 +689,10 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_R2))
 		{
 			lowerStack = 0;
-			
+
 		}
 
-		
+
 
 		/*if (controller.get_digital(DIGITAL_R1))
 		{
