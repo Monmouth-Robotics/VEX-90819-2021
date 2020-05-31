@@ -416,6 +416,34 @@ double dot(vector <double> a, vector <double> b) {
 	return a[0] * b[0] + a[1] * b[1];
 }
 
+vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > pointsList, int closestPoint, int lookAheadPointsNum) {
+	vector<double> E = pointsList[closestPoint];
+	vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
+	vector<double> C = { x, y };
+	vector<double> d = { L[0] - E[0], L[1] - E[1] };
+	vector<double> f = { E[0] - C[0], E[1] - C[1] };
+	double a = dot(d, d);
+	double b = 2 * dot(f, d);
+	double c = dot(f, f) - r * r;
+	double discriminant = b * b - 4 * a * c;
+	if (discriminant < 0) {
+		// no intersection
+	}
+	else {
+		double t1 = (-b - sqrt(discriminant)) / (2 * a);
+		double t2 = (-b + sqrt(discriminant)) / (2 * a);
+		if (t1 >= 0 && t1 <= 1) {
+			return { E[0] + t1 * d[0], E[1] + t1 * d[1] };
+		}
+		else if (t2 >= 0 && t2 <= 1) {
+			return { E[0] + t2 * d[0], E[1] + t2 * d[1] };
+		}
+		else {
+			return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1);
+		}
+	}
+}
+
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double radius, double lookAheadPointsNum) {
 	//spacing is in inches between points
 	//smoothVal should be a value between 0.75 and 0.98
@@ -457,32 +485,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 					closestPoint = i;
 				}
 			}
-			vector<double> E = pointsList[closestPoint];
-			vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
-			vector<double> C = { x, y };
-			vector<double> d = {L[0] - E[0], L[1] - E[1] };
-			vector<double> f = { E[0] - C[0], E[1] - C[1] };
-			double a = dot(d, d);
-			double b = 2 * dot(f,d);
-			double c = dot(f,f) - r * r;
-			double discriminant = b * b - 4 * a * c;
-			if (discriminant < 0) {
-				// no intersection
-			}
-			else {
-				double t1 = (-b - sqrt(discriminant)) / (2 * a);
-				double t2 = (-b + sqrt(discriminant)) / (2 * a);
-				if (t1 >= 0 && t1 <= 1) {
-					lookAheadPoint = {E[0] + t1*d[0], E[1] + t1 * d[1] };
-				}
-				else if (t2 >= 0 && t2 <= 1) {
-					lookAheadPoint = { E[0] + t2 * d[0], E[1] + t2 * d[1] };
-				}
-				else {
-					
-				}
-			}
-
+			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum);
 		}
 
 
@@ -500,7 +503,7 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 
-	pros::Task runPosition(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
+	pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
 
 }
 
