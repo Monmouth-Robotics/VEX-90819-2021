@@ -190,10 +190,10 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-double WHEEL_DIAMETER = 4; //inches
-double DISTANCE_TO_LEFT_ENCODER = 7.25; //inches
-double DISTANCE_TO_RIGHT_ENCODER = 7.25; //inches
-double DISTANCE_TO_BACK_ENCODER = 5.5; //inches
+double WHEEL_DIAMETER = 4;
+double DISTANCE_TO_LEFT_ENCODER = 7.25;
+double DISTANCE_TO_RIGHT_ENCODER = 7.25;
+double DISTANCE_TO_BACK_ENCODER = 5.5;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -449,11 +449,54 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 	}
 }
 
-void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, double lookAheadPointsNum) {
+double findCurvature(vector<double> lookAheadPoint, double x, double y) {
+	double curvature = (2 * (lookAheadPoint[0] - x)) / pow(sqrt(pow((lookAheadPoint[0] - x), 2) + pow((lookAheadPoint[1] - y), 2)), 2);
+	double angle = tanh((lookAheadPoint[1] - y) / (lookAheadPoint[0] - x));
+	double a = -1 * tan(angle);
+	double c = tan(angle) * x - y;
+	double newX = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / (sqrt(pow(a, 2) + 1));
+	return curvature;
+}
+
+double rateLimit(double velocity, double maxAccel, double prevVel) {
+	double maxChange = timeChange * maxAccel;
+	double newVel = prevVel;
+	if (-1 * maxChange > velocity - newVel) {
+		newVel = -1 * maxChange;
+	}
+	else if (maxChange < velocity - newVel) {
+		newVel = maxChange;
+	}
+	else {
+		newVel = velocity - newVel;
+	}
+	return newVel;
+}
+
+vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, vector<double> prevVel) {
+	double leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
+	double rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
+	double newVel;
+	if (rightVel < leftVel) {
+		newVel = rightVel;
+	}
+	else {
+		newVel = leftVel;
+	}
+	return { newVel * (2 + curvature * trackWidth) / 2,newVel *(2 - curvature * trackWidth) / 2 };
+}
+
+void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth) {
+	//initPoints are all the points in the motion, including start and end
 	//spacing is in inches between points
 	//smoothVal should be a value between 0.75 and 0.98
+	//maxVelocity is the highest speed the robot is allowed to reach during this movement
+	//maxAccel is the highest acceleration the robot is allowed to encounter during this movement
 	//turnConstant should be between 1.0 and 5.0
 	//lookAheadPointsNum is the number of points to look ahead
+	/*trackWidth is measured from the robot. Due to turning scrub,
+	 *you want to use a track width a few inches larger than the real one.*/
+
 	vector < vector<double> > pointsList;
 	if (initPoints.size() == 0) {
 		return;
@@ -475,6 +518,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
 	int closestPoint = 1;
+	vector<double> velocities = { 0.0, 0.0 };
 	while (true) {
 		double x = positionVector[0];
 		double y = positionVector[1];
@@ -493,14 +537,11 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		else {
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
-		if (closestPoint = pointsList[pointsList.size() - 1]) {
+		if (closestPoint == pointsList.size() - 1) {
 			break;
 		}
-		double curvature = (2 * (lookAheadPoint[0] - x)) / pow(sqrt(pow((lookAheadPoint[0] - x), 2) + pow((lookAheadPoint[1] - y), 2)), 2);
-		double angle = tanh((lookAheadPoint[1] - y)/(lookAheadPoint[0] - x));
-		double a = -1 * tan(angle);
-		double c = tan(angle) * x - y;
-		double newX = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / (sqrt(pow(a, 2) + 1));
+		double curvature = findCurvature(lookAheadPoint, x, y);
+		vector<double> velocities = findVelocities(curvature, trackWidth, velList[closestPoint], maxAccel, velocities);
 	}
 }
 
@@ -516,7 +557,7 @@ void autonomous() {
 	backEncoder.reset();
 
 	pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
-
+	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.85, 10.0, 3.0, 3.0, 2, 15.0);
 }
 
 
