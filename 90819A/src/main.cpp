@@ -1,5 +1,6 @@
 #include "main.h"
 #include <cmath>
+#include <ctime>
 #include <iostream> 
 #include <list> 
 #include <iterator> 
@@ -23,8 +24,8 @@ pros::ADIEncoder leftEncoder('A', 'B', false);
 pros::ADIEncoder rightEncoder('C', 'D', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
 
+time_t currentTime;
 lv_obj_t* text = lv_label_create(lv_scr_act(), NULL);
-
 int autonCode = 5;
 
 void setAutonState() {
@@ -452,41 +453,49 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 	double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
 	double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
-	double Bx = Rx+cos(angle);
-	double By = Ry+sin(angle);
+	double Bx = Rx + cos(angle);
+	double By = Ry + sin(angle);
 	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	return curvature*sign;
+	return curvature * sign;
 }
 
-double rateLimit(double velocity, double maxAccel, double prevVel) {
-	double maxChange = timeChange * maxAccel;
+vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
+	double maxChange = (time(0) - currentTime) * maxAccel;
 	double newVel = prevVel;
-	if (-1 * maxChange > velocity - newVel) {
-		newVel = -1 * maxChange;
+	double accel;
+	if (-1 * maxChange > (velocity - newVel)) {
+		newVel += -1 * maxChange;
+		accel = -1 * maxChange;
 	}
-	else if (maxChange < velocity - newVel) {
-		newVel = maxChange;
+	else if (maxChange < (velocity - newVel)) {
+		newVel += maxChange;
+		accel = maxChange;
 	}
 	else {
-		newVel = velocity - newVel;
+		newVel += (velocity - newVel);
+		accel = velocity - newVel;
 	}
-	return newVel;
+	currentTime = time(0);
+	return { newVel, accel };
 }
 
 vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, vector<double> prevVel) {
-	double leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
-	double rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
+	vector<double> leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
+	vector<double> rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
 	double newVel;
-	if (rightVel < leftVel) {
-		newVel = rightVel;
+	double accel;
+	if (rightVel[0] < leftVel[0]) {
+		newVel = rightVel[0];
+		accel = rightVel[1];
 	}
 	else {
-		newVel = leftVel;
+		newVel = leftVel[0];
+		accel = leftVel[1];
 	}
-	return { newVel * (2 + curvature * trackWidth) / 2,newVel * (2 - curvature * trackWidth) / 2 };
+	return { newVel * (2 + curvature * trackWidth) / 2,newVel * (2 - curvature * trackWidth) / 2, accel };
 }
 
-void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth) {
+void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
 	//initPoints are all the points in the motion, including start and end
 	//spacing is in inches between points
 	//smoothVal should be a value between 0.75 and 0.98
@@ -496,6 +505,12 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	//lookAheadPointsNum is the number of points to look ahead
 	/*trackWidth is measured from the robot. Due to turning scrub,
 	 *you want to use a track width a few inches larger than the real one.*/
+	 /*start Kv at 1/maxVelocity and start all other constants at 0
+	  *Tune Kv until the velocities match up
+	  *Set Ka to 0.002
+	  *Tune until accelerating and decelerating velocities are near accurate
+	  *Start Kp at 0.01 and increase number to make more accurate
+	  *Setting Kp too high will result in a jittery motion*/
 
 	vector < vector<double> > pointsList;
 	if (initPoints.size() == 0) {
@@ -514,11 +529,12 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 			pointsList = smooth(pointsList, smoothVal);
 		}
 	}
-	vector <double> distanceList = calculateDistance(pointsList);
+	//vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
 	int closestPoint = 1;
 	vector<double> velocities = { 0.0, 0.0 };
+	currentTime = time(0);
 	while (true) {
 		double x = positionVector[0];
 		double y = positionVector[1];
@@ -542,6 +558,14 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		}
 		double curvature = findCurvature(lookAheadPoint, x, y);
 		vector<double> velocities = findVelocities(curvature, trackWidth, velList[closestPoint], maxAccel, velocities);
+		double leftFF = Kv * velocities[0] + Ka * (velocities[2]);
+		double rightFF = Kv * velocities[1] + Ka * (velocities[2]);
+		double leftFB = Kp * (velocities[0] - ((leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2));
+		double rightFB = Kp * (velocities[1] - ((rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2));
+		leftFrontMotor = leftFF + leftFB;
+		leftBackMotor = leftFF + leftFB;
+		rightFrontMotor = rightFF + rightFB;
+		rightBackMotor = rightFF + rightFB;
 	}
 }
 
@@ -557,11 +581,8 @@ void autonomous() {
 	backEncoder.reset();
 
 	pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
-	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.85, 10.0, 3.0, 3.0, 2, 15.0);
+	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.85, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
 }
-
-
-
 
 
 /**
