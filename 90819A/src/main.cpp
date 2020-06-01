@@ -483,7 +483,7 @@ vector<double> findVelocities(double curvature, double trackWidth, double veloci
 	else {
 		newVel = leftVel;
 	}
-	return { newVel * (2 + curvature * trackWidth) / 2,newVel *(2 - curvature * trackWidth) / 2 };
+	return { newVel * (2 + curvature * trackWidth) / 2,newVel * (2 - curvature * trackWidth) / 2 };
 }
 
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth) {
@@ -632,7 +632,7 @@ bool intakeMotor = true;
 void opcontrol()
 {
 
-	
+
 	// Break type for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -644,10 +644,10 @@ void opcontrol()
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 	/*secondaryLiftMotor.move_relative(50, 70);
-while (!(secondaryLiftMotor.get_position() < 52) && !(secondaryLiftMotor.get_position() > 48)){
-pros::delay(2);
-}
-*/
+	while (!(secondaryLiftMotor.get_position() < 52) && !(secondaryLiftMotor.get_position() > 48)) {
+		pros::delay(2);
+	}*/
+
 	while (true)
 	{
 		float turnSpeed;
@@ -666,20 +666,19 @@ pros::delay(2);
 
 		move2(motorSpeed, turnSpeed);
 
-		//
-		/*// fights gravity so lift doesn't fall
-else
-{
-liftMotorLeft = 5;
-liftMotorRight = 5;
-}*/
-/*if (controller.get_digital(DIGITAL_B)) {
-BPressed = true;
-}
-else if(BPressed) {
-intakeMotor = !intakeMotor;
-BPressed = false;
-}*/
+		// fights gravity so lift doesn't fall
+		/*if (controller.get_digital(DIGITAL_B)) {
+			BPressed = true;
+		}
+		else if (BPressed) {
+			intakeMotor = !intakeMotor;
+			BPressed = false;
+		}
+		else
+		{
+			liftMotorLeft = 5;
+			liftMotorRight = 5;
+		}*/
 
 		if (controller.get_digital(DIGITAL_B))
 		{
@@ -716,7 +715,7 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_L2))
 		{
 			upperStack = 0;
-			
+
 		}
 
 		if (controller.get_digital(DIGITAL_R1))
@@ -730,7 +729,7 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_R2))
 		{
 			lowerStack = 0;
-			
+
 		}
 
 		if (controller.get_digital(DIGITAL_LEFT))
@@ -740,7 +739,7 @@ BPressed = false;
 			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
 			lv_label_set_text(text, val);*/
 		}
-		
+
 
 		/*if (controller.get_digital(DIGITAL_R1))
 		{
