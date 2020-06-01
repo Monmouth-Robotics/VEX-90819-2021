@@ -632,7 +632,7 @@ bool intakeMotor = true;
 void opcontrol()
 {
 
-
+	
 	// Break type for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -716,7 +716,7 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_L2))
 		{
 			upperStack = 0;
-
+			
 		}
 
 		if (controller.get_digital(DIGITAL_R1))
@@ -730,10 +730,17 @@ BPressed = false;
 		else if (controller.get_digital(DIGITAL_R2))
 		{
 			lowerStack = 0;
-
+			
 		}
 
-
+		if (controller.get_digital(DIGITAL_LEFT))
+		{
+			lowerStack = -127;
+			/*char val[100];
+			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
+			lv_label_set_text(text, val);*/
+		}
+		
 
 		/*if (controller.get_digital(DIGITAL_R1))
 		{
@@ -743,4 +750,3 @@ BPressed = false;
 		pros::delay(10);
 	}
 }
-
