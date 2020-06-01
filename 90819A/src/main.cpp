@@ -449,13 +449,13 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 	}
 }
 
-double findCurvature(vector<double> lookAheadPoint, double x, double y) {
-	double curvature = (2 * (lookAheadPoint[0] - x)) / pow(sqrt(pow((lookAheadPoint[0] - x), 2) + pow((lookAheadPoint[1] - y), 2)), 2);
-	double angle = tanh((lookAheadPoint[1] - y) / (lookAheadPoint[0] - x));
-	double a = -1 * tan(angle);
-	double c = tan(angle) * x - y;
-	double newX = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / (sqrt(pow(a, 2) + 1));
-	return curvature;
+double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
+	double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
+	double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
+	double Bx = Rx+cos(angle);
+	double By = Ry+sin(angle);
+	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
+	return curvature*sign;
 }
 
 double rateLimit(double velocity, double maxAccel, double prevVel) {
