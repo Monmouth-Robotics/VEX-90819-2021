@@ -318,7 +318,7 @@ void resetGlobal() {
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
 	//spacing is in inches between points
 	vector < vector<double> > pointsList;
-	double changeVector[2] = { finalX - initX, finalY - initY };
+	vector<double> changeVector = { finalX - initX, finalY - initY };
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
 	double numPoints = ceil(magnitude / spacing);
 	changeVector[0] = changeVector[0] * spacing / magnitude;
