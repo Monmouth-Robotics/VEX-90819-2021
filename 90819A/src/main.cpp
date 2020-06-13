@@ -364,11 +364,9 @@ vector <double> calculateCurve(vector < vector<double> > pointsList) {
 	return curveList;
 }
 
-vector < vector<double> > smooth(vector < vector<double> > pointsList, double b) {
+vector < vector<double> > smooth(vector < vector<double> > pointsList, double a, double b, double tolerance) {
 	//b should be a value between 0.75 and 0.98
 	vector < vector<double> > newPointsList = pointsList;
-	double a = 1 - b;
-	double tolerance = 0.001;
 	double change = tolerance;
 	while (change >= tolerance) {
 		change = 0.0;
@@ -495,14 +493,16 @@ vector<double> findVelocities(double curvature, double trackWidth, double veloci
 	return { newVel * (2 + curvature * trackWidth) / 2,newVel * (2 - curvature * trackWidth) / 2, accel };
 }
 
-void move(vector < vector<double> > initPoints, double spacing, double smoothVal, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
+void move(vector < vector<double> > initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
 	//initPoints are all the points in the motion, including start and end
 	//spacing is in inches between points
-	//smoothVal should be a value between 0.75 and 0.98
+	//smoothVal1 should be 1-smoothVal2
+	//smoothVal2 should be a value between 0.75 and 0.98
 	//maxVelocity is the highest speed the robot is allowed to reach during this movement
 	//maxAccel is the highest acceleration the robot is allowed to encounter during this movement
 	//turnConstant should be between 1.0 and 5.0
 	//lookAheadPointsNum is the number of points to look ahead
+	//smoothTolerance default is 0.001
 	/*trackWidth is measured from the robot. Due to turning scrub,
 	 *you want to use a track width a few inches larger than the real one.*/
 	 /*start Kv at 1/maxVelocity and start all other constants at 0
@@ -526,7 +526,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 				vector < vector<double> > pointsList2 = generateLinearPath(initPoints[i][0], initPoints[i][1], initPoints[i + 1][0], initPoints[i + 1][1], spacing);
 				pointsList.insert(pointsList.end(), pointsList2.begin(), pointsList2.end());
 			}
-			pointsList = smooth(pointsList, smoothVal);
+			pointsList = smooth(pointsList, smoothVal1, smoothVal2, smoothTolerance);
 		}
 	}
 	//vector <double> distanceList = calculateDistance(pointsList);
@@ -581,7 +581,7 @@ void autonomous() {
 	backEncoder.reset();
 
 	pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
-	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.85, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
+	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
 }
 
 
