@@ -356,7 +356,7 @@ vector <double> calculateCurve(vector < vector<double> > pointsList) {
 		double y3 = pointsList[i + 1][1];
 		double k1 = 0.5 * (pow(x1, 2) + pow(y1, 2) - pow(x2, 2) - pow(y2, 2)) / (x1 - x2);
 		double k2 = (y1 - y2) / (x1 - x2);
-		double b = 0.5 * (pow(x2, 2) - 2 * x2 * k1 + pow(y2, 2) - pow(x3, 2) + 2 * x2 * k1 - pow(y3, 2)) / (x3 * k2 - y3 + y2 - x2 * k2);
+		double b = 0.5 * (pow(x2, 2) - 2 * x2 * k1 + pow(y2, 2) - pow(x3, 2) + 2 * x3 * k1 - pow(y3, 2)) / (x3 * k2 - y3 + y2 - x2 * k2);
 		double a = k1 - k2 * b;
 		curveList.push_back(1 / sqrt(pow(x1 - a, 2) + pow(y1 - b, 2)));
 	}
