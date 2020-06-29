@@ -10,9 +10,14 @@ using namespace std;
 
 pros::Controller controller(CONTROLLER_MASTER);
 
-pros::Motor leftFrontMotor(14, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(11, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+//pros::Motor leftFrontMotor(14, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+//pros::Motor leftBackMotor(11, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+//pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+//pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+
+pros::Motor leftFrontMotor(10, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::Motor lowerStack(7, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
@@ -20,9 +25,9 @@ pros::Motor upperStack(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorLeft(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorRight(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::ADIEncoder leftEncoder('A', 'B', false);
-pros::ADIEncoder rightEncoder('C', 'D', false);
-pros::ADIEncoder backEncoder('E', 'F', false);
+pros::ADIEncoder leftEncoder('C', 'D', true);
+pros::ADIEncoder rightEncoder('G', 'H', true);
+pros::ADIEncoder backEncoder('A', 'B', false);
 
 time_t currentTime;
 lv_obj_t* text = lv_label_create(lv_scr_act(), NULL);
@@ -191,10 +196,10 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-double WHEEL_DIAMETER = 4;
-double DISTANCE_TO_LEFT_ENCODER = 7.25;
-double DISTANCE_TO_RIGHT_ENCODER = 7.25;
-double DISTANCE_TO_BACK_ENCODER = 5.5;
+double WHEEL_DIAMETER = 2.75;
+double DISTANCE_TO_LEFT_ENCODER = 5;
+double DISTANCE_TO_RIGHT_ENCODER = 4.5;
+double DISTANCE_TO_BACK_ENCODER = 5.25;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -218,22 +223,16 @@ double backEncoderDistance = 0;
 
 double deltaTheta = 0;
 
-double vectorComponentX = 0;
-double vectorComponentY = 0;
-
-double newVectorComponentX = 0;
-double newVectorComponentY = 0;
-
-double positionVector[2] = { 0, 0 };
-double newVector[2] = { 0, 0 };
+vector<double> positionVector = { 0,0 };
+vector<double> newVector = { 0,0 };
 
 
-double x = 0;
-double y = 0;
-double r = 0;
-double theta = 0;
-double newX = 0;
-double newY = 0;
+double x;
+double y;
+double r;
+double theta;
+double newX;
+double newY;
 
 void runPositionTask() {
 
@@ -253,24 +252,68 @@ void runPositionTask() {
 	rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 	backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 
+	printf("left: %.3f      ", leftEncoderDistance);
+	printf("right: %.3f      ", rightEncoderDistance);
+	printf("back: %.3f\n", backEncoderDistance);
+
 	deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-	x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
-	y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
+	if (deltaTheta != 0) {
+		x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
+		y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
+
+		printf("x(relative): %.3f\n", x);
+		printf("y(relative): %.3f\n", y);
+	}
+	else {
+		x = backEncoderDistance;
+		y = rightEncoderDistance;
+	}
 
 	r = sqrt(pow(x, 2) + pow(y, 2));
-	theta = atan(y / x);
 
-	theta -= deltaTheta / 2;
+	if (deltaTheta != 0)
+	{
+		theta = atan(y / x); // might be y/x
+		//theta -= deltaTheta / 2;// might be +=
+		if (x < 0 && y>0)
+		{
+			theta = M_PI - abs(theta);
+		}
+		else if (x < 0 && y < 0)
+		{
+			theta = M_PI + abs(theta);
+		}
+		else if (x > 0 && y < 0)
+		{
+			theta = 2 * M_PI - abs(theta);
+		}
+	}
 
-	newX = r * cos(theta);
-	newY = r * sin(theta);
+	printf("deltaTheta: %.3f\n", deltaTheta * 180 / M_PI);
+	printf("theta: %.3f\n degrees", theta*180/M_PI);
+
+	newX = r * cos(theta); //check sin vs cos
+	newY = r * sin(theta); //check sin vs cos
+
+	printf("newx: %.3f      ", newX);
+	printf("newy: %.3f \n", newY);
 
 	newVector[0] = newX;
 	newVector[1] = newY;
 
-	positionVector[0] = positionVector[0] + newVector[0];
-	positionVector[1] = positionVector[1] + newVector[1];
+	// positionVector[0] = positionVector[0] + newVector[0];
+	// positionVector[1] = positionVector[1] + newVector[1];
+
+	positionVector[0] = positionVector[0] + x;
+	positionVector[1] = positionVector[1] + y;
+
+	printf("x-coordinate: %.3f\n", positionVector[0]);
+	printf("y-coordinate: %.3f\n", positionVector[1]);
+
+	pros::delay(10000);
+
+	runPositionTask();
 }
 
 void resetGlobal() {
@@ -296,12 +339,6 @@ void resetGlobal() {
 
 	deltaTheta = 0;
 
-	vectorComponentX = 0;
-	vectorComponentY = 0;
-
-	newVectorComponentX = 0;
-	newVectorComponentY = 0;
-
 	positionVector[0] = 0;
 	positionVector[1] = 0;
 	newVector[0] = 0;
@@ -310,7 +347,7 @@ void resetGlobal() {
 	x = 0;
 	y = 0;
 	r = 0;
-	theta = 0;
+	theta = 0.0000000001;
 	newX = 0;
 	newY = 0;
 }
@@ -570,7 +607,6 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 }
 
 void autonomous() {
-	resetGlobal();
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -579,9 +615,10 @@ void autonomous() {
 	leftEncoder.reset();
 	rightEncoder.reset();
 	backEncoder.reset();
-
-	pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
-	move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
+	resetGlobal();
+	runPositionTask();
+	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
+	//move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
 }
 
 
