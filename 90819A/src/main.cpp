@@ -280,20 +280,22 @@ void runPositionTask() {
 	r = sqrt(x*x+y*y);
 	if (x != 0) {
 		polarTheta = atan(y / x);
-		polarTheta -= theta;
+		if (x<0 && y>0)
+			polarTheta += M_PI;
+		else if (x<0 && y<0)
+			polarTheta += M_PI;
+		else if (x>0 && y<0)
+			polarTheta += (2*M_PI);
+		
+		polarTheta -= (theta+deltaTheta/2);
+
+		printf("theta: %.3f\n", theta);
+		printf("polarTheta: %.3f\n", polarTheta);
+		//polarTheta -= theta;
 	}
 
 	newX = r * sin(polarTheta);
 	newY = r * cos(polarTheta);
-
-	if (x< 0)
-	{
-		newX *= -1;
-	}
-	if (y<0)
-	{
-		newY *= -1;
-	}
 	//newVector[0] = x;
 	//newVector[1] = y;
 
@@ -308,8 +310,8 @@ void runPositionTask() {
 	//printf("y-coordinate: %.3f\n", positionVector[1]);
 
 	
-	// printf("change in raw x: %.3f\n", x);
-	// printf("change in raw y: %.3f\n", y);
+	printf("change in raw x: %.3f\n", x);
+	printf("change in raw y: %.3f\n", y);
 	// printf("change in x: %.3f\n", newX);
 	// printf("change in y: %.3f\n", newY);
 	// printf("x: %.3f\n", positionVector[0]);
@@ -357,9 +359,7 @@ void resetGlobal() {
 
 	count2 = 0;
 
-	leftEncoder.reset();
-	rightEncoder.reset();
-	backEncoder.reset();
+	
 }
 
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
@@ -616,22 +616,29 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	}
 }
 
-void pidTurn(double target, double maxVel, double thresholdError, double kP){
+void pidTurn(double target, double maxVel, double thresholdError, double kP, double ccw){
+	//double sign = 1.0;
+	double error = 999999;
 	
+
 	while (abs(error) > thresholdError)
 	{
+		if ((target == M_PI * 2 || target == 0) && (abs(M_PI*2 - theta) < thresholdError || abs(0 - theta) < thresholdError)) {
+			break;
+		}
 		runPositionTask();
-		double error = target - theta;
-		power = kP * error
+		printf("theta: %.3f\n", theta*180.0/M_PI);
+		error = abs(target - theta);
+		double power = kP * error;
 		if (power > maxVel)
 			power = maxVel;
 		if (power < -maxVel)
 			power = -maxVel;
-		leftBackMotor = -power;
-		leftFrontMotor = -power;
-		rightBackMotor = power;
-		rightFrontMotor = power;
-		pros::delay(10)
+		leftBackMotor = -power * ccw;
+		leftFrontMotor = -power * ccw;
+		rightBackMotor = power * ccw;
+		rightFrontMotor = power * ccw;
+		pros::delay(10);
 	}
 
 	leftBackMotor = 0;
@@ -643,25 +650,31 @@ void pidTurn(double target, double maxVel, double thresholdError, double kP){
 
 void pidStraight (double targetX, double targetY, double targetTheta, double maxVel, double thresholdError, double kP, double kPStraight)
 {
-	while abs(error) > thresholdError{
-		double error = sqrt(pow(targetX - positionVector[0], 2) +  pow(targetY - positionVector[1], 2) * 1.0);
-		double power = kP * error
+	double error = 9999999;
+	while (abs(error) > thresholdError){
+		runPositionTask();
+		printf("theta: %.3f\n", theta*180.0/M_PI);
+		printf("x: %.3f\n", positionVector[0]);
+		printf("y: %.3f\n", positionVector[1]);
+		error = sqrt(pow(targetX - positionVector[0], 2) +  pow(targetY - positionVector[1], 2) * 1.0);
+		double power = kP * error;
 		if (power > maxVel)
 			power = maxVel;
 		if (power < -maxVel)
 			power = -maxVel;
 		double straightError = targetTheta - theta;
 		double powerChange = straightError * kPStraight;
-		if (powerChange > 20)
-			powerChange = 20;
-		if (powerChange < -20)
-			powerChange = -20;
-		leftBackMotor = -power + powerChange;
-		leftFrontMotor = -power + powerChange;
+		if (powerChange > 50)
+			powerChange = 50;
+		if (powerChange < -50)
+			powerChange = -50;
+		leftBackMotor = power - powerChange;
+		leftFrontMotor = power - powerChange;
 		rightBackMotor = power + powerChange;
 		rightFrontMotor = power + powerChange;
-
-		pros::delay(10)
+		printf("left: %.3f\n", power-powerChange);
+		printf("right: %.3f\n", power+powerChange);
+		pros::delay(10);
 	}
 
 	leftBackMotor = 0;
@@ -675,12 +688,26 @@ void autonomous() {
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
+	leftEncoder.reset();
+	rightEncoder.reset();
+	backEncoder.reset();
 	resetGlobal();
+	while (true) {
+		runPositionTask();
+		printf("theta: %.3f\n", theta*180.0/M_PI);
+		printf("x: %.3f\n", positionVector[0]);
+		printf("y: %.3f\n", positionVector[1]);
+		pros::delay(5000);
+	}
 
-	pidTurn(M_PI, 80, 0.006, 110)
-	pidTurn(2*M_PI, 80, 0.006, 110)
+	//pidStraight(0, 12.0, M_PI/2, 63, 0.5, 10, 500);
 
-	pidStraight(0, 24.0, 0, 63, 0.006, 110, 110)
+	// pidTurn(M_PI, 80, 0.006, 110, 1.0);
+	// pros::delay(5000);
+	// pidTurn(M_PI*2, 60, 0.006, 110, 1.0);
+	// pros::delay(5000);
+	// pidTurn(M_PI, 80, 0.006, 110, 1.0);
+
 	// double target = M_PI;
 	// double kP = 0.01;
 	// double error = 99999999;
