@@ -277,25 +277,10 @@ void runPositionTask() {
 
 	//convert to polar, rotate by negative theta, convert back
 
-	r = sqrt(x*x+y*y);
-	if (x != 0) {
-		polarTheta = atan(y / x);
-		if (x<0 && y>0)
-			polarTheta += M_PI;
-		else if (x<0 && y<0)
-			polarTheta += M_PI;
-		else if (x>0 && y<0)
-			polarTheta += (2*M_PI);
-		
-		polarTheta -= (theta+deltaTheta/2);
+	thetaM = theta + deltaTheta/2
 
-		printf("theta: %.3f\n", theta);
-		printf("polarTheta: %.3f\n", polarTheta);
-		//polarTheta -= theta;
-	}
-
-	newX = r * sin(polarTheta);
-	newY = r * cos(polarTheta);
+	newX = x * cos(-thetaM) - y * sin(-thetaM)
+	newY = y * cos(-thetaM) + x * sin (-thetaM)
 	//newVector[0] = x;
 	//newVector[1] = y;
 
@@ -353,7 +338,7 @@ void resetGlobal() {
 	x = 0;
 	y = 0;
 	r = 0;
-	theta = M_PI/2;
+	theta = 0;
 	newX = 0;
 	newY = 0;
 
