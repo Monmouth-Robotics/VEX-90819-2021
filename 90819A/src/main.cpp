@@ -645,14 +645,17 @@ void pidStraight (double targetX, double targetY, double targetTheta, double max
 {
 	while abs(error) > thresholdError{
 		double error = sqrt(pow(targetX - positionVector[0], 2) +  pow(targetY - positionVector[1], 2) * 1.0);
-		power = kP * error
+		double power = kP * error
 		if (power > maxVel)
 			power = maxVel;
 		if (power < -maxVel)
 			power = -maxVel;
 		double straightError = targetTheta - theta;
-		powerChange = straightError * kPStraight;
-
+		double powerChange = straightError * kPStraight;
+		if (powerChange > 20)
+			powerChange = 20;
+		if (powerChange < -20)
+			powerChange = -20;
 		leftBackMotor = -power + powerChange;
 		leftFrontMotor = -power + powerChange;
 		rightBackMotor = power + powerChange;
