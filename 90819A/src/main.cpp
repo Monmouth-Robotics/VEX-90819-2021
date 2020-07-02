@@ -15,15 +15,15 @@ pros::Controller controller(CONTROLLER_MASTER);
 //pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 //pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor leftFrontMotor(10, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftFrontMotor(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor rightBackMotor(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::Motor lowerStack(7, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor upperStack(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(11, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorLeft(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeMotorRight(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorRight(12, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::ADIEncoder leftEncoder('C', 'D', true);
 pros::ADIEncoder rightEncoder('G', 'H', true);
@@ -197,9 +197,9 @@ void competition_initialize() {
  * from where it left off.
  */
 double WHEEL_DIAMETER = 2.75;
-double DISTANCE_TO_LEFT_ENCODER = 5;
-double DISTANCE_TO_RIGHT_ENCODER = 4.5;
-double DISTANCE_TO_BACK_ENCODER = 5.25;
+double DISTANCE_TO_LEFT_ENCODER = 4.725;
+double DISTANCE_TO_RIGHT_ENCODER = 4.725;
+double DISTANCE_TO_BACK_ENCODER = 5;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -222,6 +222,7 @@ double rightEncoderDistance = 0;
 double backEncoderDistance = 0;
 
 double deltaTheta = 0;
+double polarTheta = 0;
 
 vector<double> positionVector = { 0,0 };
 vector<double> newVector = { 0,0 };
@@ -233,6 +234,8 @@ double r;
 double theta;
 double newX;
 double newY;
+
+int count2 = 0;
 
 void runPositionTask() {
 
@@ -252,68 +255,68 @@ void runPositionTask() {
 	rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 	backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 
-	printf("left: %.3f      ", leftEncoderDistance);
-	printf("right: %.3f      ", rightEncoderDistance);
-	printf("back: %.3f\n", backEncoderDistance);
-
 	deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+
+	theta -= deltaTheta;
 
 	if (deltaTheta != 0) {
 		x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
 		y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
-
-		printf("x(relative): %.3f\n", x);
-		printf("y(relative): %.3f\n", y);
-	}
+	}	
 	else {
 		x = backEncoderDistance;
 		y = rightEncoderDistance;
 	}
 
-	r = sqrt(pow(x, 2) + pow(y, 2));
-
-	if (deltaTheta != 0)
-	{
-		theta = atan(y / x); // might be y/x
-		//theta -= deltaTheta / 2;// might be +=
-		if (x < 0 && y>0)
-		{
-			theta = M_PI - abs(theta);
-		}
-		else if (x < 0 && y < 0)
-		{
-			theta = M_PI + abs(theta);
-		}
-		else if (x > 0 && y < 0)
-		{
-			theta = 2 * M_PI - abs(theta);
-		}
+	while (theta > M_PI*2) {
+		theta -= M_PI * 2;
+	}
+	while (theta < 0) {
+		theta += M_PI * 2;
 	}
 
-	printf("deltaTheta: %.3f\n", deltaTheta * 180 / M_PI);
-	printf("theta: %.3f\n degrees", theta*180/M_PI);
+	//convert to polar, rotate by negative theta, convert back
 
-	newX = r * cos(theta); //check sin vs cos
-	newY = r * sin(theta); //check sin vs cos
+	r = sqrt(x*x+y*y);
+	if (x != 0) {
+		polarTheta = atan(y / x);
+		polarTheta -= theta;
+	}
 
-	printf("newx: %.3f      ", newX);
-	printf("newy: %.3f \n", newY);
+	newX = r * sin(polarTheta);
+	newY = r * cos(polarTheta);
 
-	newVector[0] = newX;
-	newVector[1] = newY;
+	if (x< 0)
+	{
+		newX *= -1;
+	}
+	if (y<0)
+	{
+		newY *= -1;
+	}
+	//newVector[0] = x;
+	//newVector[1] = y;
 
 	// positionVector[0] = positionVector[0] + newVector[0];
 	// positionVector[1] = positionVector[1] + newVector[1];
 
-	positionVector[0] = positionVector[0] + x;
-	positionVector[1] = positionVector[1] + y;
+	positionVector[0] = positionVector[0] + newX;
+	positionVector[1] = positionVector[1] + newY;
 
-	printf("x-coordinate: %.3f\n", positionVector[0]);
-	printf("y-coordinate: %.3f\n", positionVector[1]);
+	
+	//printf("x-coordinate: %.3f\n", positionVector[0]);
+	//printf("y-coordinate: %.3f\n", positionVector[1]);
 
-	pros::delay(10000);
+	
+	// printf("change in raw x: %.3f\n", x);
+	// printf("change in raw y: %.3f\n", y);
+	// printf("change in x: %.3f\n", newX);
+	// printf("change in y: %.3f\n", newY);
+	// printf("x: %.3f\n", positionVector[0]);
+	// printf("y: %.3f\n", positionVector[1]);
 
-	runPositionTask();
+	// pros::delay(10000);
+	// runPositionTask();
 }
 
 void resetGlobal() {
@@ -338,6 +341,7 @@ void resetGlobal() {
 	backEncoderDistance = 0;
 
 	deltaTheta = 0;
+	polarTheta = 0;
 
 	positionVector[0] = 0;
 	positionVector[1] = 0;
@@ -347,9 +351,11 @@ void resetGlobal() {
 	x = 0;
 	y = 0;
 	r = 0;
-	theta = 0.0000000001;
+	theta = M_PI/2;
 	newX = 0;
 	newY = 0;
+
+	count2 = 0;
 }
 
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
@@ -616,7 +622,39 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 	resetGlobal();
-	runPositionTask();
+
+	double target = M_PI;
+	double kP = 0.01;
+	double error = 99999999;
+	double power;
+	double threshold = 0.006;
+	
+	while (error > threshold)
+	{
+		runPositionTask();
+		printf("theta: %.3f\n", theta*180/M_PI);
+		error = target - theta;
+		power = 11000*error *kP;
+		
+		if (power > 63)
+			power = 63;
+		if (power < -63)
+			power = -63;
+
+		leftBackMotor = -power;
+		leftFrontMotor = -power;
+		rightBackMotor = power;
+		rightFrontMotor = power;
+		pros::delay(10);
+	}
+	
+	// leftBackMotor = 40;
+	// leftFrontMotor = 40;
+	// rightBackMotor = 40;
+	// rightFrontMotor = 40;
+
+
+
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
 	//move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
 }
@@ -637,7 +675,7 @@ void autonomous() {
  */
 
 void move2(float motorSpeed, float turnSpeed)
-{
+{	
 	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20)
 	{
 		leftFrontMotor = motorSpeed + turnSpeed;
@@ -696,10 +734,10 @@ void opcontrol()
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	//lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	//upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	//intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	//intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 	/*secondaryLiftMotor.move_relative(50, 70);
 	while (!(secondaryLiftMotor.get_position() < 52) && !(secondaryLiftMotor.get_position() > 48)) {
