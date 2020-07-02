@@ -356,6 +356,10 @@ void resetGlobal() {
 	newY = 0;
 
 	count2 = 0;
+
+	leftEncoder.reset();
+	rightEncoder.reset();
+	backEncoder.reset();
 }
 
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
@@ -612,41 +616,92 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	}
 }
 
+void pidTurn(double target, double maxVel, double thresholdError, double kP){
+	
+	while (abs(error) > thresholdError)
+	{
+		runPositionTask();
+		double error = target - theta;
+		power = kP * error
+		if (power > maxVel)
+			power = maxVel;
+		if (power < -maxVel)
+			power = -maxVel;
+		leftBackMotor = -power;
+		leftFrontMotor = -power;
+		rightBackMotor = power;
+		rightFrontMotor = power;
+		pros::delay(10)
+	}
+
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightBackMotor = 0;
+	rightFrontMotor = 0;
+	
+}
+
+void pidStraight (double targetX, double targetY, double targetTheta, double maxVel, double thresholdError, double kP, double kPStraight)
+{
+	while abs(error) > thresholdError{
+		double error = sqrt(pow(targetX - positionVector[0], 2) +  pow(targetY - positionVector[1], 2) * 1.0);
+		power = kP * error
+		if (power > maxVel)
+			power = maxVel;
+		if (power < -maxVel)
+			power = -maxVel;
+		double straightError = targetTheta - theta;
+		powerChange = straightError * kPStraight;
+
+		leftBackMotor = -power + powerChange;
+		leftFrontMotor = -power + powerChange;
+		rightBackMotor = power + powerChange;
+		rightFrontMotor = power + powerChange;
+
+		pros::delay(10)
+	}
+
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightBackMotor = 0;
+	rightFrontMotor = 0;
+}
 void autonomous() {
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	leftEncoder.reset();
-	rightEncoder.reset();
-	backEncoder.reset();
 	resetGlobal();
 
-	double target = M_PI;
-	double kP = 0.01;
-	double error = 99999999;
-	double power;
-	double threshold = 0.006;
-	
-	while (error > threshold)
-	{
-		runPositionTask();
-		printf("theta: %.3f\n", theta*180/M_PI);
-		error = target - theta;
-		power = 11000*error *kP;
-		
-		if (power > 63)
-			power = 63;
-		if (power < -63)
-			power = -63;
+	pidTurn(M_PI, 80, 0.006, 110)
+	pidTurn(2*M_PI, 80, 0.006, 110)
 
-		leftBackMotor = -power;
-		leftFrontMotor = -power;
-		rightBackMotor = power;
-		rightFrontMotor = power;
-		pros::delay(10);
-	}
+	pidStraight(0, 24.0, 0, 63, 0.006, 110, 110)
+	// double target = M_PI;
+	// double kP = 0.01;
+	// double error = 99999999;
+	// double power;
+	// double threshold = 0.006;
+	
+	// while (error > threshold)
+	// {
+	// 	runPositionTask();
+	// 	printf("theta: %.3f\n", theta*180/M_PI);
+	// 	error = target - theta;
+	// 	power = 11000*error *kP;
+		
+	// 	if (power > 63)
+	// 		power = 63;
+	// 	if (power < -63)
+	// 		power = -63;
+
+	// 	leftBackMotor = -power;
+	// 	leftFrontMotor = -power;
+	// 	rightBackMotor = power;
+	// 	rightFrontMotor = power;
+	// 	pros::delay(10);
+	// }
 	
 	// leftBackMotor = 40;
 	// leftFrontMotor = 40;
