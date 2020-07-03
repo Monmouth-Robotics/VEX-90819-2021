@@ -234,6 +234,7 @@ double r;
 double theta;
 double newX;
 double newY;
+double thetaM;
 
 int count2 = 0;
 
@@ -257,7 +258,7 @@ void runPositionTask() {
 
 	deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-	theta -= deltaTheta;
+	theta += deltaTheta;
 
 	if (deltaTheta != 0) {
 		x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
@@ -277,10 +278,10 @@ void runPositionTask() {
 
 	//convert to polar, rotate by negative theta, convert back
 
-	thetaM = theta + deltaTheta/2
+	thetaM = theta + deltaTheta / 2;
 
-	newX = x * cos(-thetaM) - y * sin(-thetaM)
-	newY = y * cos(-thetaM) + x * sin (-thetaM)
+	newX = x * cos(-thetaM) - y * sin(-thetaM);
+	newY = y * cos(-thetaM) + x * sin(-thetaM);
 	//newVector[0] = x;
 	//newVector[1] = y;
 
@@ -295,8 +296,8 @@ void runPositionTask() {
 	//printf("y-coordinate: %.3f\n", positionVector[1]);
 
 	
-	printf("change in raw x: %.3f\n", x);
-	printf("change in raw y: %.3f\n", y);
+	//printf("change in raw x: %.3f\n", x);
+	//printf("change in raw y: %.3f\n", y);
 	// printf("change in x: %.3f\n", newX);
 	// printf("change in y: %.3f\n", newY);
 	// printf("x: %.3f\n", positionVector[0]);
@@ -339,24 +340,24 @@ void resetGlobal() {
 	y = 0;
 	r = 0;
 	theta = 0;
+	thetaM = 0;
 	newX = 0;
 	newY = 0;
 
 	count2 = 0;
-
-	
 }
 
 vector < vector<double> > generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing) {
 	//spacing is in inches between points
-	vector < vector<double> > pointsList;
+	vector < vector<double> > pointsList = {{0.0}};
+	pointsList = {};
 	vector<double> changeVector = { finalX - initX, finalY - initY };
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
 	double numPoints = ceil(magnitude / spacing);
 	changeVector[0] = changeVector[0] * spacing / magnitude;
 	changeVector[1] = changeVector[1] * spacing / magnitude;
 	for (int i = 0; i < numPoints; i++) {
-		vector<double> newVector{ initX + changeVector[0] * i, initY + changeVector[1] * i };
+		vector<double> newVector = { initX + changeVector[0] * i, initY + changeVector[1] * i };
 		pointsList.push_back(newVector);
 	}
 	vector<double> finalVector{ finalX, finalY };
@@ -365,7 +366,8 @@ vector < vector<double> > generateLinearPath(double initX, double initY, double 
 }
 
 vector <double> calculateDistance(vector < vector<double> > pointsList) {
-	vector<double> distanceList;
+	vector<double> distanceList = {0.0};
+	distanceList = {};
 	distanceList.push_back(0.0);
 	for (int i = 1; i < pointsList.size(); i++) {
 		distanceList.push_back(distanceList[i - 1] + sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
@@ -374,7 +376,8 @@ vector <double> calculateDistance(vector < vector<double> > pointsList) {
 }
 
 vector <double> calculateCurve(vector < vector<double> > pointsList) {
-	vector<double> curveList;
+	vector<double> curveList = {0.0};
+	curveList = {};
 	curveList.push_back(0.0);
 	for (int i = 1; i < pointsList.size() - 1; i++) {
 		double x1 = pointsList[i][0];
@@ -416,7 +419,8 @@ vector < vector<double> > smooth(vector < vector<double> > pointsList, double a,
 
 vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <double> curveList, double maxVelocity, double maxAccel, double turnConstant) {
 	//turnConstant should be between 1.0 and 5.0
-	vector<double> maxVelList;
+	vector<double> maxVelList = {0.0};
+	maxVelList = {};
 	for (int i = 0; i < curveList.size(); i++) {
 		if (curveList[i] == 0.0) {
 			curveList[i] = 0.001;
@@ -424,7 +428,8 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 		maxVelList.push_back(min(maxVelocity, (turnConstant / curveList[i])));
 	}
 
-	vector<double> targetVelList;
+	vector<double> targetVelList = {0};
+	targetVelList = {};
 	targetVelList.push_back(0.0);
 	double prevVel = 0.0;
 	for (int i = 1; i < maxVelList.size(); i++) {
@@ -432,14 +437,20 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 		targetVelList.push_back(prevVel);
 	}
 
-
 	vector<double> velList(maxVelList.size(), 0.0);
 	double previousVel = 0.0;
-	for (int i = maxVelList.size() - 2; i <= 0; i--) {
+	for (int i = maxVelList.size() - 2; i >= 0; i--) {
 		double distance = sqrt(pow((pointsList[i + 1][0] - pointsList[i][0]), 2) + pow((pointsList[i + 1][1] - pointsList[i][1]), 2));
 		previousVel = min(targetVelList[i], sqrt(pow(previousVel, 2) + 2 * maxAccel * distance));
 		velList[i] = previousVel;
 	}
+	//for (int i = 0; i < targetVelList.size(); i++) {
+	//	printf("targetVelList #%d: %.3f\n", i, targetVelList[i]);
+	//}
+
+	//for (int i = 0; i < velList.size(); i++) {
+	//	printf("velList #%d: %.3f\n", i, velList[i]);
+	//}
 	return velList;
 }
 
@@ -447,18 +458,37 @@ double dot(vector <double> a, vector <double> b) {
 	return a[0] * b[0] + a[1] * b[1];
 }
 
-vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > pointsList, int closestPoint, int lookAheadPointsNum) {
+vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > pointsList, int closestPoint, int lookAheadPointsNum, double spacing) {
+	// 0, 0, pointslist, 1, 2
 	vector<double> E = pointsList[closestPoint];
+	// E = {0, 2}
 	vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
+	// L = {0, 6}
 	vector<double> C = { x, y };
+	// C = {0, 0}
 	vector<double> d = { L[0] - E[0], L[1] - E[1] };
+	// d= {0, 4}
 	vector<double> f = { E[0] - C[0], E[1] - C[1] };
+	// f = {0, 2}
+
+	double r = spacing * lookAheadPointsNum;
+	// r = 4
 	double a = dot(d, d);
+	// a = 16
 	double b = 2 * dot(f, d);
+	// 16
 	double c = dot(f, f) - r * r;
+	// -12
 	double discriminant = b * b - 4 * a * c;
+	// > 0
 	if (discriminant < 0) {
-		// no intersection
+		//no intersection
+		if (closestPoint != pointsList.size() - lookAheadPointsNum - 1) {
+			return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1 , spacing);
+		}
+		else {
+			return pointsList[pointsList.size() - 1];
+		}
 	}
 	else {
 		double t1 = (-b - sqrt(discriminant)) / (2 * a);
@@ -471,7 +501,7 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 		}
 		else {
 			if (closestPoint != pointsList.size() - lookAheadPointsNum - 1) {
-				return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1);
+				return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1, spacing);
 			}
 			else {
 				return pointsList[pointsList.size() - 1];
@@ -490,7 +520,7 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
-	double maxChange = (time(0) - currentTime) * maxAccel;
+	double maxChange = 0.01 * maxAccel;
 	double newVel = prevVel;
 	double accel;
 	if (-1 * maxChange > (velocity - newVel)) {
@@ -505,11 +535,12 @@ vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
 		newVel += (velocity - newVel);
 		accel = velocity - newVel;
 	}
-	currentTime = time(0);
+	//currentTime = time(0);
 	return { newVel, accel };
 }
 
 vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, vector<double> prevVel) {
+	//printf("velocity: %.3f", velocity);
 	vector<double> leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
 	vector<double> rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
 	double newVel;
@@ -543,8 +574,9 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	  *Tune until accelerating and decelerating velocities are near accurate
 	  *Start Kp at 0.01 and increase number to make more accurate
 	  *Setting Kp too high will result in a jittery motion*/
-
-	vector < vector<double> > pointsList;
+	runPositionTask();
+	vector < vector<double> > pointsList = { {0.0} };
+	pointsList = {};
 	if (initPoints.size() == 0) {
 		return;
 	}
@@ -561,43 +593,56 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 			pointsList = smooth(pointsList, smoothVal1, smoothVal2, smoothTolerance);
 		}
 	}
+	
 	//vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
+	/*for (int i = 0; i < velList.size(); i++) {
+		printf("velList #%d: %.3f\n", i, velList[i]);
+	}*/
 	int closestPoint = 1;
 	vector<double> velocities = { 0.0, 0.0 };
 	currentTime = time(0);
 	while (true) {
+		runPositionTask();
 		double x = positionVector[0];
 		double y = positionVector[1];
-		vector<double> lookAheadPoint;
+		vector<double> lookAheadPoint = {0.0};
+		lookAheadPoint = {};
 		double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
 		if (closestPoint != pointsList.size() - lookAheadPointsNum) {
-			for (int i = closestPoint + 1; i++; i < pointsList.size()) {
-				double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
+			for (int i = closestPoint + 1; i < pointsList.size(); i++) {
+				 double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
 				if (smallestDistance > newDistance) {
 					smallestDistance = newDistance;
 					closestPoint = i;
 				}
 			}
-			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum);
+			// 0, 0, pointslist, 1, 2
+			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing);
 		}
 		else {
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
+		//printf("lookAheadPoint: (%.3f,%.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
 		if (closestPoint == pointsList.size() - 1) {
 			break;
 		}
 		double curvature = findCurvature(lookAheadPoint, x, y);
+		//printf("curvature: %.3f\n", curvature);
 		vector<double> velocities = findVelocities(curvature, trackWidth, velList[closestPoint], maxAccel, velocities);
+		//printf("velocities: (%.3f,%.3f)\n", veloscities[0], velocities[1]);
 		double leftFF = Kv * velocities[0] + Ka * (velocities[2]);
 		double rightFF = Kv * velocities[1] + Ka * (velocities[2]);
 		double leftFB = Kp * (velocities[0] - ((leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2));
 		double rightFB = Kp * (velocities[1] - ((rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2));
-		leftFrontMotor = leftFF + leftFB;
-		leftBackMotor = leftFF + leftFB;
-		rightFrontMotor = rightFF + rightFB;
-		rightBackMotor = rightFF + rightFB;
+		leftFrontMotor = (leftFF + leftFB) * 1000;
+		leftBackMotor = (leftFF + leftFB) * 1000;
+		rightFrontMotor = (rightFF + rightFB) * 1000;
+		rightBackMotor = (rightFF + rightFB) * 10000;
+		printf("leftSpeed: %.4f\n", (leftFF + leftFB) * 1000);
+		printf("rightSpeed: %.4f\n", (rightFF + rightFB) * 1000);
+		pros::delay(10);
 	}
 }
 
@@ -647,18 +692,23 @@ void pidStraight (double targetX, double targetY, double targetTheta, double max
 			power = maxVel;
 		if (power < -maxVel)
 			power = -maxVel;
-		double straightError = targetTheta - theta;
+		
+		double straightError = theta - targetTheta;
+		if (straightError > M_PI)
+		{
+			straightError = (theta - 2 * M_PI - targetTheta);
+		}
 		double powerChange = straightError * kPStraight;
-		if (powerChange > 50)
-			powerChange = 50;
-		if (powerChange < -50)
-			powerChange = -50;
+		if (powerChange > 40)
+			powerChange = 40;
+		if (powerChange < -40)
+			powerChange = -40;
 		leftBackMotor = power - powerChange;
 		leftFrontMotor = power - powerChange;
 		rightBackMotor = power + powerChange;
 		rightFrontMotor = power + powerChange;
-		printf("left: %.3f\n", power-powerChange);
-		printf("right: %.3f\n", power+powerChange);
+		printf("left: %.3f\n", power+powerChange);
+		printf("right: %.3f\n", power-powerChange);
 		pros::delay(10);
 	}
 
@@ -677,15 +727,15 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 	resetGlobal();
-	while (true) {
-		runPositionTask();
-		printf("theta: %.3f\n", theta*180.0/M_PI);
-		printf("x: %.3f\n", positionVector[0]);
-		printf("y: %.3f\n", positionVector[1]);
-		pros::delay(5000);
-	}
+	// while (true) {
+	// 	runPositionTask();
+	// 	printf("theta: %.3f\n", theta*180.0/M_PI);
+	// 	printf("x: %.3f\n", positionVector[0]);
+	// 	printf("y: %.3f\n", positionVector[1]);
+	// 	pros::delay(10);
+	// }
 
-	//pidStraight(0, 12.0, M_PI/2, 63, 0.5, 10, 500);
+	//pidStraight(0, 24.0, 0, 63, 0.5, 12, 500);
 
 	// pidTurn(M_PI, 80, 0.006, 110, 1.0);
 	// pros::delay(5000);
@@ -725,8 +775,8 @@ void autonomous() {
 
 
 
-	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task");
-	//move({ {0.0, 0.0},{10.0, 10.0}, {20.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 15.0, 0.01, 0.002, 0.01);
+	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
+	move({ {0.0, 0.0}, {0.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 17.0, 0.01, 0.002, 0.01);
 }
 
 
@@ -797,8 +847,6 @@ bool intakeMotor = true;
 
 void opcontrol()
 {
-
-
 	// Break type for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
