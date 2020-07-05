@@ -444,13 +444,14 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 		previousVel = min(targetVelList[i], sqrt(pow(previousVel, 2) + 2 * maxAccel * distance));
 		velList[i] = previousVel;
 	}
+
+	// for (i = 0; i < velList.size(); i++) {
+		
+	// }
 	//for (int i = 0; i < targetVelList.size(); i++) {
 	//	printf("targetVelList #%d: %.3f\n", i, targetVelList[i]);
 	//}
 
-	//for (int i = 0; i < velList.size(); i++) {
-	//	printf("velList #%d: %.3f\n", i, velList[i]);
-	//}
 	return velList;
 }
 
@@ -459,26 +460,29 @@ double dot(vector <double> a, vector <double> b) {
 }
 
 vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > pointsList, int closestPoint, int lookAheadPointsNum, double spacing) {
+	
+	//printf("closestPoint: %d\n", closestPoint);
+
 	// 0, 0, pointslist, 1, 2
 	vector<double> E = pointsList[closestPoint];
-	// E = {0, 2}
+	// E = {0, 5}
 	vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
-	// L = {0, 6}
+	// L = {0, 7}
 	vector<double> C = { x, y };
-	// C = {0, 0}
+	// C = {0.257, 5.359}
 	vector<double> d = { L[0] - E[0], L[1] - E[1] };
-	// d= {0, 4}
+	// d= {0, 2}
 	vector<double> f = { E[0] - C[0], E[1] - C[1] };
-	// f = {0, 2}
+	// f = {-0.257, -0.359 }
 
 	double r = spacing * lookAheadPointsNum;
-	// r = 4
+	// r = 2
 	double a = dot(d, d);
-	// a = 16
+	// a = 4
 	double b = 2 * dot(f, d);
-	// 16
+	// -1.436
 	double c = dot(f, f) - r * r;
-	// -12
+	// -3.80507
 	double discriminant = b * b - 4 * a * c;
 	// > 0
 	if (discriminant < 0) {
@@ -516,7 +520,7 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 	double Bx = Rx + cos(angle);
 	double By = Ry + sin(angle);
 	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	return curvature * sign;
+	return curvature * sign * -1.0;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -540,25 +544,43 @@ vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
 	return { newVel, accel };
 }
 
-vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, vector<double> prevVel) {
-	//printf("velocity: %.3f", velocity);
-	vector<double> leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
-	vector<double> rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
+double convertToRPM(double value)
+{
+	return value / 100.0 * (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+}
+
+double convertToRPM(int value)
+{
+	return value / 100.0 * (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+}
+
+double convertToMeters(double value)
+{
+	return value * 100.0 / (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+}
+
+double convertToMeters(int value)
+{
+	return value * 100.0 / (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+}
+
+vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, double prevVel) {
+	
+	vector<double> vel = rateLimit(velocity, maxAccel, prevVel);
+
+	//vector<double> leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
+	//vector<double> rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
+
+	//printf("velocity: %.3f m/s\n", vel[0]);
+	//printf("rpm: %.3f rpm\n", convertToRPM(vel[0]));
 
 	//printf("leftVel: %.4f\n", leftVel[0]);
-	//printf("rightVel: %.4f\n", rightVel[0]);
+	//printf("rightVel: %.4f\n", rightVel[0]);s
+	
+	//printf("L: %.3f\n", vel[0] * (2 + curvature * trackWidth) / 2);
+	//printf("R: %.3f\n", vel[0] * (2 - curvature * trackWidth) / 2);
 
-	double newVel;
-	double accel;
-	if (rightVel[0] < leftVel[0]) {
-		newVel = rightVel[0];
-		accel = rightVel[1];
-	}
-	else {
-		newVel = leftVel[0];
-		accel = leftVel[1];
-	}
-	return { newVel * (2 + curvature * trackWidth) / 2,newVel * (2 - curvature * trackWidth) / 2, accel };
+	return { vel[0] * (2 + curvature * trackWidth/2) /2, vel[0] * (2 - curvature * trackWidth/2) / 2, vel[0], vel[1]};
 }
 
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
@@ -602,9 +624,12 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	//vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
-	/*for (int i = 0; i < velList.size(); i++) {
-		printf("velList #%d: %.3f\n", i, velList[i]);
-	}*/
+	//for (int i = 0; i < pointsList.size(); i++) {
+	//	printf("pointsList #%d: (%.3f,%.3f)\n", i, pointsList[i][0], pointsList[i][1]);
+	//}
+	//for (int i = 0; i < curveList.size(); i++) {
+	//	printf("curveList #%d: %.3f\n", i, curveList[i]);
+	//}
 	int closestPoint = 1;
 	vector<double> velocities = { 0.0, 0.0 };
 	currentTime = time(0);
@@ -612,56 +637,71 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		runPositionTask();
 		double x = positionVector[0];
 		double y = positionVector[1];
+		//printf("Location: (%.3f, %.3f, %.3f)\n", x, y, theta*180/M_PI);
 		vector<double> lookAheadPoint = { 0.0 };
 		lookAheadPoint = {};
 		double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
-		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum) {
-			for (int i = closestPoint + 1; i < pointsList.size(); i++) {
-				double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
-				if (smallestDistance > newDistance) {
-					smallestDistance = newDistance;
-					closestPoint = i;
-				}
+		for (int i = closestPoint + 1; i < pointsList.size(); i++) {
+			double newDistance = sqrt(pow((pointsList[i][0] - x), 2) + pow((pointsList[i][1] - y), 2));
+			if (smallestDistance > newDistance) {
+				smallestDistance = newDistance;
+				closestPoint = i;
 			}
+		}
+		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum) {
 			// 0, 0, pointslist, 1, 2
 			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing);
 		}
 		else {
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
-		//printf("lookAheadPoint: (%.3f,%.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
 		if (closestPoint == pointsList.size() - 1) {
 			break;
 		}
+		//printf("closestPoint: (%.3f,%.3f)\n", pointsList[closestPoint][0], pointsList[closestPoint][1]);
+		//printf("lookAheadPoint: (%.3f, %.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
+
 		double curvature = findCurvature(lookAheadPoint, x, y);
+		//printf("Curvature: %.3f\n", curvature);
 		//printf("curvature: %.3f\n", curvature);
-		velocities = findVelocities(curvature, trackWidth, velList[closestPoint], maxAccel, { (leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60) + leftBackMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60)) / 2 ,(rightFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60) + rightBackMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60)) / 2 });
-		//printf("velocities: (%.3f,%.3f)\n", velocities[0], velocities[1]);
 
-		double leftFF = Kv * velocities[0] + Ka * (velocities[2]);
-		double rightFF = Kv * velocities[1] + Ka * (velocities[2]);
-		double leftFB = Kp * (velocities[0] - ((leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60) + leftBackMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 *2.54 * 60)) / 2));
-		double rightFB = Kp * (velocities[1] - ((rightFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60) + rightBackMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 *2.54 * 60)) / 2));
-		leftFrontMotor.move_velocity((int)(velocities[0] * 100);
-		leftBackMotor.move_velocity((int)(velocities[0] * 100);
-		rightFrontMotor.move_velocity((int)(velocities[1] * 100);
-		rightBackMotor.move_velocity((int)(velocities[1] * 100);
+		//Left wheel speed, right wheel speed, target velocity, accel
+		velocities = findVelocities(curvature, trackWidth, velList[closestPoint], maxAccel, velocities[2]);
+		//printf("velocities: (%.3f, %.3f)\n m/s", velocities[0], velocities[1]);
 
-		printf("Left: %.3f", ((leftFF + leftFB) / 100 * (2 * M_PI * 4.0 * 2.54 * 60)));
-		printf("Right: %.3f", ((rightFF + rightFB) / 100 * (2 * M_PI * 4.0 * 2.54 * 60)));
+		double leftFF = Kv * velocities[0] + Ka * (velocities[3]);
+		double rightFF = Kv * velocities[1] + Ka * (velocities[3]);
+		double leftFB = Kp * (velocities[0] - (convertToMeters(leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2.0));
+		double rightFB = Kp * (velocities[1] - (convertToMeters(rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2.0));
+		
+		//printf("Left FF: %.3f\n", (leftFF ));
+		//printf("Left FB: %.3f\n", (leftFB));
+		//printf("Right FF: %.3f\n", (rightFF));
+		//printf("Right FB: %.3f\n", (rightFB));
 
-		//leftFrontMotor = (leftFF + leftFB) * 1000;
-		//leftBackMotor = (leftFF + leftFB) * 1000;
-		//rightFrontMotor = (rightFF + rightFB) * 1000;
-		//rightBackMotor = (rightFF + rightFB) * 1000;
+		//printf("Motor Voltage (L): %.3f\n", convertToRPM(leftFF + leftFB) * 127.0 / 200.0);
+		//printf("Motor Voltage (R): %.3f\n\n", convertToRPM(rightFF + rightFB) * 127.0 / 200.0);
 
-		//printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actua_vlociy() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);
-		//printf("Right speed: %.3f m/s\n", rightFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60));
+
+		leftFrontMotor = convertToRPM(leftFF + leftFB)* 127.0 / 200;
+		leftBackMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
+		rightFrontMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
+		rightBackMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
+
+		printf("%.3f,%.3f,%.3f,%.3f\n", velocities[0], velocities[1], (leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) * 100 / (2 * 2 * M_PI * 4.0 * 2.54 * 60), (rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) * 100 / (2 * 2 * M_PI * 4.0 * 2.54 * 60));
+
+		//printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);
+		//printf("Right speed: %.3f m/s\n", rightFrontMotor.get_actual_velocitty() * 100 / (2 * M_PI * 4.0 * 2.54 * 60));
 		
 		//printf("leftSpeed: %.4f\n", (leftFF + leftFB));
 		//printf("rightSpeed: %.4f\n", (rightFF + rightFB));
 		pros::delay(10);
 	}
+
+	leftFrontMotor = 0;
+	leftBackMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 }
 
 void pidTurn(double target, double maxVel, double thresholdError, double kP, double ccw) {
@@ -736,10 +776,10 @@ void pidStraight(double targetX, double targetY, double targetTheta, double maxV
 	rightFrontMotor = 0;
 }
 void autonomous() {
-	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	rightBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+	leftBackMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+	rightBackMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	leftEncoder.reset();
 	rightEncoder.reset();
@@ -794,7 +834,7 @@ void autonomous() {
 
 
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
-	move({ {0.0, 0.0}, {0.0,20.0} }, 1.0, 0.15, 0.85, 0.001, 10.0, 3.0, 3.0, 2, 17.0, 0.01, 0.002, 0.01);
+	move({ {0.0, 0.0}, {0, 20.0} }, 1.0, 0.15, 0.85, 0.001, 5.0, 2.0, 3.0, 2, 15.0, 1.25, 0, 0);
 }
 
 
