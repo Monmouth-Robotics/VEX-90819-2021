@@ -20,8 +20,8 @@ pros::Motor leftBackMotor(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor rightBackMotor(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor lowerStack(7, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor upperStack(11, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor lowerStack(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorLeft(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorRight(12, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
@@ -948,7 +948,7 @@ void opcontrol()
 
 		if (controller.get_digital(DIGITAL_LEFT))
 		{
-			lowerStack = -127;
+			upperStack = -127;
 			/*char val[100];
 			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
 			lv_label_set_text(text, val);*/
