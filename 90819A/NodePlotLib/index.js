@@ -1,5 +1,6 @@
 let plotlib = require('nodeplotlib');
 let fs = require('fs');
+const puppeteer = require('puppeteer');
 const setTZ = require('set-tz');
 
 let lines;
@@ -58,8 +59,13 @@ async function createGraph() {
     await plotlib.stack(graph2Data);
     await plotlib.stack(graph3Data);
     await plotlib.stack(graph4Data);
-    await plotlib.plot();
-
+    plotlib.plot();
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    page.emulate({ userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4196.0 Safari/537.36 Edg/86.0.573.0",  viewport: { width: 1400, height: 610, isLandscape: true } });
+    await page.goto('http://localhost:8080/plots/0/index.html', { waitUntil: 'networkidle2' });
+    await page.pdf({ path: `./logs/${time}/index.pdf`, format: 'Letter', landscape: true, margin: {top: 70, bottom: 70, right: 10, left: 10}});
+    await browser.close();
 }
 
 createGraph();

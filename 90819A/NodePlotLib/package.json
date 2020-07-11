@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
-    "nodeplotlib": "^0.6.5"
+    "nodeplotlib": "^0.6.5",
+    "puppeteer": "^5.0.0",
+    "set-tz": "^0.2.0"
+  }
 }
