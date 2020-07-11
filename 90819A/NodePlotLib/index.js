@@ -7,6 +7,7 @@ let values = [];
 let graph1Data = [{ x: [], y: [], name: "Left Target" }, { x: [], y: [], name: "Left Actual" }];
 let graph2Data = [{ x: [], y: [], name: "Right Target" }, { x: [], y: [], name: "Right Actual" }];
 let graph3Data = [{ x: [], y: [], name: "Target Velocity" }, { x: [], y: [], name: "Previous Velocity" }];
+let graph4Data = [{ x: [], y: [], name: "Closest Point" }];
 let counter = 0;
 
 async function createGraph() {
@@ -34,26 +35,29 @@ async function createGraph() {
         }
     }
     for (let i = 0; i < values.length; i++) {
-        if (values[i].length == 4) {
+        if (values[i].length == 5) {
             await graph1Data[0].x.push(counter);
             await graph2Data[0].x.push(counter);
             await graph1Data[1].x.push(counter);
             await graph2Data[1].x.push(counter);
+            await graph4Data[0].x.push(counter);
             await graph1Data[0].y.push(parseFloat(values[i][0]));
             await graph2Data[0].y.push(parseFloat(values[i][1]));
             await graph1Data[1].y.push(parseFloat(values[i][2]));
             await graph2Data[1].y.push(parseFloat(values[i][3]));
+            await graph4Data[0].y.push(parseFloat(values[i][4]));
+            counter += 10;
         } else {
             await graph3Data[0].x.push(counter);
             await graph3Data[1].x.push(counter);
             await graph3Data[0].y.push(parseFloat(values[i][0]));
             await graph3Data[1].y.push(parseFloat(values[i][1]));
-            counter += 10;
         }
     }
     await plotlib.stack(graph1Data);
     await plotlib.stack(graph2Data);
     await plotlib.stack(graph3Data);
+    await plotlib.stack(graph4Data);
     await plotlib.plot();
 
 }

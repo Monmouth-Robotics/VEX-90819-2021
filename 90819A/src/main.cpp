@@ -433,10 +433,11 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	targetVelList.push_back(0.0);
 	double prevVel = 0.0;
 	for (int i = 1; i < maxVelList.size(); i++) {
-		prevVel = sqrt(pow(prevVel, 2) + 2 * maxAccel * sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
-		if (prevVel > maxVelList[i]) {
+		prevVel = sqrt(pow(prevVel, 2) + 2 * maxAccel * 0.0254 * sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
+		// this might be casuing problems if we curve
+		/*if (prevVel > maxVelList[i]) {
 			prevVel = maxVelList[i];
-		}
+		}*/
 		targetVelList.push_back(prevVel);
 	}
 
@@ -444,6 +445,7 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	double previousVel = 0.0;
 	for (int i = maxVelList.size() - 2; i >= 0; i--) {
 		double distance = sqrt(pow((pointsList[i + 1][0] - pointsList[i][0]), 2) + pow((pointsList[i + 1][1] - pointsList[i][1]), 2));
+		distance = distance * 0.0254;
 		previousVel = min(targetVelList[i], sqrt(pow(previousVel, 2) + 2 * maxAccel * distance));
 		velList[i] = previousVel;
 	}
@@ -523,7 +525,7 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 	double Bx = Rx + cos(angle);
 	double By = Ry + sin(angle);
 	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	return curvature * sign * -1.0;
+	return curvature * sign *-1;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -537,6 +539,7 @@ vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
 	//velocity - newVel
 	printf("%.3f,", velocity);
 	printf("%.3f\n", prevVel);
+
 	if (-1 * maxChange > (velocity - newVel)) {
 		newVel += -1 * maxChange;
 		accel = -1 * maxChange;
@@ -591,7 +594,7 @@ vector<double> findVelocities(double curvature, double trackWidth, double veloci
 	//printf("L: %.3f\n", vel[0] * (2 + curvature * trackWidth) / 2);
 	//printf("R: %.3f\n", vel[0] * (2 - curvature * trackWidth) / 2);
 
-	return { vel[0] * (2 + curvature * trackWidth / 2) / 2, vel[0] * (2 - curvature * trackWidth / 2) / 2, vel[0], vel[1] };
+	return { vel[0] * (2 + curvature * trackWidth / 2) , vel[0] * (2 - curvature * trackWidth / 2), vel[0], vel[1] };
 }
 
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
@@ -693,13 +696,13 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		//printf("Motor Voltage (L): %.3f\n", convertToRPM(leftFF + leftFB) * 127.0 / 200.0);
 		//printf("Motor Voltage (R): %.3f\n\n", convertToRPM(rightFF + rightFB) * 127.0 / 200.0);
 
+		printf("%.3f,%.3f,%.3f,%.3f,%.3f\n", velocities[0], velocities[1], convertToMeters((leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity())/2),  convertToMeters((rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity())/2), closestPoint*1.0);
 
 		leftFrontMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
 		leftBackMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
 		rightFrontMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
 		rightBackMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
 
-		printf("%.3f,%.3f,%.3f,%.3f\n", velocities[0], velocities[1], (leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) * 100 / (2 * 2 * M_PI * 4.0 * 2.54 * 60), (rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) * 100 / (2 * 2 * M_PI * 4.0 * 2.54 * 60));
 
 		//printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);
 		//printf("Right speed: %.3f m/s\n", rightFrontMotor.get_actual_velocitty() * 100 / (2 * M_PI * 4.0 * 2.54 * 60));
@@ -787,10 +790,10 @@ void pidStraight(double targetX, double targetY, double targetTheta, double maxV
 	rightFrontMotor = 0;
 }
 void autonomous() {
-	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-	leftBackMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-	rightBackMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 	leftEncoder.reset();
 	rightEncoder.reset();
@@ -845,7 +848,7 @@ void autonomous() {
 
 
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
-	move({ {0.0, 0.0}, {0, 20.0} }, 1.0, 0.15, 0.85, 0.001, 0.75, 5.0, 3.0, 2, 15.0, 1.0, 0, 0);
+	move({ {0.0, 0.0}, {0, 48.0} }, 1.0, 0.15, 0.85, 0.001, 0.75, 1.0, 3.0, 2, 15.0, 1.25, 0, 0);
 }
 
 
