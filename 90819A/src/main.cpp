@@ -434,6 +434,9 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	double prevVel = 0.0;
 	for (int i = 1; i < maxVelList.size(); i++) {
 		prevVel = sqrt(pow(prevVel, 2) + 2 * maxAccel * sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
+		if (prevVel > maxVelList[i]) {
+			prevVel = maxVelList[i];
+		}
 		targetVelList.push_back(prevVel);
 	}
 
@@ -446,7 +449,7 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	}
 
 	// for (i = 0; i < velList.size(); i++) {
-		
+
 	// }
 	//for (int i = 0; i < targetVelList.size(); i++) {
 	//	printf("targetVelList #%d: %.3f\n", i, targetVelList[i]);
@@ -460,7 +463,7 @@ double dot(vector <double> a, vector <double> b) {
 }
 
 vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > pointsList, int closestPoint, int lookAheadPointsNum, double spacing) {
-	
+
 	//printf("closestPoint: %d\n", closestPoint);
 
 	// 0, 0, pointslist, 1, 2
@@ -524,50 +527,58 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
+	//velocity is target velocity
+	//prevVal = current actual velocity
 	double maxChange = 0.01 * maxAccel;
 	double newVel = prevVel;
 	double accel;
 
+	//newVel > target
+	//velocity - newVel
+	printf("%.3f,", velocity);
+	printf("%.3f\n", prevVel);
 	if (-1 * maxChange > (velocity - newVel)) {
 		newVel += -1 * maxChange;
 		accel = -1 * maxChange;
+		printf(".Decelerate\n");
 	}
 	else if (maxChange < (velocity - newVel)) {
 		newVel += maxChange;
 		accel = maxChange;
+		printf(".Accelerate\n");
 	}
 	else {
 		newVel += (velocity - newVel);
 		accel = velocity - newVel;
 	}
 	currentTime = time(0);
+
 	return { newVel, accel };
 }
 
 double convertToRPM(double value)
 {
-	return value / 100.0 * (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+	return value / (2 * M_PI * WHEEL_DIAMETER * 2.54) * (100 * 2 * 60.0);
 }
 
 double convertToRPM(int value)
 {
-	return value / 100.0 * (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+	return value / (2 * M_PI * WHEEL_DIAMETER * 2.54) * (100 * 2 * 60.0);
 }
 
 double convertToMeters(double value)
 {
-	return value * 100.0 / (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+	return value * (2 * M_PI * WHEEL_DIAMETER * 2.54) / (100 * 2 * 60.0);
 }
 
 double convertToMeters(int value)
 {
-	return value * 100.0 / (2.0 * M_PI * 4.0 * 2.54 * 60.0);
+
+	return value * (2 * M_PI * WHEEL_DIAMETER * 2.54) / (100 * 2 * 60.0);
 }
 
 vector<double> findVelocities(double curvature, double trackWidth, double velocity, double maxAccel, double prevVel) {
-	
 	vector<double> vel = rateLimit(velocity, maxAccel, prevVel);
-
 	//vector<double> leftVel = rateLimit(velocity, maxAccel, prevVel[0]);
 	//vector<double> rightVel = rateLimit(velocity, maxAccel, prevVel[1]);
 
@@ -576,11 +587,11 @@ vector<double> findVelocities(double curvature, double trackWidth, double veloci
 
 	//printf("leftVel: %.4f\n", leftVel[0]);
 	//printf("rightVel: %.4f\n", rightVel[0]);s
-	
+
 	//printf("L: %.3f\n", vel[0] * (2 + curvature * trackWidth) / 2);
 	//printf("R: %.3f\n", vel[0] * (2 - curvature * trackWidth) / 2);
 
-	return { vel[0] * (2 + curvature * trackWidth/2) /2, vel[0] * (2 - curvature * trackWidth/2) / 2, vel[0], vel[1]};
+	return { vel[0] * (2 + curvature * trackWidth / 2) / 2, vel[0] * (2 - curvature * trackWidth / 2) / 2, vel[0], vel[1] };
 }
 
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
@@ -624,9 +635,9 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	//vector <double> distanceList = calculateDistance(pointsList);
 	vector <double> curveList = calculateCurve(pointsList);
 	vector <double> velList = calculateVelocity(pointsList, curveList, maxVelocity, maxAccel, turnConstant);
-	//for (int i = 0; i < pointsList.size(); i++) {
-	//	printf("pointsList #%d: (%.3f,%.3f)\n", i, pointsList[i][0], pointsList[i][1]);
-	//}
+	for (int i = 0; i < pointsList.size(); i++) {
+		printf(".velList #%d: %.3f\n", i, velList[i]);
+	}
 	//for (int i = 0; i < curveList.size(); i++) {
 	//	printf("curveList #%d: %.3f\n", i, curveList[i]);
 	//}
@@ -673,7 +684,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		double rightFF = Kv * velocities[1] + Ka * (velocities[3]);
 		double leftFB = Kp * (velocities[0] - (convertToMeters(leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2.0));
 		double rightFB = Kp * (velocities[1] - (convertToMeters(rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2.0));
-		
+
 		//printf("Left FF: %.3f\n", (leftFF ));
 		//printf("Left FB: %.3f\n", (leftFB));
 		//printf("Right FF: %.3f\n", (rightFF));
@@ -683,7 +694,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		//printf("Motor Voltage (R): %.3f\n\n", convertToRPM(rightFF + rightFB) * 127.0 / 200.0);
 
 
-		leftFrontMotor = convertToRPM(leftFF + leftFB)* 127.0 / 200;
+		leftFrontMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
 		leftBackMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
 		rightFrontMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
 		rightBackMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
@@ -692,7 +703,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 
 		//printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);
 		//printf("Right speed: %.3f m/s\n", rightFrontMotor.get_actual_velocitty() * 100 / (2 * M_PI * 4.0 * 2.54 * 60));
-		
+
 		//printf("leftSpeed: %.4f\n", (leftFF + leftFB));
 		//printf("rightSpeed: %.4f\n", (rightFF + rightFB));
 		pros::delay(10);
@@ -834,7 +845,7 @@ void autonomous() {
 
 
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
-	move({ {0.0, 0.0}, {0, 20.0} }, 1.0, 0.15, 0.85, 0.001, 5.0, 2.0, 3.0, 2, 15.0, 1.25, 0, 0);
+	move({ {0.0, 0.0}, {0, 20.0} }, 1.0, 0.15, 0.85, 0.001, 0.75, 5.0, 3.0, 2, 15.0, 1.0, 0, 0);
 }
 
 

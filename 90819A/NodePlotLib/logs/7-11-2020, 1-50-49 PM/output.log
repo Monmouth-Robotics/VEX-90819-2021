@@ -1,0 +1,636 @@
+﻿.Target Velocity: 2.000
+.Previous Velocity: 0.000
+.Accelerate
+0.020,0.020,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.020
+.Accelerate
+0.040,0.040,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.040
+.Accelerate
+0.060,0.060,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.060
+.Accelerate
+0.080,0.080,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.080
+.Accelerate
+0.100,0.100,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.100
+.Accelerate
+0.120,0.120,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.120
+.Accelerate
+0.140,0.140,0.000,-0.000
+.Target Velocity: 2.000
+.Previous Velocity: 0.140
+.Accelerate
+0.160,0.160,0.000,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.160
+.Accelerate
+0.180,0.180,0.065,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.180
+.Accelerate
+0.200,0.200,0.065,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.200
+.Accelerate
+0.220,0.220,0.065,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.220
+.Accelerate
+0.240,0.240,0.065,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.240
+.Accelerate
+0.260,0.260,0.298,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.260
+.Accelerate
+0.280,0.280,0.298,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.280
+.Accelerate
+0.300,0.300,0.298,0.042
+.Target Velocity: 2.000
+.Previous Velocity: 0.300
+.Accelerate
+0.320,0.320,0.285,0.064
+.Target Velocity: 2.000
+.Previous Velocity: 0.320
+.Accelerate
+0.340,0.340,0.203,0.103
+.Target Velocity: 2.000
+.Previous Velocity: 0.340
+.Accelerate
+0.351,0.369,0.194,0.103
+.Target Velocity: 2.000
+.Previous Velocity: 0.360
+.Accelerate
+0.371,0.389,0.194,0.201
+.Target Velocity: 2.000
+.Previous Velocity: 0.380
+.Accelerate
+0.390,0.410,0.194,0.201
+.Target Velocity: 2.000
+.Previous Velocity: 0.400
+.Accelerate
+0.410,0.430,0.184,0.154
+.Target Velocity: 2.000
+.Previous Velocity: 0.420
+.Accelerate
+0.429,0.451,0.184,0.154
+.Target Velocity: 2.000
+.Previous Velocity: 0.440
+.Accelerate
+0.449,0.471,0.184,0.125
+.Target Velocity: 2.000
+.Previous Velocity: 0.460
+.Accelerate
+0.469,0.491,0.184,0.125
+.Target Velocity: 2.000
+.Previous Velocity: 0.480
+.Accelerate
+0.488,0.512,0.238,0.125
+.Target Velocity: 2.000
+.Previous Velocity: 0.500
+.Accelerate
+0.508,0.532,0.165,0.104
+.Target Velocity: 2.000
+.Previous Velocity: 0.520
+.Accelerate
+0.540,0.540,0.165,0.104
+.Target Velocity: 2.000
+.Previous Velocity: 0.540
+.Accelerate
+0.560,0.560,0.165,0.092
+.Target Velocity: 2.000
+.Previous Velocity: 0.560
+.Accelerate
+0.580,0.580,0.161,0.092
+.Target Velocity: 2.000
+.Previous Velocity: 0.580
+.Accelerate
+0.614,0.586,0.182,0.096
+.Target Velocity: 2.000
+.Previous Velocity: 0.600
+.Accelerate
+0.635,0.605,0.249,0.117
+.Target Velocity: 2.000
+.Previous Velocity: 0.620
+.Accelerate
+0.671,0.609,0.218,0.120
+.Target Velocity: 2.000
+.Previous Velocity: 0.640
+.Accelerate
+0.692,0.628,0.215,0.135
+.Target Velocity: 2.000
+.Previous Velocity: 0.660
+.Accelerate
+0.712,0.648,0.182,0.135
+.Target Velocity: 2.000
+.Previous Velocity: 0.680
+.Accelerate
+0.733,0.667,0.151,0.125
+.Target Velocity: 2.000
+.Previous Velocity: 0.700
+.Accelerate
+0.772,0.668,0.151,0.132
+.Target Velocity: 2.000
+.Previous Velocity: 0.720
+.Accelerate
+0.811,0.669,0.183,0.130
+.Target Velocity: 2.000
+.Previous Velocity: 0.740
+.Accelerate
+0.833,0.687,0.242,0.171
+.Target Velocity: 2.000
+.Previous Velocity: 0.760
+.Accelerate
+0.855,0.705,0.252,0.258
+.Target Velocity: 2.000
+.Previous Velocity: 0.780
+.Accelerate
+0.877,0.723,0.269,0.250
+.Target Velocity: 2.000
+.Previous Velocity: 0.800
+.Accelerate
+0.880,0.760,0.285,0.240
+.Target Velocity: 2.000
+.Previous Velocity: 0.820
+.Accelerate
+0.942,0.738,0.310,0.252
+.Target Velocity: 2.000
+.Previous Velocity: 0.840
+.Accelerate
+0.944,0.776,0.357,0.287
+.Target Velocity: 2.000
+.Previous Velocity: 0.860
+.Accelerate
+0.967,0.793,0.386,0.305
+.Target Velocity: 2.000
+.Previous Velocity: 0.880
+.Accelerate
+0.968,0.832,0.446,0.343
+.Target Velocity: 2.000
+.Previous Velocity: 0.900
+.Accelerate
+1.012,0.828,0.465,0.391
+.Target Velocity: 2.000
+.Previous Velocity: 0.920
+.Accelerate
+1.057,0.823,0.483,0.424
+.Target Velocity: 2.000
+.Previous Velocity: 0.940
+.Accelerate
+1.057,0.863,0.534,0.436
+.Target Velocity: 2.000
+.Previous Velocity: 0.960
+.Accelerate
+1.080,0.880,0.616,0.453
+.Target Velocity: 2.000
+.Previous Velocity: 0.980
+.Accelerate
+1.078,0.922,0.694,0.510
+.Target Velocity: 2.000
+.Previous Velocity: 1.000
+.Accelerate
+1.101,0.939,0.724,0.566
+.Target Velocity: 2.000
+.Previous Velocity: 1.020
+.Accelerate
+1.123,0.957,0.734,0.614
+.Target Velocity: 2.000
+.Previous Velocity: 1.040
+.Accelerate
+1.145,0.975,0.753,0.644
+.Target Velocity: 2.000
+.Previous Velocity: 1.060
+.Accelerate
+1.194,0.966,0.789,0.655
+.Target Velocity: 2.000
+.Previous Velocity: 1.080
+.Accelerate
+1.217,0.983,0.797,0.686
+.Target Velocity: 2.000
+.Previous Velocity: 1.100
+.Accelerate
+1.213,1.027,0.849,0.722
+.Target Velocity: 2.000
+.Previous Velocity: 1.120
+.Accelerate
+1.264,1.016,0.866,0.740
+.Target Velocity: 2.000
+.Previous Velocity: 1.140
+.Accelerate
+1.287,1.033,0.867,0.819
+.Target Velocity: 2.000
+.Previous Velocity: 1.160
+.Accelerate
+1.283,1.077,0.943,0.844
+.Target Velocity: 2.000
+.Previous Velocity: 1.180
+.Accelerate
+1.306,1.094,1.023,0.855
+.Target Velocity: 2.000
+.Previous Velocity: 1.200
+.Accelerate
+1.221,1.219,1.022,0.905
+.Target Velocity: 2.000
+.Previous Velocity: 1.220
+.Accelerate
+1.241,1.239,1.071,0.927
+.Target Velocity: 2.000
+.Previous Velocity: 1.240
+.Accelerate
+1.261,1.259,1.052,0.986
+.Target Velocity: 2.000
+.Previous Velocity: 1.260
+.Accelerate
+1.281,1.279,1.043,1.034
+.Target Velocity: 2.000
+.Previous Velocity: 1.280
+.Accelerate
+1.302,1.298,1.056,1.029
+.Target Velocity: 2.000
+.Previous Velocity: 1.300
+.Accelerate
+1.322,1.318,1.070,1.047
+.Target Velocity: 2.828
+.Previous Velocity: 1.320
+.Accelerate
+1.502,1.178,1.122,1.092
+.Target Velocity: 2.828
+.Previous Velocity: 1.340
+.Accelerate
+1.526,1.194,1.159,1.125
+.Target Velocity: 2.828
+.Previous Velocity: 1.360
+.Accelerate
+1.551,1.209,1.297,1.103
+.Target Velocity: 2.828
+.Previous Velocity: 1.380
+.Accelerate
+1.576,1.224,1.384,1.132
+.Target Velocity: 2.828
+.Previous Velocity: 1.400
+.Accelerate
+1.636,1.204,1.423,1.170
+.Target Velocity: 2.828
+.Previous Velocity: 1.420
+.Accelerate
+1.662,1.218,1.407,1.181
+.Target Velocity: 2.828
+.Previous Velocity: 1.440
+.Accelerate
+1.463,1.457,1.449,1.207
+.Target Velocity: 2.828
+.Previous Velocity: 1.460
+.Accelerate
+1.483,1.477,1.484,1.229
+.Target Velocity: 2.828
+.Previous Velocity: 1.480
+.Accelerate
+1.503,1.497,1.498,1.313
+.Target Velocity: 2.828
+.Previous Velocity: 1.500
+.Accelerate
+1.523,1.517,1.499,1.365
+.Target Velocity: 2.828
+.Previous Velocity: 1.520
+.Accelerate
+1.543,1.537,1.495,1.385
+.Target Velocity: 3.464
+.Previous Velocity: 1.540
+.Accelerate
+1.744,1.376,1.475,1.403
+.Target Velocity: 3.464
+.Previous Velocity: 1.560
+.Accelerate
+1.808,1.352,1.562,1.425
+.Target Velocity: 3.464
+.Previous Velocity: 1.580
+.Accelerate
+1.795,1.405,1.696,1.367
+.Target Velocity: 3.464
+.Previous Velocity: 1.600
+.Accelerate
+1.820,1.420,1.758,1.370
+.Target Velocity: 3.464
+.Previous Velocity: 1.620
+.Accelerate
+1.643,1.637,1.810,1.445
+.Target Velocity: 3.464
+.Previous Velocity: 1.640
+.Accelerate
+1.664,1.656,1.773,1.513
+.Target Velocity: 3.464
+.Previous Velocity: 1.660
+.Accelerate
+1.684,1.676,1.670,1.644
+.Target Velocity: 3.464
+.Previous Velocity: 1.680
+.Accelerate
+1.703,1.697,1.691,1.691
+.Target Velocity: 4.000
+.Previous Velocity: 1.700
+.Accelerate
+1.950,1.490,1.794,1.700
+.Target Velocity: 4.000
+.Previous Velocity: 1.720
+.Accelerate
+1.976,1.504,1.826,1.686
+.Target Velocity: 4.000
+.Previous Velocity: 1.740
+.Accelerate
+2.002,1.518,1.968,1.592
+.Target Velocity: 4.000
+.Previous Velocity: 1.760
+.Accelerate
+1.985,1.575,2.029,1.585
+.Target Velocity: 4.000
+.Previous Velocity: 1.780
+.Accelerate
+1.803,1.797,2.086,1.667
+.Target Velocity: 4.000
+.Previous Velocity: 1.800
+.Accelerate
+1.824,1.816,2.032,1.739
+.Target Velocity: 4.000
+.Previous Velocity: 1.820
+.Accelerate
+1.844,1.836,1.983,1.869
+.Target Velocity: 4.472
+.Previous Velocity: 1.840
+.Accelerate
+2.085,1.635,1.982,1.966
+.Target Velocity: 4.472
+.Previous Velocity: 1.860
+.Accelerate
+2.110,1.650,2.029,1.952
+.Target Velocity: 4.472
+.Previous Velocity: 1.880
+.Accelerate
+2.135,1.665,2.122,1.806
+.Target Velocity: 4.472
+.Previous Velocity: 1.900
+.Accelerate
+1.924,1.916,2.236,1.788
+.Target Velocity: 4.472
+.Previous Velocity: 1.920
+.Accelerate
+1.944,1.936,2.198,1.862
+.Target Velocity: 4.472
+.Previous Velocity: 1.940
+.Accelerate
+1.965,1.955,2.162,2.061
+.Target Velocity: 4.472
+.Previous Velocity: 1.960
+.Accelerate
+1.985,1.975,2.214,2.132
+.Target Velocity: 4.899
+.Previous Velocity: 1.980
+.Accelerate
+2.213,1.787,2.231,2.144
+.Target Velocity: 4.899
+.Previous Velocity: 2.000
+.Accelerate
+2.237,1.803,2.291,2.123
+.Target Velocity: 4.899
+.Previous Velocity: 2.020
+.Accelerate
+2.043,2.037,2.376,2.048
+.Target Velocity: 4.899
+.Previous Velocity: 2.040
+.Accelerate
+2.065,2.055,2.395,2.083
+.Target Velocity: 4.899
+.Previous Velocity: 2.060
+.Accelerate
+2.084,2.076,2.271,2.209
+.Target Velocity: 5.292
+.Previous Velocity: 2.080
+.Accelerate
+2.329,1.871,2.274,2.293
+.Target Velocity: 5.292
+.Previous Velocity: 2.100
+.Accelerate
+2.246,1.994,2.437,2.382
+.Target Velocity: 5.292
+.Previous Velocity: 2.120
+.Accelerate
+2.266,2.014,2.597,2.331
+.Target Velocity: 5.292
+.Previous Velocity: 2.140
+.Accelerate
+2.163,2.157,2.575,2.324
+.Target Velocity: 5.292
+.Previous Velocity: 2.160
+.Accelerate
+2.183,2.177,2.452,2.348
+.Target Velocity: 5.292
+.Previous Velocity: 2.180
+.Accelerate
+2.205,2.195,2.414,2.390
+.Target Velocity: 5.657
+.Previous Velocity: 2.200
+.Accelerate
+2.344,2.096,2.461,2.409
+.Target Velocity: 5.657
+.Previous Velocity: 2.220
+.Accelerate
+2.363,2.117,2.485,2.440
+.Target Velocity: 5.657
+.Previous Velocity: 2.240
+.Accelerate
+2.263,2.257,2.693,2.497
+.Target Velocity: 5.657
+.Previous Velocity: 2.260
+.Accelerate
+2.284,2.276,2.730,2.559
+.Target Velocity: 5.657
+.Previous Velocity: 2.280
+.Accelerate
+2.305,2.295,2.653,2.614
+.Target Velocity: 6.000
+.Previous Velocity: 2.300
+.Accelerate
+2.383,2.257,2.646,2.615
+.Target Velocity: 6.000
+.Previous Velocity: 2.320
+.Accelerate
+2.399,2.281,2.714,2.666
+.Target Velocity: 6.000
+.Previous Velocity: 2.340
+.Accelerate
+2.364,2.356,2.760,2.641
+.Target Velocity: 6.000
+.Previous Velocity: 2.360
+.Accelerate
+2.382,2.378,2.736,2.620
+.Target Velocity: 6.000
+.Previous Velocity: 2.380
+.Accelerate
+2.402,2.398,2.762,2.753
+.Target Velocity: 6.325
+.Previous Velocity: 2.400
+.Accelerate
+2.525,2.315,2.824,2.787
+.Target Velocity: 6.325
+.Previous Velocity: 2.420
+.Accelerate
+2.482,2.398,2.814,2.809
+.Target Velocity: 6.325
+.Previous Velocity: 2.440
+.Accelerate
+2.464,2.456,2.829,2.868
+.Target Velocity: 6.325
+.Previous Velocity: 2.460
+.Accelerate
+2.481,2.479,2.867,2.833
+.Target Velocity: 6.000
+.Previous Velocity: 2.480
+.Accelerate
+2.593,2.407,2.973,2.850
+.Target Velocity: 6.000
+.Previous Velocity: 2.500
+.Accelerate
+2.676,2.364,3.011,2.982
+.Target Velocity: 6.000
+.Previous Velocity: 2.520
+.Accelerate
+2.697,2.383,3.125,2.995
+.Target Velocity: 6.000
+.Previous Velocity: 2.540
+.Accelerate
+2.568,2.552,3.081,2.922
+.Target Velocity: 6.000
+.Previous Velocity: 2.560
+.Accelerate
+2.592,2.568,3.062,2.952
+.Target Velocity: 5.657
+.Previous Velocity: 2.580
+.Accelerate
+2.896,2.304,3.062,3.065
+.Target Velocity: 5.657
+.Previous Velocity: 2.600
+.Accelerate
+2.857,2.383,3.036,3.090
+.Target Velocity: 5.657
+.Previous Velocity: 2.620
+.Accelerate
+2.660,2.620,3.189,3.015
+.Target Velocity: 5.657
+.Previous Velocity: 2.640
+.Accelerate
+2.682,2.638,3.295,2.947
+.Target Velocity: 5.292
+.Previous Velocity: 2.660
+.Accelerate
+3.006,2.354,3.174,3.076
+.Target Velocity: 5.292
+.Previous Velocity: 2.680
+.Accelerate
+3.034,2.366,3.265,3.214
+.Target Velocity: 5.292
+.Previous Velocity: 2.700
+.Accelerate
+2.738,2.702,3.448,3.035
+.Target Velocity: 5.292
+.Previous Velocity: 2.720
+.Accelerate
+2.761,2.719,3.525,2.995
+.Target Velocity: 4.899
+.Previous Velocity: 2.740
+.Accelerate
+3.067,2.453,3.410,3.228
+.Target Velocity: 4.899
+.Previous Velocity: 2.760
+.Accelerate
+3.028,2.532,3.331,3.243
+.Target Velocity: 4.899
+.Previous Velocity: 2.780
+.Accelerate
+2.837,2.763,3.509,3.107
+.Target Velocity: 4.899
+.Previous Velocity: 2.800
+.Accelerate
+2.862,2.778,3.540,3.108
+.Target Velocity: 4.472
+.Previous Velocity: 2.820
+.Accelerate
+3.339,2.341,3.518,3.261
+.Target Velocity: 4.472
+.Previous Velocity: 2.840
+.Accelerate
+3.381,2.339,3.630,3.341
+.Target Velocity: 4.472
+.Previous Velocity: 2.860
+.Accelerate
+2.958,2.802,3.734,3.129
+.Target Velocity: 4.472
+.Previous Velocity: 2.880
+.Accelerate
+2.989,2.811,3.750,3.141
+.Target Velocity: 4.000
+.Previous Velocity: 2.900
+.Accelerate
+3.424,2.416,3.666,3.348
+.Target Velocity: 4.000
+.Previous Velocity: 2.920
+.Accelerate
+3.463,2.417,3.729,3.316
+.Target Velocity: 4.000
+.Previous Velocity: 2.940
+.Accelerate
+3.106,2.814,3.854,3.199
+.Target Velocity: 4.000
+.Previous Velocity: 2.960
+.Accelerate
+3.106,2.854,3.754,3.236
+.Target Velocity: 3.464
+.Previous Velocity: 2.980
+.Accelerate
+3.339,2.661,3.870,3.380
+.Target Velocity: 3.464
+.Previous Velocity: 3.000
+.Accelerate
+3.444,2.596,3.789,3.367
+.Target Velocity: 3.464
+.Previous Velocity: 3.020
+.Accelerate
+3.274,2.806,3.999,3.426
+.Target Velocity: 2.828
+.Previous Velocity: 3.040
+.Decelerate
+3.257,2.783,4.003,3.451
+.Target Velocity: 2.828
+.Previous Velocity: 3.020
+.Decelerate
+3.305,2.695,3.929,3.428
+.Target Velocity: 2.828
+.Previous Velocity: 3.000
+.Decelerate
+3.215,2.745,3.908,3.484
+.Target Velocity: 2.828
+.Previous Velocity: 2.980
+.Decelerate
+3.288,2.632,3.976,3.527
+.Target Velocity: 2.000
+.Previous Velocity: 2.960
+.Decelerate
+3.231,2.649,3.940,3.436
+.Target Velocity: 2.000
+.Previous Velocity: 2.940
+.Decelerate
+3.074,2.766,3.988,3.444
+.Target Velocity: 2.000
+.Previous Velocity: 2.920
+.Decelerate
+2.550,3.250,4.072,3.465
