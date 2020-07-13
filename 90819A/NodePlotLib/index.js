@@ -9,6 +9,7 @@ let graph1Data = [{ x: [], y: [], name: "Left Target" }, { x: [], y: [], name: "
 let graph2Data = [{ x: [], y: [], name: "Right Target" }, { x: [], y: [], name: "Right Actual" }];
 let graph3Data = [{ x: [], y: [], name: "Target Velocity" }, { x: [], y: [], name: "Previous Velocity" }];
 let graph4Data = [{ x: [], y: [], name: "Closest Point" }];
+let graph5Data = [{ x: [], y: [], name: "Curvature" }];
 let counter = 0;
 
 async function createGraph() {
@@ -48,17 +49,20 @@ async function createGraph() {
             await graph2Data[1].y.push(parseFloat(values[i][3]));
             await graph4Data[0].y.push(parseFloat(values[i][4]));
             counter += 10;
-        } else {
+        } else if (values[i].length == 3) {
             await graph3Data[0].x.push(counter);
             await graph3Data[1].x.push(counter);
+            await graph5Data[0].x.push(counter);
             await graph3Data[0].y.push(parseFloat(values[i][0]));
             await graph3Data[1].y.push(parseFloat(values[i][1]));
+            await graph5Data[0].y.push(parseFloat(values[i][2]));
         }
     }
     await plotlib.stack(graph1Data);
     await plotlib.stack(graph2Data);
     await plotlib.stack(graph3Data);
     await plotlib.stack(graph4Data);
+    await plotlib.stack(graph5Data);
     plotlib.plot();
     const browser = await puppeteer.launch();
     const page = await browser.newPage();

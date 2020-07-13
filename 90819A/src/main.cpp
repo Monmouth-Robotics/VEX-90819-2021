@@ -435,9 +435,9 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 	for (int i = 1; i < maxVelList.size(); i++) {
 		prevVel = sqrt(pow(prevVel, 2) + 2 * maxAccel * 0.0254 * sqrt(pow((pointsList[i][0] - pointsList[i - 1][0]), 2) + pow((pointsList[i][1] - pointsList[i - 1][1]), 2)));
 		// this might be casuing problems if we curve
-		/*if (prevVel > maxVelList[i]) {
+		if (prevVel > maxVelList[i]) {
 			prevVel = maxVelList[i];
-		}*/
+		}
 		targetVelList.push_back(prevVel);
 	}
 
@@ -519,13 +519,22 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 	}
 }
 
+//def curvature(lookahead):
+//    global path, pos, angle
+//    side = np.sign(math.sin(3.1415/2 - angle)*(lookahead[0]-pos[0]) - math.cos(3.1415/2 - angle)*(lookahead[1]-pos[1]))
+//    a = -math.tan(3.1415/2 - angle)
+//    c = math.tan(3.1415/2 - angle)*pos[0] - pos[1]
+//    # x = abs(-math.tan(3.1415/2 - angle) * lookahead[0] + lookahead[1] + math.tan(3.1415/2 - angle)*pos[0] - pos[1]) / math.sqrt((math.tan(3.1415/2 - angle))**2 + 1)
+//    x = abs(a*lookahead[0] + lookahead[1] + c) / math.sqrt(a**2 + 1)
+//    return side * (2*x/(float(config["PATH"]["LOOKAHEAD"])**2))
+
 double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 	double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
 	double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
 	double Bx = Rx + cos(angle);
 	double By = Ry + sin(angle);
 	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	return curvature * sign *-1;
+	return curvature * sign *-1*0.75;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -537,8 +546,6 @@ vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
 
 	//newVel > target
 	//velocity - newVel
-	printf("%.3f,", velocity);
-	printf("%.3f\n", prevVel);
 
 	if (-1 * maxChange > (velocity - newVel)) {
 		newVel += -1 * maxChange;
@@ -555,6 +562,9 @@ vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
 		accel = velocity - newVel;
 	}
 	currentTime = time(0);
+
+	printf("%.3f,", velocity);
+	printf("%.3f,", newVel);
 
 	return { newVel, accel };
 }
@@ -594,7 +604,9 @@ vector<double> findVelocities(double curvature, double trackWidth, double veloci
 	//printf("L: %.3f\n", vel[0] * (2 + curvature * trackWidth) / 2);
 	//printf("R: %.3f\n", vel[0] * (2 - curvature * trackWidth) / 2);
 
-	return { vel[0] * (2 + curvature * trackWidth / 2) , vel[0] * (2 - curvature * trackWidth / 2), vel[0], vel[1] };
+	
+	printf("%.3f\n", curvature);
+	return { vel[0] * (2 + curvature * trackWidth) / 2 , vel[0] * (2 - curvature * trackWidth) / 2 , vel[0], vel[1] };
 }
 
 void move(vector < vector<double> > initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVelocity, double maxAccel, double turnConstant, int lookAheadPointsNum, double trackWidth, double Kv, double Ka, double Kp) {
@@ -615,6 +627,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	  *Tune until accelerating and decelerating velocities are near accurate
 	  *Start Kp at 0.01 and increase number to make more accurate
 	  *Setting Kp too high will result in a jittery motion*/
+	int counter = 0;
 	runPositionTask();
 	vector < vector<double> > pointsList = { {0.0} };
 	pointsList = {};
@@ -648,10 +661,11 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 	vector<double> velocities = { 0.0, 0.0 };
 	currentTime = time(0);
 	while (true) {
+		printf(".Time: %.d", counter);
 		runPositionTask();
 		double x = positionVector[0];
 		double y = positionVector[1];
-		//printf("Location: (%.3f, %.3f, %.3f)\n", x, y, theta*180/M_PI);
+		printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, theta*180/M_PI);
 		vector<double> lookAheadPoint = { 0.0 };
 		lookAheadPoint = {};
 		double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
@@ -669,11 +683,15 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		else {
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
-		if (closestPoint == pointsList.size() - 1) {
+		printf(".lookAheadPoint: (%.3f, %.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
+		//might need to be distance for tolerance
+		if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1]
+		&& (closestPoint == pointsList.size()-1-lookAheadPointsNum)) {
+			printf(".here");
 			break;
 		}
 		//printf("closestPoint: (%.3f,%.3f)\n", pointsList[closestPoint][0], pointsList[closestPoint][1]);
-		//printf("lookAheadPoint: (%.3f, %.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
+		
 
 		double curvature = findCurvature(lookAheadPoint, x, y);
 		//printf("Curvature: %.3f\n", curvature);
@@ -709,6 +727,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 
 		//printf("leftSpeed: %.4f\n", (leftFF + leftFB));
 		//printf("rightSpeed: %.4f\n", (rightFF + rightFB));
+		counter += 10;
 		pros::delay(10);
 	}
 
@@ -845,10 +864,8 @@ void autonomous() {
 	// rightBackMotor = 40;
 	// rightFrontMotor = 40;
 
-
-
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
-	move({ {0.0, 0.0}, {0, 48.0} }, 1.0, 0.15, 0.85, 0.001, 0.75, 1.0, 3.0, 2, 15.0, 1.25, 0, 0);
+	move({{0.0, 0.0}, {0, 20.0}, {20.0, 40.0}}, 1.0, 0.15, 0.85, 0.001, 0.5, 0.33, 3.0, 5, 15.0, 1.25, 0, 0);
 }
 
 
