@@ -15,15 +15,15 @@ pros::Controller controller(CONTROLLER_MASTER);
 //pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 //pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor leftFrontMotor(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor leftFrontMotor(6, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(20, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor rightFrontMotor(8, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor rightBackMotor(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor lowerStack(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor upperStack(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeMotorLeft(1, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeMotorRight(12, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor lowerStack(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(16, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorLeft(19, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorRight(3, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::ADIEncoder leftEncoder('C', 'D', true);
 pros::ADIEncoder rightEncoder('G', 'H', true);
@@ -519,22 +519,33 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 	}
 }
 
-//def curvature(lookahead):
-//    global path, pos, angle
-//    side = np.sign(math.sin(3.1415/2 - angle)*(lookahead[0]-pos[0]) - math.cos(3.1415/2 - angle)*(lookahead[1]-pos[1]))
-//    a = -math.tan(3.1415/2 - angle)
-//    c = math.tan(3.1415/2 - angle)*pos[0] - pos[1]
-//    # x = abs(-math.tan(3.1415/2 - angle) * lookahead[0] + lookahead[1] + math.tan(3.1415/2 - angle)*pos[0] - pos[1]) / math.sqrt((math.tan(3.1415/2 - angle))**2 + 1)
-//    x = abs(a*lookahead[0] + lookahead[1] + c) / math.sqrt(a**2 + 1)
-//    return side * (2*x/(float(config["PATH"]["LOOKAHEAD"])**2))
+// def curvature(lookahead, pos):
+//     angle = math.atan2(lookahead[1] - pos[1], lookahead[0] - pos[0])
+//     print(angle)
+//     side = np.sign(math.sin(angle)*(lookahead[0]-pos[0]) - math.cos(angle)*(lookahead[1]-pos[1]))
+//     a = -math.tan(angle)
+//     c = math.tan(angle)*pos[0] - pos[1]
+//     x = abs(a*lookahead[0] + lookahead[1] + c) / math.sqrt(a**2 + 1)
+//     return side * (2*x/(float(5**2)))
+
 
 double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
-	double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
-	double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
-	double Bx = Rx + cos(angle);
-	double By = Ry + sin(angle);
-	double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	return curvature * sign *-1*0.75;
+	double angle = M_PI/2 - theta;
+	double a = -1*tan(angle);
+	//b = 1
+	double c = tan(angle) * Rx - Ry;
+	double x = abs(a*lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) +1);
+	double side = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
+	double curvature = (2 * x) / (pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2));
+	return curvature * side;
+
+	// double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
+	// //(2 * (5)) / pow(sqrt(pow((5), 2) + pow((5), 2)), 2)
+	// double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
+	// double Bx = Rx + cos(angle);
+	// double By = Ry + sin(angle);
+	// double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
+	// return curvature * sign *-1*0.75;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -1023,7 +1034,7 @@ void opcontrol()
 
 		if (controller.get_digital(DIGITAL_R1))
 		{
-			lowerStack = 127;
+			lowerStack = 80;
 			/*char val[100];
 			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
 			lv_label_set_text(text, val);*/
