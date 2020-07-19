@@ -282,11 +282,6 @@ void runPositionTask() {
 
 	newX = x * cos(-thetaM) - y * sin(-thetaM);
 	newY = y * cos(-thetaM) + x * sin(-thetaM);
-	//newVector[0] = x;
-	//newVector[1] = y;
-
-	// positionVector[0] = positionVector[0] + newVector[0];
-	// positionVector[1] = positionVector[1] + newVector[1];
 
 	positionVector[0] = positionVector[0] + newX;
 	positionVector[1] = positionVector[1] + newY;
@@ -450,9 +445,6 @@ vector <double> calculateVelocity(vector < vector<double> > pointsList, vector <
 		velList[i] = previousVel;
 	}
 
-	// for (i = 0; i < velList.size(); i++) {
-
-	// }
 	//for (int i = 0; i < targetVelList.size(); i++) {
 	//	printf("targetVelList #%d: %.3f\n", i, targetVelList[i]);
 	//}
@@ -468,28 +460,17 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 
 	//printf("closestPoint: %d\n", closestPoint);
 
-	// 0, 0, pointslist, 1, 2
 	vector<double> E = pointsList[closestPoint];
-	// E = {0, 5}
 	vector<double> L = pointsList[closestPoint + lookAheadPointsNum];
-	// L = {0, 7}
 	vector<double> C = { x, y };
-	// C = {0.257, 5.359}
 	vector<double> d = { L[0] - E[0], L[1] - E[1] };
-	// d= {0, 2}
 	vector<double> f = { E[0] - C[0], E[1] - C[1] };
-	// f = {-0.257, -0.359 }
 
 	double r = spacing * lookAheadPointsNum;
-	// r = 2
 	double a = dot(d, d);
-	// a = 4
 	double b = 2 * dot(f, d);
-	// -1.436
 	double c = dot(f, f) - r * r;
-	// -3.80507
 	double discriminant = b * b - 4 * a * c;
-	// > 0
 	if (discriminant < 0) {
 		//no intersection
 		if (closestPoint != pointsList.size() - lookAheadPointsNum - 1) {
@@ -519,33 +500,24 @@ vector<double> findLookAheadPoint(double x, double y, vector < vector<double> > 
 	}
 }
 
-// def curvature(lookahead, pos):
-//     angle = math.atan2(lookahead[1] - pos[1], lookahead[0] - pos[0])
-//     print(angle)
-//     side = np.sign(math.sin(angle)*(lookahead[0]-pos[0]) - math.cos(angle)*(lookahead[1]-pos[1]))
-//     a = -math.tan(angle)
-//     c = math.tan(angle)*pos[0] - pos[1]
-//     x = abs(a*lookahead[0] + lookahead[1] + c) / math.sqrt(a**2 + 1)
-//     return side * (2*x/(float(5**2)))
-
-
 double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
+
+	/* python code:
+	angle = math.atan2(lookahead[1] - pos[1], lookahead[0] - pos[0])
+	print(angle)
+	side = np.sign(math.sin(angle)*(lookahead[0]-pos[0]) - math.cos(angle)*(lookahead[1]-pos[1]))
+	a = -math.tan(angle)
+	c = math.tan(angle)*pos[0] - pos[1]
+	x = abs(a*lookahead[0] + lookahead[1] + c) / math.sqrt(a**2 + 1)
+	return side * (2*x/(float(5**2)))*/
+
 	double angle = M_PI/2 - theta;
 	double a = -1*tan(angle);
-	//b = 1
 	double c = tan(angle) * Rx - Ry;
 	double x = abs(a*lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) +1);
 	double side = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
 	double curvature = (2 * x) / (pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2));
 	return curvature * side;
-
-	// double curvature = (2 * (lookAheadPoint[0] - Rx)) / pow(sqrt(pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2)), 2);
-	// //(2 * (5)) / pow(sqrt(pow((5), 2) + pow((5), 2)), 2)
-	// double angle = tanh((lookAheadPoint[1] - Ry) / (lookAheadPoint[0] - Rx));
-	// double Bx = Rx + cos(angle);
-	// double By = Ry + sin(angle);
-	// double sign = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
-	// return curvature * sign *-1*0.75;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -688,7 +660,6 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 			}
 		}
 		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum) {
-			// 0, 0, pointslist, 1, 2
 			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing);
 		}
 		else {
@@ -829,52 +800,7 @@ void autonomous() {
 	rightEncoder.reset();
 	backEncoder.reset();
 	resetGlobal();
-	// while (true) {
-	// 	runPositionTask();
-	// 	printf("theta: %.3f\n", theta*180.0/M_PI);
-	// 	printf("x: %.3f\n", positionVector[0]);
-	// 	printf("y: %.3f\n", positionVector[1]);
-	// 	pros::delay(10);
-	// }
-
-	//pidStraight(0, 24.0, 0, 63, 0.5, 12, 500);
-
-	// pidTurn(M_PI, 80, 0.006, 110, 1.0);
-	// pros::delay(5000);
-	// pidTurn(M_PI*2, 60, 0.006, 110, 1.0);
-	// pros::delay(5000);
-	// pidTurn(M_PI, 80, 0.006, 110, 1.0);
-
-	// double target = M_PI;
-	// double kP = 0.01;
-	// double error = 99999999;
-	// double power;
-	// double threshold = 0.006;
-
-	// while (error > threshold)
-	// {
-	// 	runPositionTask();
-	// 	printf("theta: %.3f\n", theta*180/M_PI);
-	// 	error = target - theta;
-	// 	power = 11000*error *kP;
-
-	// 	if (power > 63)
-	// 		power = 63;
-	// 	if (power < -63)
-	// 		power = -63;
-
-	// 	leftBackMotor = -power;
-	// 	leftFrontMotor = -power;
-	// 	rightBackMotor = power;
-	// 	rightFrontMotor = power;
-	// 	pros::delay(10);
-	// }
-
-	// leftBackMotor = 40;
-	// leftFrontMotor = 40;
-	// rightBackMotor = 40;
-	// rightFrontMotor = 40;
-
+	
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
 	move({{0.0, 0.0}, {0, 20.0}, {20.0, 40.0}}, 1.0, 0.15, 0.85, 0.001, 0.5, 0.33, 3.0, 5, 15.0, 1.25, 0, 0);
 }
@@ -901,39 +827,49 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 	//back: all negative
 	//left: lB and rF positive, lF and rB negative
 
-	// if strafing:
-	// top right* = -1, bottom left *= -1
-
-	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20)
-	{
-		//motorSpeed = 127
-		//turnSpeed = 63
-		leftFrontMotor = motorSpeed + turnSpeed; //127
-		leftBackMotor = motorSpeed + turnSpeed; //-127
-		rightFrontMotor = motorSpeed - turnSpeed; //-63
-		rightBackMotor = motorSpeed - turnSpeed; //63
+	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20 && abs(strafeSpeed) > 20) {
+		leftFrontMotor = motorSpeed + turnSpeed + strafeSpeed;
+		leftBackMotor = motorSpeed + turnSpeed - strafeSpeed;
+		rightFrontMotor = motorSpeed - turnSpeed - strafeSpeed;
+		rightBackMotor = motorSpeed - turnSpeed + strafeSpeed;
 	}
-
-	// if only motorSpeed is beyond the minimum, just move
-	else if (abs(motorSpeed) > 20)
-	{
+	else if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20) {
+		leftFrontMotor = motorSpeed + turnSpeed;
+		leftBackMotor = motorSpeed + turnSpeed;
+		rightFrontMotor = motorSpeed - turnSpeed;
+		rightBackMotor = motorSpeed - turnSpeed;
+	}
+	else if (abs(motorSpeed) > 20 && abs(strafeSpeed) > 20) {
+		leftFrontMotor = motorSpeed + strafeSpeed;
+		leftBackMotor = motorSpeed - strafeSpeed;
+		rightFrontMotor = motorSpeed - strafeSpeed;
+		rightBackMotor = motorSpeed + strafeSpeed;
+	}
+	else if (abs(turnSpeed) > 20 && abs(strafeSpeed) > 20) {
+		leftFrontMotor = strafeSpeed + turnSpeed;
+		leftBackMotor = -strafeSpeed + turnSpeed;
+		rightFrontMotor = -strafeSpeed - turnSpeed;
+		rightBackMotor = strafeSpeed - turnSpeed;
+	}
+	else if (abs(motorSpeed) > 20) {
 		leftFrontMotor = motorSpeed;
 		leftBackMotor = motorSpeed;
 		rightFrontMotor = motorSpeed;
 		rightBackMotor = motorSpeed;
 	}
-
-	// if only turnSpeed is beyond the minimum, just turn
-	else if (abs(turnSpeed) > 20)
-	{
+	else if (abs(turnSpeed) > 20) {
 		leftFrontMotor = turnSpeed;
 		leftBackMotor = turnSpeed;
 		rightFrontMotor = -turnSpeed;
 		rightBackMotor = -turnSpeed;
 	}
-
-	else
-	{
+	else if (abs(strafeSpeed) > 20) {
+		leftFrontMotor = strafeSpeed;
+		leftBackMotor = -strafeSpeed;
+		rightFrontMotor = -strafeSpeed;
+		rightBackMotor = strafeSpeed;
+	}
+	else {
 		leftFrontMotor = 0;
 		leftBackMotor = 0;
 		rightFrontMotor = 0;
