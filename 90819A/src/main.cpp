@@ -894,14 +894,24 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 
-void move2(float motorSpeed, float turnSpeed)
+void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 {
+	//forward: all positive
+	//right: lF and rB positive, lB and rF negative
+	//back: all negative
+	//left: lB and rF positive, lF and rB negative
+
+	// if strafing:
+	// top right* = -1, bottom left *= -1
+
 	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20)
 	{
-		leftFrontMotor = motorSpeed + turnSpeed;
-		leftBackMotor = motorSpeed + turnSpeed;
-		rightFrontMotor = motorSpeed - turnSpeed;
-		rightBackMotor = motorSpeed - turnSpeed;
+		//motorSpeed = 127
+		//turnSpeed = 63
+		leftFrontMotor = motorSpeed + turnSpeed; //127
+		leftBackMotor = motorSpeed + turnSpeed; //-127
+		rightFrontMotor = motorSpeed - turnSpeed; //-63
+		rightBackMotor = motorSpeed - turnSpeed; //63
 	}
 
 	// if only motorSpeed is beyond the minimum, just move
@@ -931,20 +941,6 @@ void move2(float motorSpeed, float turnSpeed)
 	}
 }
 
-float exponential(float input, float output, float x)
-{
-	float base = pow((127 / output), (1 / (127 - input)));
-	float a = output / (pow(base, input));
-
-	return (a * (pow(base, abs(x))));
-}
-
-float driveInput = 25;
-float driveOutput = 10;
-float turnInput = 40;
-float turnOutput = 10;
-bool intakeMotor = true;
-
 void opcontrol()
 {
 	// Break type for all motors
@@ -957,49 +953,24 @@ void opcontrol()
 	//intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	//intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	/*secondaryLiftMotor.move_relative(50, 70);
-	while (!(secondaryLiftMotor.get_position() < 52) && !(secondaryLiftMotor.get_position() > 48)) {
-		pros::delay(2);
-	}*/
-
 	while (true)
 	{
-		float turnSpeed;
+		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
+		int strafeSpeed = controller.get_analog(ANALOG_LEFT_X);
+		int turnSpeed = controller.get_analog(ANALOG_RIGHT_X);
 
-		int motorSpeedRaw = controller.get_analog(ANALOG_LEFT_Y);
-		int turnSpeedRaw = controller.get_analog(ANALOG_RIGHT_X);
-
-		float motorSpeed = (motorSpeedRaw / abs(motorSpeedRaw) * (exponential(driveInput, driveOutput, motorSpeedRaw)));
-		if (turnSpeedRaw > 100)
+		if (turnSpeed > 100)
 			turnSpeed = 127;
-		else if (turnSpeedRaw < -100)
+		else if (turnSpeed < -100)
 			turnSpeed = -127;
-		else
-			turnSpeed = (turnSpeedRaw / abs(turnSpeedRaw) * (exponential(turnInput, turnOutput, turnSpeedRaw)) * 0.5);
 
-
-		move2(motorSpeed, turnSpeed);
-
-		// fights gravity so lift doesn't fall
-		/*if (controller.get_digital(DIGITAL_B)) {
-			BPressed = true;
-		}
-		else if (BPressed) {
-			intakeMotor = !intakeMotor;
-			BPressed = false;
-		}
-		else
-		{
-			liftMotorLeft = 5;
-			liftMotorRight = 5;
-		}*/
+		moveDrive(motorSpeed, turnSpeed, strafeSpeed);
 
 		if (controller.get_digital(DIGITAL_B))
 		{
 			intakeMotorLeft = 0;
 			intakeMotorRight = 0;
 		}
-
 
 		else if (controller.get_digital(DIGITAL_A))
 		{
@@ -1021,9 +992,6 @@ void opcontrol()
 		if (controller.get_digital(DIGITAL_L1))
 		{
 			upperStack = 127;
-			/*char val[100];
-			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
-			lv_label_set_text(text, val);*/
 		}
 
 		else if (controller.get_digital(DIGITAL_L2))
@@ -1035,9 +1003,6 @@ void opcontrol()
 		if (controller.get_digital(DIGITAL_R1))
 		{
 			lowerStack = 80;
-			/*char val[100];
-			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
-			lv_label_set_text(text, val);*/
 		}
 
 		else if (controller.get_digital(DIGITAL_R2))
@@ -1049,16 +1014,7 @@ void opcontrol()
 		if (controller.get_digital(DIGITAL_LEFT))
 		{
 			upperStack = -127;
-			/*char val[100];
-			sprintf(val, "Lift Motor: %f", liftMotor.get_position());
-			lv_label_set_text(text, val);*/
 		}
-
-
-		/*if (controller.get_digital(DIGITAL_R1))
-		{
-			deploy(chassis, profileController, trayController, liftController);
-		}*/
 
 		pros::delay(10);
 	}
