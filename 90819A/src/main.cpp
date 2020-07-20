@@ -15,9 +15,9 @@ pros::Controller controller(CONTROLLER_MASTER);
 //pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 //pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor leftFrontMotor(6, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(20, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor rightFrontMotor(8, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor leftFrontMotor(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor rightBackMotor(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::Motor lowerStack(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
@@ -517,7 +517,7 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry) {
 	double x = abs(a*lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) +1);
 	double side = (sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry)) / abs(sin(angle) * (lookAheadPoint[0] - Rx) - cos(angle) * (lookAheadPoint[1] - Ry));
 	double curvature = (2 * x) / (pow((lookAheadPoint[0] - Rx), 2) + pow((lookAheadPoint[1] - Ry), 2));
-	return curvature * side;
+	return curvature * side / 2.5;
 }
 
 vector<double> rateLimit(double velocity, double maxAccel, double prevVel) {
@@ -668,7 +668,7 @@ void move(vector < vector<double> > initPoints, double spacing, double smoothVal
 		printf(".lookAheadPoint: (%.3f, %.3f)\n", lookAheadPoint[0], lookAheadPoint[1]);
 		//might need to be distance for tolerance
 		if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1]
-		&& (closestPoint == pointsList.size()-1-lookAheadPointsNum)) {
+		&& (closestPoint == pointsList.size()-1)) {
 			printf(".here");
 			break;
 		}
@@ -802,7 +802,12 @@ void autonomous() {
 	resetGlobal();
 	
 	//pros::Task positionTask(runPositionTask, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
-	move({{0.0, 0.0}, {0, 20.0}, {20.0, 40.0}}, 1.0, 0.15, 0.85, 0.001, 0.5, 0.33, 3.0, 5, 15.0, 1.25, 0, 0);
+	move({{0.0, 0.0}, {-16.0, 16.0}, {-48.0, 20.0}}, 1.0, 0.15, 0.85, 0.001, 0.5, 0.67, 3.0, 5, 15.0, 1.25, 0, 0);
+	pros::delay(200);
+	pidTurn(M_PI - 0.03, 80, 0.025, 110, true);
+	pros::delay(200);
+	move({{-50.0, 10.0}}, 1.0, 0.15, 0.85, 0.001, 0.5, 1.0, 3.0, 5, 15.0, 1.25, 0, 0);
+
 }
 
 
@@ -819,7 +824,6 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-
 void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 {
 	//forward: all positive
@@ -891,6 +895,11 @@ void opcontrol()
 
 	while (true)
 	{
+		runPositionTask();
+		printf("Theta: %.3f\n", theta*180/M_PI);
+		printf("X: %.3f\n", positionVector[0]);
+		printf("Y: %.3f\n\n", positionVector[1]);
+
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
 		int strafeSpeed = controller.get_analog(ANALOG_LEFT_X);
 		int turnSpeed = controller.get_analog(ANALOG_RIGHT_X);
@@ -952,6 +961,6 @@ void opcontrol()
 			upperStack = -127;
 		}
 
-		pros::delay(10);
+		pros::delay(500);
 	}
 }
