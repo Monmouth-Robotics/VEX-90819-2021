@@ -15,15 +15,15 @@ pros::Controller controller(CONTROLLER_MASTER);
 //pros::Motor rightFrontMotor(17, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 //pros::Motor rightBackMotor(20, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor leftFrontMotor(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor leftBackMotor(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor rightFrontMotor(6, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor rightBackMotor(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor leftFrontMotor(6, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor leftBackMotor(20, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor rightFrontMotor(9, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor rightBackMotor(11, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
-pros::Motor lowerStack(9, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor upperStack(16, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeMotorLeft(19, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-pros::Motor intakeMotorRight(3, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor lowerStack(21, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor upperStack(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorLeft(16, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+pros::Motor intakeMotorRight(14, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::ADIEncoder leftEncoder('C', 'D', true);
 pros::ADIEncoder rightEncoder('G', 'H', true);
@@ -961,6 +961,6 @@ void opcontrol()
 			upperStack = -127;
 		}
 
-		pros::delay(500);
+		pros::delay(10);
 	}
 }
