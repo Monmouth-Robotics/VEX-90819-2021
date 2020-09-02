@@ -35,6 +35,15 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+#include "devices.h"
+#include "positionAlg.h"
+#include "purePursuit.h"
+#include "pid.h"
+#include <cmath>
+#include <ctime>
+#include <iostream>
+#include <list>
+#include <iterator>
 
 /**
  * You should add more #includes here

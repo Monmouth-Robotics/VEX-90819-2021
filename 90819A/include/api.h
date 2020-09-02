@@ -22,6 +22,9 @@
 #ifdef __cplusplus
 #include <cerrno>
 #include <cmath>
+#include <ctime>
+#include <list>
+#include <iterator>
 #include <cstdbool>
 #include <cstddef>
 #include <cstdint>
@@ -37,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <vector>
 #endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 3
