@@ -36,9 +36,8 @@
 
 #include "api.h"
 #include "devices.h"
-#include "positionAlg.h"
-#include "purePursuit.h"
-#include "pid.h"
+#include "display.h"
+#include "progSkills.h"
 #include <cmath>
 #include <ctime>
 #include <iostream>
