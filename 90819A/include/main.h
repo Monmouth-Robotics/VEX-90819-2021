@@ -38,11 +38,6 @@
 #include "devices.h"
 #include "display.h"
 #include "progSkills.h"
-#include <cmath>
-#include <ctime>
-#include <iostream>
-#include <list>
-#include <iterator>
 
 /**
  * You should add more #includes here
@@ -83,7 +78,11 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-//#include <iostream>
+#include <cmath>
+#include <ctime>
+#include <iostream>
+#include <list>
+#include <iterator>
 #endif
 
 #endif  // _PROS_MAIN_H_

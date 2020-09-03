@@ -5,6 +5,7 @@
 #define PROS_USE_LITERALS
 #include "api.h"
 #include "devices.h"
+#include "okapi.h"
 #include "purePursuit.h"
 #include "pid.h"
 
