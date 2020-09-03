@@ -38,6 +38,7 @@
 #include "devices.h"
 #include "display.h"
 #include "progSkills.h"
+#include "purePursuit.h"
 
 /**
  * You should add more #includes here

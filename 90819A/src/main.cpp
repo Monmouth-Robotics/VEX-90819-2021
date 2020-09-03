@@ -10,7 +10,7 @@ void initialize()
 }
 
 void disabled() {
-	resetGlobal();
+	position.resetGlobal();
 }
 
 
@@ -21,6 +21,7 @@ void competition_initialize()
 
 void autonomous()
 {
+	position.resetGlobal();
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -29,8 +30,6 @@ void autonomous()
 	leftEncoder.reset();
 	rightEncoder.reset();
 	backEncoder.reset();
-	resetGlobal();
-
 
 	switch (getAutonCode()) {
 	case 1:
@@ -128,10 +127,10 @@ void opcontrol()
 
 	while (true)
 	{
-		calcPosition();
-		printf("Theta: %.3f\n", getTheta() * 180 / M_PI);
-		printf("X: %.3f\n", getPosition()[0]);
-		printf("Y: %.3f\n\n", getPosition()[1]);
+		//calcPosition();
+		printf("Theta: %.3f\n", position.getTheta() * 180 / M_PI);
+		printf("X: %.3f\n", position.getPosition()[0]);
+		printf("Y: %.3f\n\n", position.getPosition()[1]);
 		//resetGlobal();
 		//printf("Left: %.3f\n", leftEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
 		//printf("Right: %.3f\n", rightEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);

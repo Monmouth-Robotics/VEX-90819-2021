@@ -4,6 +4,9 @@ using namespace std;
 time_t currentTime;
 double WHEEL_DIAMETER2 = 2.75;
 
+PositionAlg position;
+pros::Task positionController(position.calcPosition, NULL, "Position Tracker");
+
 vector<vector<double>> generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing)
 {
     //spacing is in inches between points
@@ -192,7 +195,7 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 
 double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry, double kC)
 {
-    double angle = (M_PI / 2 - getTheta());
+    double angle = (M_PI / 2 - position.getTheta());
 
     double a = -1 * tan(angle);
     double c = tan(angle) * Rx - Ry;
@@ -204,7 +207,7 @@ double findCurvature(vector<double> lookAheadPoint, double Rx, double Ry, double
 
 double findCurvatureBackwards(vector<double> lookAheadPoint, double Rx, double Ry, double kC)
 {
-    double angle = int(M_PI / 2 - getTheta() + 180) % 360;
+    double angle = int(M_PI / 2 - position.getTheta() + 180) % 360;
     double a = -1 * tan(angle);
     double c = tan(angle) * Rx - Ry;
     double x = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) + 1);
@@ -216,7 +219,7 @@ double findCurvatureBackwards(vector<double> lookAheadPoint, double Rx, double R
 double findCurvatureLeft(vector<double> lookAheadPoint, double Rx, double Ry, double kC)
 {
     // need to check angle
-    double angle = int(M_PI / 2 - getTheta() + 270) % 360;
+    double angle = int(M_PI / 2 - position.getTheta() + 270) % 360;
     double a = -1 * tan(angle);
     double c = tan(angle) * Rx - Ry;
     double x = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) + 1);
@@ -228,7 +231,7 @@ double findCurvatureLeft(vector<double> lookAheadPoint, double Rx, double Ry, do
 double findCurvatureRight(vector<double> lookAheadPoint, double Rx, double Ry, double kC)
 {
     // need to check angle
-    double angle = int(M_PI / 2 - getTheta() + 90) % 360;
+    double angle = int(M_PI / 2 - position.getTheta() + 90) % 360;
     double a = -1 * tan(angle);
     double c = tan(angle) * Rx - Ry;
     double x = abs(a * lookAheadPoint[0] + lookAheadPoint[1] + c) / sqrt(pow(a, 2) + 1);
@@ -334,7 +337,7 @@ void ppMoveForward(vector<vector<double>> initPoints, double spacing, double smo
       *Setting Kp too high will result in a jittery motion*/
     //Kc is curvature constant
     int counter = 0;
-    calcPosition();
+    //calcPosition();
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
     if (initPoints.size() == 0)
@@ -343,7 +346,7 @@ void ppMoveForward(vector<vector<double>> initPoints, double spacing, double smo
     }
     else if (initPoints.size() == 1)
     {
-        pointsList = generateLinearPath(getPosition()[0], getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
+        pointsList = generateLinearPath(position.getPosition()[0], position.getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
     }
     else
     {
@@ -375,10 +378,10 @@ void ppMoveForward(vector<vector<double>> initPoints, double spacing, double smo
     while (true)
     {
         printf(".Time: %.d", counter);
-        calcPosition();
-        double x = getPosition()[0];
-        double y = getPosition()[1];
-        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
+        //calcPosition();
+        double x = position.getPosition()[0];
+        double y = position.getPosition()[1];
+        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, position.getTheta() * 180 / M_PI);
         vector<double> lookAheadPoint = {0.0};
         lookAheadPoint = {};
         double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
@@ -472,7 +475,7 @@ void ppMoveBackward(vector<vector<double>> initPoints, double spacing, double sm
       *Setting Kp too high will result in a jittery motion*/
     //Kc is curvature constant
     int counter = 0;
-    calcPosition();
+    //calcPosition();
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
     if (initPoints.size() == 0)
@@ -481,7 +484,7 @@ void ppMoveBackward(vector<vector<double>> initPoints, double spacing, double sm
     }
     else if (initPoints.size() == 1)
     {
-        pointsList = generateLinearPath(getPosition()[0], getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
+        pointsList = generateLinearPath(position.getPosition()[0], position.getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
     }
     else
     {
@@ -513,10 +516,10 @@ void ppMoveBackward(vector<vector<double>> initPoints, double spacing, double sm
     while (true)
     {
         printf(".Time: %.d", counter);
-        calcPosition();
-        double x = getPosition()[0];
-        double y = getPosition()[1];
-        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
+        //calcPosition();
+        double x = position.getPosition()[0];
+        double y = position.getPosition()[1];
+        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, position.getTheta() * 180 / M_PI);
         vector<double> lookAheadPoint = {0.0};
         lookAheadPoint = {};
         double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
@@ -610,7 +613,7 @@ void ppMoveLeft(vector<vector<double>> initPoints, double spacing, double smooth
       *Setting Kp too high will result in a jittery motion*/
     //Kc is curvature constant
     int counter = 0;
-    calcPosition();
+    //calcPosition();
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
     if (initPoints.size() == 0)
@@ -619,7 +622,7 @@ void ppMoveLeft(vector<vector<double>> initPoints, double spacing, double smooth
     }
     else if (initPoints.size() == 1)
     {
-        pointsList = generateLinearPath(getPosition()[0], getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
+        pointsList = generateLinearPath(position.getPosition()[0], position.getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
     }
     else
     {
@@ -651,10 +654,10 @@ void ppMoveLeft(vector<vector<double>> initPoints, double spacing, double smooth
     while (true)
     {
         printf(".Time: %.d", counter);
-        calcPosition();
-        double x = getPosition()[0];
-        double y = getPosition()[1];
-        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
+        //calcPosition();
+        double x = position.getPosition()[0];
+        double y = position.getPosition()[1];
+        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, position.getTheta() * 180 / M_PI);
         vector<double> lookAheadPoint = {0.0};
         lookAheadPoint = {};
         double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));
@@ -748,7 +751,7 @@ void ppMoveRight(vector<vector<double>> initPoints, double spacing, double smoot
       *Setting Kp too high will result in a jittery motion*/
     //Kc is curvature constant
     int counter = 0;
-    calcPosition();
+    //calcPosition();
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
     if (initPoints.size() == 0)
@@ -757,7 +760,7 @@ void ppMoveRight(vector<vector<double>> initPoints, double spacing, double smoot
     }
     else if (initPoints.size() == 1)
     {
-        pointsList = generateLinearPath(getPosition()[0], getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
+        pointsList = generateLinearPath(position.getPosition()[0], position.getPosition()[1], initPoints[0][0], initPoints[0][1], spacing);
     }
     else
     {
@@ -789,10 +792,10 @@ void ppMoveRight(vector<vector<double>> initPoints, double spacing, double smoot
     while (true)
     {
         printf(".Time: %.d", counter);
-        calcPosition();
-        double x = getPosition()[0];
-        double y = getPosition()[1];
-        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
+        //calcPosition();
+        double x = position.getPosition()[0];
+        double y = position.getPosition()[1];
+        printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, position.getTheta() * 180 / M_PI);
         vector<double> lookAheadPoint = {0.0};
         lookAheadPoint = {};
         double smallestDistance = sqrt(pow((pointsList[closestPoint][0] - x), 2) + pow((pointsList[closestPoint][1] - y), 2));

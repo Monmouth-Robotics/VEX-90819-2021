@@ -24,10 +24,10 @@ void pidTurn(double target, double maxVel, double thresholdError, double kP, dou
 
     while (abs(error) > thresholdError)
     {
-        calcPosition();
-        printf("theta: %.3f\n", getTheta() * 180.0 / M_PI);
+        //calcPosition();
+        printf("theta: %.3f\n", position.getTheta() * 180.0 / M_PI);
 
-        error = calcAngleDiff(target, getTheta());
+        error = calcAngleDiff(target, position.getTheta());
 
         if (kI != 0)
         {
@@ -71,13 +71,13 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 
 
     while (abs(distanceError) > thresholdDistanceError){
-        calcPosition();
-        printf("getTheta(): %.3f\n", getTheta() * 180.0 / M_PI);
-        printf("x: %.3f\n", getPosition()[0]);
-        printf("y: %.3f\n", getPosition()[1]);
+        //calcPosition();
+        printf("getTheta(): %.3f\n", position.getTheta() * 180.0 / M_PI);
+        printf("x: %.3f\n", position.getPosition()[0]);
+        printf("y: %.3f\n", position.getPosition()[1]);
 
-        distanceError = sqrt(pow(targetX - getPosition()[0], 2) + pow(targetY - getPosition()[1], 2) * 1.0);
-        angleError = calcAngleDiff(targetTheta, getTheta());
+        distanceError = sqrt(pow(targetX - position.getPosition()[0], 2) + pow(targetY - position.getPosition()[1], 2) * 1.0);
+        angleError = calcAngleDiff(targetTheta, position.getTheta());
         
         printf("Distance Error: %.3f", distanceError);
         power = kP * distanceError;

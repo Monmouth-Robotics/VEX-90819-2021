@@ -41,21 +41,18 @@ double thetaM;
 
 int count2 = 0;
 
-double getTheta()
+double PositionAlg::getTheta()
 {
     return theta;
 }
 
-vector<double> getPosition()
+vector<double> PositionAlg::getPosition()
 {
     return positionVector;
 }
 
-
-void calcPosition()
+void PositionAlg::calcPosition(void *ignore)
 {
-
-    
     leftEncoderDegrees = leftEncoder.get_value();
     rightEncoderDegrees = rightEncoder.get_value();
     backEncoderDegrees = backEncoder.get_value();
@@ -126,7 +123,7 @@ void calcPosition()
     // runPositionTask();
 }
 
-void resetGlobal()
+void PositionAlg::resetGlobal()
 {
     previousLeftEncoderDegrees = 0;
     previousRightEncoderDegrees = 0;

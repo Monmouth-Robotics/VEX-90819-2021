@@ -10,9 +10,12 @@
 
 using namespace std;
 
-void calcPosition(void);
-vector<double> getPosition(void);
-void resetGlobal(void);
-double getTheta(void);
+class PositionAlg {
+public:
+	static void calcPosition(void* ignore);
+	static vector<double> getPosition(void);
+	static void resetGlobal(void);
+	static double getTheta(void);
+};
 
 #endif
