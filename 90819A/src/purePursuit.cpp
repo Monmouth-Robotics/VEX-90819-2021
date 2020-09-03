@@ -375,7 +375,7 @@ void ppMoveForward(vector<vector<double>> initPoints, double spacing, double smo
     while (true)
     {
         printf(".Time: %.d", counter);
-        getPosition();
+        calcPosition();
         double x = getPosition()[0];
         double y = getPosition()[1];
         printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
@@ -513,7 +513,7 @@ void ppMoveBackward(vector<vector<double>> initPoints, double spacing, double sm
     while (true)
     {
         printf(".Time: %.d", counter);
-        getPosition();
+        calcPosition();
         double x = getPosition()[0];
         double y = getPosition()[1];
         printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
@@ -651,7 +651,7 @@ void ppMoveLeft(vector<vector<double>> initPoints, double spacing, double smooth
     while (true)
     {
         printf(".Time: %.d", counter);
-        getPosition();
+        calcPosition();
         double x = getPosition()[0];
         double y = getPosition()[1];
         printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);
@@ -789,7 +789,7 @@ void ppMoveRight(vector<vector<double>> initPoints, double spacing, double smoot
     while (true)
     {
         printf(".Time: %.d", counter);
-        getPosition();
+        calcPosition();
         double x = getPosition()[0];
         double y = getPosition()[1];
         printf(".Location: (%.3f, %.3f, %.3f)\n", x, y, getTheta() * 180 / M_PI);

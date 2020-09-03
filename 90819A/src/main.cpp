@@ -4,8 +4,6 @@ using namespace std;
 
 #define _USE_MATH_DEFINES
 
-
-
 void initialize()
 {
 	pros::lcd::initialize();
@@ -130,7 +128,7 @@ void opcontrol()
 
 	while (true)
 	{
-		getPosition();
+		calcPosition();
 		printf("Theta: %.3f\n", getTheta() * 180 / M_PI);
 		printf("X: %.3f\n", getPosition()[0]);
 		printf("Y: %.3f\n\n", getPosition()[1]);

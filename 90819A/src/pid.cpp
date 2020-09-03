@@ -2,8 +2,8 @@
 
 double calcAngleDiff(double angle1, double angle2){
 	double num1 = angle1 - angle2;
-    double num2 = (angle1 - 360) - angle2;
-    double num3 = angle1 - (angle2 - 360);
+    double num2 = (angle1 - 2 * M_PI) - angle2;
+    double num3 = angle1 - (angle2 - 2 * M_PI);
     if(abs(num1) < abs(num2) && abs(num1) < abs(num3)){
         return num1;
 	} else if(abs(num2) < abs(num1) && abs(num2) < abs(num3)){
@@ -79,17 +79,30 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
         distanceError = sqrt(pow(targetX - getPosition()[0], 2) + pow(targetY - getPosition()[1], 2) * 1.0);
         angleError = calcAngleDiff(targetTheta, getTheta());
         
+        printf("Distance Error: %.3f", distanceError);
         power = kP * distanceError;
         angleCorrection = kPStraight * angleError;
+
+        if (angleCorrection > 40)
+            angleCorrection = 40;
+        if (angleCorrection < -40)
+            angleCorrection = -40;
+
+        if (power > maxVel)
+            power = maxVel;
+        if (power < -maxVel)
+            power = -maxVel;
 
         leftFrontMotor = power + angleCorrection;
         leftBackMotor = power + angleCorrection;
         rightFrontMotor = power - angleCorrection;
         rightBackMotor = power - angleCorrection;
 
-        if (power > maxVel)
-            power = maxVel;
-        if (power < -maxVel)
-            power = -maxVel;
+        
      }
+
+     leftFrontMotor = 0;
+     leftBackMotor = 0;
+     rightFrontMotor = 0;
+     rightBackMotor = 0;
 }

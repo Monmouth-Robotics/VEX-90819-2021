@@ -55,6 +55,7 @@ vector<double> getPosition()
 void calcPosition()
 {
 
+    
     leftEncoderDegrees = leftEncoder.get_value();
     rightEncoderDegrees = rightEncoder.get_value();
     backEncoderDegrees = backEncoder.get_value();
@@ -71,9 +72,9 @@ void calcPosition()
     rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
     backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 
-    //printf("Left: %.3f\n", leftEncoderDistance);
-    //printf("right: %.3f\n", rightEncoderDistance);
-    //printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+    // printf("Left: %.3f\n", leftEncoderDistance);
+    // printf("right: %.3f\n", rightEncoderDistance);
+    // printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
 
     deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
@@ -116,9 +117,9 @@ void calcPosition()
     //printf("change in raw y: %.3f\n", y);
     // printf("change in x: %.3f\n", newX);
     // printf("change in y: %.3f\n", newY);
-    printf("x: %.3f\n", positionVector[0]);
-    printf("y: %.3f\n", positionVector[1]);
-    printf("theta: %.3f\n", theta);
+    // printf("x: %.3f\n", positionVector[0]);
+    // printf("y: %.3f\n", positionVector[1]);
+    // printf("theta: %.3f\n", theta);
 
 
     // pros::delay(10000);
