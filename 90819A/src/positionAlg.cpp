@@ -52,7 +52,8 @@ vector<double> PositionAlg::getPosition()
 }
 
 void PositionAlg::calcPosition(void *ignore)
-{
+{   
+    while (true){
     leftEncoderDegrees = leftEncoder.get_value();
     rightEncoderDegrees = rightEncoder.get_value();
     backEncoderDegrees = backEncoder.get_value();
@@ -69,8 +70,8 @@ void PositionAlg::calcPosition(void *ignore)
     rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
     backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 
-    // printf("Left: %.3f\n", leftEncoderDistance);
-    // printf("right: %.3f\n", rightEncoderDistance);
+    // printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+    // printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
     // printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
 
     deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
@@ -107,8 +108,11 @@ void PositionAlg::calcPosition(void *ignore)
     positionVector[0] = positionVector[0] + newX;
     positionVector[1] = positionVector[1] + newY;
 
-    //printf("x-coordinate: %.3f\n", positionVector[0]);
-    //printf("y-coordinate: %.3f\n", positionVector[1]);
+    // printf("x-coordinate: %.3f\n", positionVector[0]);
+    // printf("y-coordinate: %.3f\n", positionVector[1]);
+    pros::delay(10);
+    }
+    
 
     //printf("change in raw x: %.3f\n", x);
     //printf("change in raw y: %.3f\n", y);

@@ -75,18 +75,25 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
         printf("getTheta(): %.3f\n", position.getTheta() * 180.0 / M_PI);
         printf("x: %.3f\n", position.getPosition()[0]);
         printf("y: %.3f\n", position.getPosition()[1]);
+        printf("targetX: %.3f\n", targetX);
+        printf("targetY: %.3f\n", targetY);
 
-        distanceError = sqrt(pow(targetX - position.getPosition()[0], 2) + pow(targetY - position.getPosition()[1], 2) * 1.0);
+
+        distanceError = abs(targetX - position.getPosition()[0]);
+        // distanceError = sqrt(pow(targetX - position.getPosition()[0], 2) + pow(targetY - position.getPosition()[1], 2) * 1.0);
         angleError = calcAngleDiff(targetTheta, position.getTheta());
         
         printf("Distance Error: %.3f", distanceError);
         power = kP * distanceError;
         angleCorrection = kPStraight * angleError;
 
-        if (angleCorrection > 40)
-            angleCorrection = 40;
-        if (angleCorrection < -40)
-            angleCorrection = -40;
+        if (angleCorrection > 60)
+            angleCorrection = 60;
+        if (angleCorrection < -60)
+            angleCorrection = -60;
+
+        printf("power: %.3f\n", power);
+        printf("angleCorrection: %.3f\n", angleCorrection);
 
         if (power > maxVel)
             power = maxVel;

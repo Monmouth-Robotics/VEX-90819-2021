@@ -127,10 +127,8 @@ void opcontrol()
 
 	while (true)
 	{
+		printf("%d\n", lineSensor.get_value());
 		//calcPosition();
-		printf("Theta: %.3f\n", position.getTheta() * 180 / M_PI);
-		printf("X: %.3f\n", position.getPosition()[0]);
-		printf("Y: %.3f\n\n", position.getPosition()[1]);
 		//resetGlobal();
 		//printf("Left: %.3f\n", leftEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
 		//printf("Right: %.3f\n", rightEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
