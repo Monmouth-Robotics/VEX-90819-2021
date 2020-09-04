@@ -1,7 +1,7 @@
 #ifndef _PURE_PURSUIT
 #define _PURE_PURSUIT
 #include "api.h"
-#include "positionAlg.h"
+#include "positioning/positionAlg.h"
 #include <vector>
 
 using namespace std;

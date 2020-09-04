@@ -4,10 +4,10 @@
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
 #include "api.h"
-#include "devices.h"
-#include "okapi.h"
-#include "pid.h"
-#include "purePursuit.h"
+#include "init/devices.h"
+#include "motion/okapi.h"
+#include "motion/pid.h"
+#include "motion/purePursuit.h"
 
 void runProgSkills();
 

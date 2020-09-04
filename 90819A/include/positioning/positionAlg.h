@@ -5,7 +5,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "devices.h"
+#include "init/devices.h"
 #include <vector>
 
 using namespace std;

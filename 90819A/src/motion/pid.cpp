@@ -1,4 +1,4 @@
-#include "pid.h"
+#include "motion/pid.h"
 
 double calcAngleDiff(double angle1, double angle2){
 	double num1 = angle1 - angle2;

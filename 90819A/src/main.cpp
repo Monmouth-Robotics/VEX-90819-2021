@@ -127,7 +127,7 @@ void opcontrol()
 
 	while (true)
 	{
-		printf("%d\n", lineSensor.get_value());
+		printf("%d\n", lineSensorTop.get_value());
 		//calcPosition();
 		//resetGlobal();
 		//printf("Left: %.3f\n", leftEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);

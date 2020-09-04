@@ -1,4 +1,4 @@
-#include "progSkills.h"
+#include "autons/progSkills.h"
 
 void runProgSkills() {
 	// //pros::Task positionTask(getPosition, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Position Task
@@ -41,6 +41,9 @@ void runProgSkills() {
 	intakeMotorRight = 0;
 	upperStack = 127;
 	lowerStack = 127;
+	chassis->turnAngle(45_deg);
+	chassisStrafe->moveDistance(12_in);
+
 
 	// pidTurn(M_PI / 2, 80, 0.025, 200.0, 0.0, 0.0);
 

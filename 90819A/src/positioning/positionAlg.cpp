@@ -1,4 +1,4 @@
-#include "positionAlg.h"
+#include "positioning/positionAlg.h"
 
 double WHEEL_DIAMETER = 2.75;
 double DISTANCE_TO_LEFT_ENCODER = 6.75;

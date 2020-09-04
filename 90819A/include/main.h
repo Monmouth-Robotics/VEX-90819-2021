@@ -35,10 +35,10 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "devices.h"
-#include "display.h"
-#include "progSkills.h"
-#include "purePursuit.h"
+#include "init/devices.h"
+#include "init/display.h"
+#include "autons/progSkills.h"
+#include "motion/purePursuit.h"
 
 /**
  * You should add more #includes here
