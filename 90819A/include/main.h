@@ -39,6 +39,7 @@
 #include "init/display.h"
 #include "autons/progSkills.h"
 #include "motion/purePursuit.h"
+#include "driveControl.h"
 
 /**
  * You should add more #includes here
