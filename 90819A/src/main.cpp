@@ -114,16 +114,56 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 }
 
 void opcontrol()
-{
-	// Break type for all motors
-	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+{	
+
+leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	//lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	//upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	//intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	//intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	// printf("BaseReading: %d\n", baseReading);
+	// pros::delay(200);
+	// int baseReadingBottom = lineSensorBottom.get_value();
+	// int baseReadingTop = lineSensorTop.get_value();
+	// printf("Top Reading: %d", baseReadingTop);
+	// pros::delay(1000);
+
+	// while(true){
+
+	// 	printf("Top Reading: %d\n", lineSensorTop.get_value());
+
+	// 	if (abs(lineSensorTop.get_value()-baseReadingTop) > 5)
+	// 	{	
+	// 		printf("here");
+	// 		upperStack = -63;
+	// 		pros::delay(10);
+	// 		upperStack = 0;
+
+	// 		while (true)
+	// 		{
+	// 			if (abs(lineSensorBottom.get_value()-baseReadingBottom) > 10)
+	// 			while (true){
+	// 				printf("detecting ball");
+	// 			lowerStack = 0;
+	// 			pros::delay(10);
+	// 			}
+				
+	// 		}
+	// 	}
+		
+	// 	intakeMotorLeft = 127;
+	// 	intakeMotorRight = 127;
+	// 	lowerStack = 127;
+	// 	upperStack = 127;
+
+	// 	pros::delay(10);
+		
+	// }
+	// Break type for all motors
+	
 
 	while (true)
 	{
