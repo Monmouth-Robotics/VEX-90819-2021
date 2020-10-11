@@ -119,10 +119,8 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 	rightBackMotor = 0;
 }
 
-
-void pidForwardBeta(double targetX, double targetY, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
+void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
 {
-	double targetTheta = position.getTheta();
 	double distanceError = 99999999;
 	double angleError = 99999;
 	double diffError = 99999;
@@ -148,8 +146,9 @@ void pidForwardBeta(double targetX, double targetY, double maxVel, double thresh
 	while (abs(distanceError) > thresholdDistanceError) {
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
+		double currTheta = position.getTheta();
 		distanceError = sqrt(pow(targetX - position.getPosition()[0], 2) + pow(targetY - position.getPosition()[1], 2) * 1.0);
-		angleError = calcAngleDiff(targetTheta, position.getTheta());
+		angleError = calcAngleDiff(targetTheta, currTheta);
 		double m = (targetY - startY) / (targetX - startX);
 		double tempB = targetY - m * targetX;
 		double a = -1 * m;
@@ -214,7 +213,6 @@ void pidForwardBeta(double targetX, double targetY, double maxVel, double thresh
 
 		powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
 
-
 		double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
 		double leftBackSpeed = powerDistance + powerAngle - powerDiff;
 		double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
@@ -226,6 +224,12 @@ void pidForwardBeta(double targetX, double targetY, double maxVel, double thresh
 			rightFrontMotor = rightFrontSpeed * (127 / maxCurrSpeed);
 			rightBackMotor = rightBackSpeed * (127 / maxCurrSpeed);
 		}
+		printf("Current Position: (%.3f, %.3f, %.3f)", currX, currY, position.getTheta());
+		printf("Distance Error: %.3f\n", distanceError);
+		printf("Angle Error: %.3f\n", angleError);
+		printf("Diff Error: %.3f\n", diffError);
+
+		pros::delay(10);
 	}
 
 	leftFrontMotor = 0;
