@@ -43,8 +43,18 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
     double derivativeAngle = 0.0;
     double derivativeDistance = 0.0;
     double derivativeDiff = 0.0;
-    double startX = 1;
-    double startY = 0;
+
+    double m = tan((M_PI/2)*((int)(targetTheta / (M_PI/2)) + 1) - targetTheta + (M_PI/2)*((int)(targetTheta / (M_PI/2))));
+
+    double tempB = targetY - m * targetX;
+    double a = -1 * m;
+    double b = 1;
+    double c = -tempB;
+
+    printf("m: %.3f\n", m);
+    printf("a: %.3f\n", a);
+    printf("b: %.3f\n", b);
+    printf("c: %.3f\n", c);
 
     while (abs(distanceError) > thresholdDistanceError)
     {
@@ -52,27 +62,20 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         double currY;
         double currTheta;
 
+        printf("Curr x: ");
         scanf("%lf", &currX);
+        printf("Curr y: ");
         scanf("%lf", &currY);
+        printf("Curr theta: ");
         scanf("%lf", &currTheta);
-
 
         // double currX = positionX;
         // double currY = positionY;
         // double currTheta = theta;
         distanceError = sqrt(pow(targetX - currX, 2) + pow(targetY - currY, 2) * 1.0);
         angleError = calcAngleDiff(targetTheta, currTheta);
-        double m = (targetY - startY) / (targetX - startX);
-        double tempB = targetY - m * targetX;
-        double a = -1 * m;
-        double b = 1;
-        double c = -tempB;
 
-        printf("a: %.3f\n", a);
-        printf("b: %.3f\n", b);
-        printf("c: %.3f\n", c);
-
-        diffError = (abs(a * currX + b * currY + c)) / sqrt(pow(a, 2) + pow(b, 2));
+        diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
         if (kIAngle != 0)
         {
@@ -142,17 +145,29 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
         double rightBackSpeed = powerDistance - powerAngle + powerDiff;
         double maxCurrSpeed = std::max(std::max(abs(leftFrontSpeed), abs(leftBackSpeed)), std::max(abs(rightFrontSpeed), abs(rightBackSpeed)));
-        // if (maxCurrSpeed > 127) {
-        // 	leftFrontMotor = leftFrontSpeed * (127 / maxCurrSpeed);
-        // 	leftBackMotor = leftBackSpeed * (127 / maxCurrSpeed);
-        // 	rightFrontMotor = rightFrontSpeed * (127 / maxCurrSpeed);
-        // 	rightBackMotor = rightBackSpeed * (127 / maxCurrSpeed);
-        // }
+        
+
+
+        if (maxCurrSpeed > 127) {
+        	leftFrontSpeed = leftFrontSpeed * (127 / maxCurrSpeed);
+        	leftBackSpeed = leftBackSpeed * (127 / maxCurrSpeed);
+        	rightFrontSpeed = rightFrontSpeed * (127 / maxCurrSpeed);
+        	rightBackSpeed = rightBackSpeed * (127 / maxCurrSpeed);
+        }
+
+        printf("leftFront: %.3f\n", leftFrontSpeed);
+        printf("leftBack: %.3f\n", leftBackSpeed);
+        printf("rightFront: %.3f\n", rightFrontSpeed);
+        printf("rightBack: %.3f\n", rightBackSpeed);
         printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
         printf("Distance Error: %.3f\n", distanceError);
         printf("Angle Error: %.3f\n", angleError);
         printf("Diff Error: %.3f\n", diffError);
 
+        // leftFrontMotor = leftFrontSpeed;
+        // leftBackMotor = leftBackSpeed;
+        // rightFrontMotor = rightFrontSpeed;
+        // rightBackMotor = rightBackSpeed;
         // pros::delay(10);
     }
 
@@ -164,5 +179,5 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
 
 int main()
 {
-    pidForwardBeta(0, 10, 0 , 127, 0.5, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    pidForwardBeta(0, 10, 0, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0);
 }
