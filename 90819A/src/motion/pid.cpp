@@ -74,7 +74,6 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 
 	double angleCorrection;
 
-
 	while (abs(distanceError) > thresholdDistanceError) {
 		//calcPosition();
 		printf("getTheta(): %.3f\n", position.getTheta() * 180.0 / M_PI);
@@ -141,7 +140,6 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
 	double derivativeDiff = 0.0;
 	double startX = position.getPosition()[0];
 	double startY = position.getPosition()[1];
-
 
 	while (abs(distanceError) > thresholdDistanceError) {
 		double currX = position.getPosition()[0];
@@ -217,14 +215,14 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
 		double leftBackSpeed = powerDistance + powerAngle - powerDiff;
 		double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
 		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
-		double maxCurrSpeed = max(abs(leftFrontSpeed), abs(leftBackSpeed), abs(rightFrontSpeed), abs(rightBackSpeed));
+		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 		if (maxCurrSpeed > 127) {
 			leftFrontMotor = leftFrontSpeed * (127 / maxCurrSpeed);
 			leftBackMotor = leftBackSpeed * (127 / maxCurrSpeed);
 			rightFrontMotor = rightFrontSpeed * (127 / maxCurrSpeed);
 			rightBackMotor = rightBackSpeed * (127 / maxCurrSpeed);
 		}
-		printf("Current Position: (%.3f, %.3f, %.3f)", currX, currY, position.getTheta());
+		printf("Current Position: (%.3f, %.3f, %.3f)", currX, currY, currTheta);
 		printf("Distance Error: %.3f\n", distanceError);
 		printf("Angle Error: %.3f\n", angleError);
 		printf("Diff Error: %.3f\n", diffError);
