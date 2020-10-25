@@ -90,13 +90,14 @@ void driveControl()
 
 	while (true)
 	{
-		printf("%d\n", lineSensorTop.get_value());
-		//calcPosition();
-		//resetGlobal();
-		//printf("Left: %.3f\n", leftEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
-		//printf("Right: %.3f\n", rightEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
-		//printf("Back: %.3f\n", backEncoder.get_value()* M_PI / 180.0 * WHEEL_DIAMETER /2);
+		// printf("%d\n", lineSensorTop.get_value());
+		// calcPosition();
+		// resetGlobal();
+		// printf("Left: %d\n", leftEncoder.get_value());
+		// printf("Right: %d\n", rightEncoder.get_value());
+		// printf("Back: %d\n", backEncoder.get_value());
 
+		// printf(positionController.getPosition());
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
 		int strafeSpeed = controller.get_analog(ANALOG_LEFT_X);
 		int turnSpeed = controller.get_analog(ANALOG_RIGHT_X);
@@ -143,20 +144,20 @@ void driveControl()
 
 		if (controller.get_digital(DIGITAL_R1))
 		{
-			digitalR1Pressed = true;
-		}
-		else if(digitalR1Pressed) {
-			shootOneBallFunction();
-			digitalR1Pressed = false;
+			upperStack = 127;
+			lowerStack = 127;
 		}
 
 		if (controller.get_digital(DIGITAL_R2))
 		{
-			digitalR2Pressed = true;
+			upperStack = 0;
+			lowerStack = 0;
 		}
-		else if (digitalR2Pressed) {
-			shootTwoBallsFunction();
-			digitalR2Pressed = false;
+
+		if (controller.get_digital(DIGITAL_L1))
+		{
+			upperStack = -127;
+			lowerStack = 127;
 		}
 
 		if (controller.get_digital(DIGITAL_LEFT))
