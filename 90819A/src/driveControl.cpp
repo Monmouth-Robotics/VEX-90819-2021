@@ -93,9 +93,9 @@ void driveControl()
 		// printf("%d\n", lineSensorTop.get_value());
 		// calcPosition();
 		// resetGlobal();
-		// printf("Left: %d\n", leftEncoder.get_value());
-		// printf("Right: %d\n", rightEncoder.get_value());
-		// printf("Back: %d\n", backEncoder.get_value());
+		printf("Left: %d\n", leftEncoder.get_value());
+		printf("Right: %d\n", rightEncoder.get_value());
+		printf("Back: %d\n", backEncoder.get_value());
 
 		// printf(positionController.getPosition());
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
@@ -168,6 +168,6 @@ void driveControl()
 
 		//pros::Task indexShootingController(indexerFunctions.shootBall, NULL, "Ball Shooter");
 
-		pros::delay(10);
+		pros::delay(1000);
 	}
 }

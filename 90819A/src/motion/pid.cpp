@@ -120,118 +120,160 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 
 void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
 {
-	double distanceError = 99999999;
-	double angleError = 99999;
-	double diffError = 99999;
-	double lastDistanceError = 0.0;
-	double lastAngleError = 0.0;
-	double lastDiffError = 0.0;
-	double powerAngle = 0.0;
-	double powerDistance = 0.0;
-	double powerDiff = 0.0;
-	double integralLimitAngle = 0.0;
-	double integralLimitDistance = 0.0;
-	double integralLimitDiff = 0.0;
-	double integralAngle = 0.0;
-	double integralDistance = 0.0;
-	double integralDiff = 0.0;
-	double derivativeAngle = 0.0;
-	double derivativeDistance = 0.0;
-	double derivativeDiff = 0.0;
-	double startX = position.getPosition()[0];
-	double startY = position.getPosition()[1];
+    double distanceError = 99999999;
+    double angleError = 99999;
+    double diffError = 99999;
+    double lastDistanceError = 0.0;
+    double lastAngleError = 0.0;
+    double lastDiffError = 0.0;
+    double powerAngle = 0.0;
+    double powerDistance = 0.0;
+    double powerDiff = 0.0;
+    double integralLimitAngle = 0.0;
+    double integralLimitDistance = 0.0;
+    double integralLimitDiff = 0.0;
+    double integralAngle = 0.0;
+    double integralDistance = 0.0;
+    double integralDiff = 0.0;
+    double derivativeAngle = 0.0;
+    double derivativeDistance = 0.0;
+    double derivativeDiff = 0.0;
 
-	while (abs(distanceError) > thresholdDistanceError) {
-		double currX = position.getPosition()[0];
-		double currY = position.getPosition()[1];
-		double currTheta = position.getTheta();
-		distanceError = sqrt(pow(targetX - position.getPosition()[0], 2) + pow(targetY - position.getPosition()[1], 2) * 1.0);
-		angleError = calcAngleDiff(targetTheta, currTheta);
-		double m = (targetY - startY) / (targetX - startX);
-		double tempB = targetY - m * targetX;
-		double a = -1 * m;
-		double b = 1;
-		double c = -tempB;
+    double m = tan((M_PI/2)*((int)(targetTheta / (M_PI/2)) + 1) - targetTheta + (M_PI/2)*((int)(targetTheta / (M_PI/2))));
 
-		diffError = (abs(a * currX + b * currY + c)) / sqrt(pow(a, 2) + pow(b, 2));
+    double tempB = targetY - m * targetX;
+    double a = -1 * m;
+    double b = 1;
+    double c = -tempB;
 
-		if (kIAngle != 0)
-		{
-			if (abs(angleError) < integralLimitAngle) {
-				integralAngle += angleError;
-			}
-			else {
-				integralAngle = 0;
-			}
-		}
-		else {
-			integralAngle = 0;
-		}
+    // printf("m: %.3f\n", m);
+    // printf("a: %.3f\n", a);
+    // printf("b: %.3f\n", b);
+    // printf("c: %.3f\n", c);
 
-		derivativeAngle = angleError - lastAngleError;
-		lastAngleError = angleError;
+    while (abs(distanceError) > thresholdDistanceError)
+    {
+        double currX = position.getPosition()[0];
+        double currY = position.getPosition()[1];
+        double currTheta = position.getTheta();
 
-		powerAngle = kPAngle * angleError + kIAngle * integralAngle + kDAngle * derivativeAngle;
+        // printf("Curr x: ");
+        // scanf("%lf", &currX);
+        // printf("Curr y: ");
+        // scanf("%lf", &currY);
+        // printf("Curr theta: ");
+        // scanf("%lf", &currTheta);
 
+        // double currX = positionX;
+        // double currY = positionY;
+        // double currTheta = theta;
 
-		if (kIDistance != 0)
-		{
-			if (abs(distanceError) < integralLimitDistance) {
-				integralDistance += distanceError;
-			}
-			else {
-				integralDistance = 0;
-			}
-		}
-		else {
-			integralDistance = 0;
-		}
+        distanceError = sqrt(pow(targetX - currX, 2) + pow(targetY - currY, 2) * 1.0);
+        angleError = calcAngleDiff(targetTheta, currTheta);
 
-		derivativeDistance = distanceError - lastDistanceError;
-		lastDistanceError = distanceError;
+        diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
-		powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
+        if (kIAngle != 0)
+        {
+            if (abs(angleError) < integralLimitAngle)
+            {
+                integralAngle += angleError;
+            }
+            else
+            {
+                integralAngle = 0;
+            }
+        }
+        else
+        {
+            integralAngle = 0;
+        }
 
+        derivativeAngle = angleError - lastAngleError;
+        lastAngleError = angleError;
 
-		if (kIDiff != 0)
-		{
-			if (abs(diffError) < integralLimitDiff) {
-				integralDiff += diffError;
-			}
-			else {
-				integralDiff = 0;
-			}
-		}
-		else {
-			integralDiff = 0;
-		}
+        powerAngle = kPAngle * angleError + kIAngle * integralAngle + kDAngle * derivativeAngle;
 
-		derivativeDiff = diffError - lastDiffError;
-		lastDiffError = diffError;
+        if (kIDistance != 0)
+        {
+            if (abs(distanceError) < integralLimitDistance)
+            {
+                integralDistance += distanceError;
+            }
+            else
+            {
+                integralDistance = 0;
+            }
+        }
+        else
+        {
+            integralDistance = 0;
+        }
 
-		powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
+        derivativeDistance = distanceError - lastDistanceError;
+        lastDistanceError = distanceError;
 
-		double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
-		double leftBackSpeed = powerDistance + powerAngle - powerDiff;
-		double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
-		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
-		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
-		if (maxCurrSpeed > 127) {
-			leftFrontMotor = leftFrontSpeed * (127 / maxCurrSpeed);
-			leftBackMotor = leftBackSpeed * (127 / maxCurrSpeed);
-			rightFrontMotor = rightFrontSpeed * (127 / maxCurrSpeed);
-			rightBackMotor = rightBackSpeed * (127 / maxCurrSpeed);
-		}
-		printf("Current Position: (%.3f, %.3f, %.3f)", currX, currY, currTheta);
-		printf("Distance Error: %.3f\n", distanceError);
-		printf("Angle Error: %.3f\n", angleError);
-		printf("Diff Error: %.3f\n", diffError);
+        powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
+
+        if (kIDiff != 0)
+        {
+            if (abs(diffError) < integralLimitDiff)
+            {
+                integralDiff += diffError;
+            }
+            else
+            {
+                integralDiff = 0;
+            }
+        }
+        else
+        {
+            integralDiff = 0;
+        }
+
+        derivativeDiff = diffError - lastDiffError;
+        lastDiffError = diffError;
+
+        powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
+
+		printf("Angle Power: %.3f", powerAngle);
+
+        double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
+        double leftBackSpeed = powerDistance + powerAngle - powerDiff;
+        double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
+        double rightBackSpeed = powerDistance - powerAngle + powerDiff;
+        double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
+        
+        if (maxCurrSpeed > maxVel) {
+        	leftFrontSpeed = leftFrontSpeed * (maxVel / maxCurrSpeed);
+        	leftBackSpeed = leftBackSpeed * (maxVel / maxCurrSpeed);
+        	rightFrontSpeed = rightFrontSpeed * (maxVel / maxCurrSpeed);
+        	rightBackSpeed = rightBackSpeed * (maxVel / maxCurrSpeed);
+        }
+
+       
+        printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
+        printf("Distance Error: %.3f\n", distanceError);
+        printf("Angle Error: %.3f\n", angleError);
+        printf("Diff Error: %.3f\n\n", diffError);
+
+		printf("leftFront: %.3f\n", leftFrontSpeed);
+        printf("leftBack: %.3f\n", leftBackSpeed);
+        printf("rightFront: %.3f\n", rightFrontSpeed);
+        printf("rightBack: %.3f\n\n\n", rightBackSpeed);
+		
+		leftFrontMotor = leftFrontSpeed;
+        leftBackMotor = leftBackSpeed;
+        rightFrontMotor = rightFrontSpeed;
+        rightBackMotor = rightBackSpeed;
 
 		pros::delay(10);
-	}
+        
+        // pros::delay(10);
+    }
 
-	leftFrontMotor = 0;
-	leftBackMotor = 0;
-	rightFrontMotor = 0;
-	rightBackMotor = 0;
+    leftFrontMotor = 0;
+    leftBackMotor = 0;
+    rightFrontMotor = 0;
+    rightBackMotor = 0;
 }

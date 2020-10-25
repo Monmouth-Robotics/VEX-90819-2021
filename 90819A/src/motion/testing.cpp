@@ -1,27 +1,27 @@
-// #include <cstdio>
-// #define _USE_MATH_DEFINES
-// #include <math.h>
-// #include <algorithm>
-// #include <vector>
+// // #include <cstdio>
+// // #define _USE_MATH_DEFINES
+// // #include <math.h>
+// // #include <algorithm>
+// // #include <vector>
 
-// // double calcAngleDiff(double angle1, double angle2)
-// {
-//     double num1 = angle1 - angle2;
-//     double num2 = (angle1 - 2 * M_PI) - angle2;
-//     double num3 = angle1 - (angle2 - 2 * M_PI);
-//     if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
-//     {
-//         return num1;
-//     }
-//     else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
-//     {
-//         return num2;
-//     }
-//     else
-//     {
-//         return num3;
-//     }
-// }
+// // // double calcAngleDiff(double angle1, double angle2)
+// // {
+// //     double num1 = angle1 - angle2;
+// //     double num2 = (angle1 - 2 * M_PI) - angle2;
+// //     double num3 = angle1 - (angle2 - 2 * M_PI);
+// //     if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
+// //     {
+// //         return num1;
+// //     }
+// //     else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
+// //     {
+// //         return num2;
+// //     }
+// //     else
+// //     {
+// //         return num3;
+// //     }
+// // }
 
 // void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
 // {
@@ -177,7 +177,7 @@
 //     // rightBackMotor = 0;
 // }
 
-// int main()
-// {
-//     pidForwardBeta(0, 10, 0, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0);
-// }
+// // int main()
+// // {
+// //     pidForwardBeta(0, 10, 0, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0);
+// // }

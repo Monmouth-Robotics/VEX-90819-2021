@@ -15,6 +15,7 @@ pros::Motor intakeMotorRight(7, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 pros::ADIEncoder leftEncoder('A', 'B', true);
 pros::ADIEncoder rightEncoder('G', 'H', false);
-pros::ADIEncoder backEncoder('E', 'F', true);
+pros::ADIEncoder backEncoder('E', 'F', false);
+
 pros::ADIAnalogIn lineSensorTop ('C');
 pros::ADIAnalogIn lineSensorBottom ('D');
