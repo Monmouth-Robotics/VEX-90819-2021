@@ -50,13 +50,16 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
     double a = -1 * m;
     double b = 1;
     double c = -tempB;
+    
+    double x = -999999999;
+    double y = -99999999;
 
     printf("m: %.3f\n", m);
     printf("a: %.3f\n", a);
     printf("b: %.3f\n", b);
     printf("c: %.3f\n", c);
 
-    while (abs(distanceError) > thresholdDistanceError)
+    while (abs(distanceError) > thresholdDistanceError && x < targetX && y < targetY)
     {
         double currX;
         double currY;
@@ -81,11 +84,12 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         double perpB = 1;
         double perpC = mPerp*currX-currY;
 
-        double x = (perpC-c)/(a-perpA);
-		double y  = mPerp*(x-currX) + currY;
+        x = (perpC-c)/(a-perpA);
+		y  = mPerp*(x-currX) + currY;
 
         distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
         angleError = calcAngleDiff(targetTheta, currTheta);
+
         printf("Intersection Stuff: \n");
         printf("mPerp: %.3f\n", mPerp);
         printf("perpB: %.3f\n", perpB);

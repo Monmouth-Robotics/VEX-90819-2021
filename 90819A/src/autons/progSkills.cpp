@@ -2,7 +2,7 @@
 
 void runProgSkills() {
 
-	pidForwardBeta(12, 12, M_PI/4, 63, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0);
+	pidForwardBeta(12, 12, M_PI/4, 63, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, false);
 
 	// while (true){	
 	// 	printf("(%.3f, %.3f, %.3f)\n", position.getPosition()[0], position.getPosition()[1], position.getTheta()*180 / M_PI);
