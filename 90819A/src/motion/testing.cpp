@@ -59,7 +59,7 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
     printf("b: %.3f\n", b);
     printf("c: %.3f\n", c);
 
-    while (abs(distanceError) > thresholdDistanceError && x < targetX && y < targetY)
+    while (abs(distanceError) > thresholdDistanceError)
     {
         double currX;
         double currY;
