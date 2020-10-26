@@ -118,7 +118,7 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 	rightBackMotor = 0;
 }
 
-void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
+void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff, bool stopMotors)
 {
     double distanceError = 99999999;
     double angleError = 99999;
@@ -157,6 +157,18 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         double currY = position.getPosition()[1];
         double currTheta = position.getTheta();
 
+        double mPerp = -1/m;
+
+        // Ax + By + C = 0
+        // (y-currY) = mPerp(x-currX)
+        double perpA = -mPerp;
+        double perpB = 1;
+        double perpC = mPerp*currX-currY;
+
+        double x = (c * perpB -perpC * b) / (a * perpB -perpA * b);
+		double y  = mPerp*(x-currX) + currY;
+
+		// y=(C-Ax)/B = mPerp(x-currX)+currY
         // printf("Curr x: ");
         // scanf("%lf", &currX);
         // printf("Curr y: ");
@@ -166,7 +178,7 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
 
         // double currX = positionX;
         // double currY = positionY;
-        // double currTheta = theta;
+        // double currTheta = theta;    
 
         distanceError = sqrt(pow(targetX - currX, 2) + pow(targetY - currY, 2) * 1.0);
         angleError = calcAngleDiff(targetTheta, currTheta);
@@ -261,7 +273,7 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         printf("leftBack: %.3f\n", leftBackSpeed);
         printf("rightFront: %.3f\n", rightFrontSpeed);
         printf("rightBack: %.3f\n\n\n", rightBackSpeed);
-		
+        
 		leftFrontMotor = leftFrontSpeed;
         leftBackMotor = leftBackSpeed;
         rightFrontMotor = rightFrontSpeed;
@@ -272,8 +284,11 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
         // pros::delay(10);
     }
 
+    if (stopMotors)
+    {
     leftFrontMotor = 0;
     leftBackMotor = 0;
     rightFrontMotor = 0;
     rightBackMotor = 0;
+    }
 }
