@@ -348,7 +348,7 @@ void pidBackward(double targetX, double targetY, double targetTheta, double maxV
 
 		diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
-		if (currTheta > M_PI / 2 && currTheta < M_PI * 3 / 2)
+		if (currTheta < M_PI / 2 || currTheta > M_PI * 3 / 2)
 		{
 			diffError *= -1;
 		}
@@ -418,10 +418,10 @@ void pidBackward(double targetX, double targetY, double targetTheta, double maxV
 
 		printf("Angle Power: %.3f", powerAngle);
 
-		double leftFrontSpeed = -1 * (powerDistance + powerAngle + powerDiff);
-		double leftBackSpeed = -1 * (powerDistance + powerAngle - powerDiff);
-		double rightFrontSpeed = -1 * (powerDistance - powerAngle - powerDiff);
-		double rightBackSpeed = -1 * (powerDistance - powerAngle + powerDiff);
+		double leftFrontSpeed = -powerDistance + powerAngle + powerDiff;
+		double leftBackSpeed = -powerDistance + powerAngle - powerDiff;
+		double rightFrontSpeed = -powerDistance - powerAngle - powerDiff;
+		double rightBackSpeed = -powerDistance - powerAngle + powerDiff;
 
 
 
