@@ -175,7 +175,7 @@ void pidForwardBeta(double targetX, double targetY, double targetTheta, double m
 
         diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
-        if (targetTheta > M_PI/2 && targetTheta < M_PI*3/2)
+        if (currTheta > M_PI/2 && currTheta < M_PI*3/2)
         {
             diffError*=-1;
         }
