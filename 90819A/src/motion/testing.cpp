@@ -220,6 +220,8 @@ void pidBackward(double targetX, double targetY, double targetTheta, double maxV
 
 	double m = tan((M_PI / 2) * ((int)(targetTheta / (M_PI / 2)) + 1) - targetTheta + (M_PI / 2) * ((int)(targetTheta / (M_PI / 2))));
 
+    m = -1 / m;
+
 	double tempB = targetY - m * targetX;
 	double a = -1 * m;
 	double b = 1;
@@ -334,10 +336,10 @@ void pidBackward(double targetX, double targetY, double targetTheta, double maxV
 
 		printf("Angle Power: %.3f", powerAngle);
 
-		double leftFrontSpeed = -powerDistance + powerAngle + powerDiff;
+		double leftFrontSpeed = powerDistance + powerAngle - powerDiff;
 		double leftBackSpeed = -powerDistance + powerAngle - powerDiff;
 		double rightFrontSpeed = -powerDistance - powerAngle - powerDiff;
-		double rightBackSpeed = -powerDistance - powerAngle + powerDiff;
+		double rightBackSpeed = powerDistance - powerAngle - powerDiff;
 
 		double maxCurrSpeed = std::max(std::max(abs(leftFrontSpeed), abs(leftBackSpeed)), std::max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 
@@ -380,5 +382,5 @@ void pidBackward(double targetX, double targetY, double targetTheta, double maxV
 
 int main()
 {
-    pidBackward(0, -10, 0, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0, false);
+    pidBackward(-10, 0, M_PI, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0, false);
 }
