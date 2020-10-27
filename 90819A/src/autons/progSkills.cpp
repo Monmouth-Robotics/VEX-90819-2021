@@ -2,7 +2,26 @@
 
 void runProgSkills() {
 
-	pidForwardBeta(12, 12, M_PI/4, 63, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, false);
+	pidForwardBeta(0, 24, 0, 80, 0.25, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidTurn(3*M_PI/2-M_PI/4, 80, 0.025, 120.0, 0.0, 0.0);
+	printf("Angle: %.3f\n", position.getTheta()*180/M_PI);
+	intakeMotorLeft = 127;
+	intakeMotorRight = 127;
+	pidForwardBeta(-16, 8, 3*M_PI/2-M_PI/4, 63, 0.5, 50, 15, 50, 0, 0, 0, 0, 0, 0, true);
+	upperStack = 127;
+	lowerStack = 127;
+	pros::delay(1000);
+	upperStack = 0;
+	lowerStack = 0;
+	intakeMotorLeft = 0;
+	intakeMotorRight = 0;
+	pidBackwardBeta(0, 24, 3.92, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
+	pidTurn(M_PI*3/2, 80, 0.025, 100.0, 0.0, 0.0);
+	pidForwardBeta(-10, 24, M_PI*3/2, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
+
+	// pidForwardBeta(-12, 24, 4.71, 63, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+
+
 
 	// while (true){	
 	// 	printf("(%.3f, %.3f, %.3f)\n", position.getPosition()[0], position.getPosition()[1], position.getTheta()*180 / M_PI);

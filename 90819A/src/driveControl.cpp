@@ -168,6 +168,6 @@ void driveControl()
 
 		//pros::Task indexShootingController(indexerFunctions.shootBall, NULL, "Ball Shooter");
 
-		pros::delay(1000);
+		pros::delay(10);
 	}
 }

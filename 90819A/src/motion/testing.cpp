@@ -1,203 +1,203 @@
-#include <cstdio>
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <algorithm>
-#include <vector>
+// #include <cstdio>
+// #define _USE_MATH_DEFINES
+// #include <math.h>
+// #include <algorithm>
+// #include <vector>
 
-double calcAngleDiff(double angle1, double angle2)
-{
-    double num1 = angle1 - angle2;
-    double num2 = (angle1 - 2 * M_PI) - angle2;
-    double num3 = angle1 - (angle2 - 2 * M_PI);
-    if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
-    {
-        return num1;
-    }
-    else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
-    {
-        return num2;
-    }
-    else
-    {
-        return num3;
-    }
-}
+// double calcAngleDiff(double angle1, double angle2)
+// {
+//     double num1 = angle1 - angle2;
+//     double num2 = (angle1 - 2 * M_PI) - angle2;
+//     double num3 = angle1 - (angle2 - 2 * M_PI);
+//     if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
+//     {
+//         return num1;
+//     }
+//     else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
+//     {
+//         return num2;
+//     }
+//     else
+//     {
+//         return num3;
+//     }
+// }
 
-void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
-{
-    double distanceError = 99999999;
-    double angleError = 99999;
-    double diffError = 99999;
-    double lastDistanceError = 0.0;
-    double lastAngleError = 0.0;
-    double lastDiffError = 0.0;
-    double powerAngle = 0.0;
-    double powerDistance = 0.0;
-    double powerDiff = 0.0;
-    double integralLimitAngle = 0.0;
-    double integralLimitDistance = 0.0;
-    double integralLimitDiff = 0.0;
-    double integralAngle = 0.0;
-    double integralDistance = 0.0;
-    double integralDiff = 0.0;
-    double derivativeAngle = 0.0;
-    double derivativeDistance = 0.0;
-    double derivativeDiff = 0.0;
+// void pidForwardBeta(double targetX, double targetY, double targetTheta, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff)
+// {
+//     double distanceError = 99999999;
+//     double angleError = 99999;
+//     double diffError = 99999;
+//     double lastDistanceError = 0.0;
+//     double lastAngleError = 0.0;
+//     double lastDiffError = 0.0;
+//     double powerAngle = 0.0;
+//     double powerDistance = 0.0;
+//     double powerDiff = 0.0;
+//     double integralLimitAngle = 0.0;
+//     double integralLimitDistance = 0.0;
+//     double integralLimitDiff = 0.0;
+//     double integralAngle = 0.0;
+//     double integralDistance = 0.0;
+//     double integralDiff = 0.0;
+//     double derivativeAngle = 0.0;
+//     double derivativeDistance = 0.0;
+//     double derivativeDiff = 0.0;
 
-    double m = tan((M_PI/2)*((int)(targetTheta / (M_PI/2)) + 1) - targetTheta + (M_PI/2)*((int)(targetTheta / (M_PI/2))));
+//     double m = tan((M_PI/2)*((int)(targetTheta / (M_PI/2)) + 1) - targetTheta + (M_PI/2)*((int)(targetTheta / (M_PI/2))));
 
-    double tempB = targetY - m * targetX;
-    double a = -1 * m;
-    double b = 1;
-    double c = -tempB;
+//     double tempB = targetY - m * targetX;
+//     double a = -1 * m;
+//     double b = 1;
+//     double c = -tempB;
     
-    double x = -999999999;
-    double y = -99999999;
+//     double x = -999999999;
+//     double y = -99999999;
 
-    printf("m: %.3f\n", m);
-    printf("a: %.3f\n", a);
-    printf("b: %.3f\n", b);
-    printf("c: %.3f\n", c);
+//     printf("m: %.3f\n", m);
+//     printf("a: %.3f\n", a);
+//     printf("b: %.3f\n", b);
+//     printf("c: %.3f\n", c);
 
-    while (abs(distanceError) > thresholdDistanceError)
-    {
-        double currX;
-        double currY;
-        double currTheta;
+//     while (abs(distanceError) > thresholdDistanceError)
+//     {
+//         double currX;
+//         double currY;
+//         double currTheta;
 
-        printf("Curr x: ");
-        scanf("%lf", &currX);
-        printf("Curr y: ");
-        scanf("%lf", &currY);
-        printf("Curr theta: ");
-        scanf("%lf", &currTheta);
+//         printf("Curr x: ");
+//         scanf("%lf", &currX);
+//         printf("Curr y: ");
+//         scanf("%lf", &currY);
+//         printf("Curr theta: ");
+//         scanf("%lf", &currTheta);
         
-        // double currX = positionX;
-        // double currY = positionY;
-        // double currTheta = theta;
-        double mPerp = -1/m;
+//         // double currX = positionX;
+//         // double currY = positionY;
+//         // double currTheta = theta;
+//         double mPerp = -1/m;
 
-        // Ax + By + C = 0
-        // (y-currY) = mPerp(x-currX)
+//         // Ax + By + C = 0
+//         // (y-currY) = mPerp(x-currX)
 
-        double perpA = -mPerp;
-        double perpB = 1;
-        double perpC = mPerp*currX-currY;
+//         double perpA = -mPerp;
+//         double perpB = 1;
+//         double perpC = mPerp*currX-currY;
 
-        x = (perpC-c)/(a-perpA);
-		y  = mPerp*(x-currX) + currY;
+//         x = (perpC-c)/(a-perpA);
+// 		y  = mPerp*(x-currX) + currY;
 
-        distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
-        angleError = calcAngleDiff(targetTheta, currTheta);
+//         distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
+//         angleError = calcAngleDiff(targetTheta, currTheta);
 
-        printf("Intersection Stuff: \n");
-        printf("mPerp: %.3f\n", mPerp);
-        printf("perpB: %.3f\n", perpB);
-        printf("perpC: %.3f\n", perpC);
-		printf("POI: (%.3f %.3f)\n\n", x, y);
+//         printf("Intersection Stuff: \n");
+//         printf("mPerp: %.3f\n", mPerp);
+//         printf("perpB: %.3f\n", perpB);
+//         printf("perpC: %.3f\n", perpC);
+// 		printf("POI: (%.3f %.3f)\n\n", x, y);
 
-        diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
+//         diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
-		if (kIAngle != 0)
-        {
-            if (abs(angleError) < integralLimitAngle)
-            {
-                integralAngle += angleError;
-            }
-            else
-            {
-                integralAngle = 0;
-            }
-        }
-        else
-        {
-            integralAngle = 0;
-        }
+// 		if (kIAngle != 0)
+//         {
+//             if (abs(angleError) < integralLimitAngle)
+//             {
+//                 integralAngle += angleError;
+//             }
+//             else
+//             {
+//                 integralAngle = 0;
+//             }
+//         }
+//         else
+//         {
+//             integralAngle = 0;
+//         }
 
-        derivativeAngle = angleError - lastAngleError;
-        lastAngleError = angleError;
+//         derivativeAngle = angleError - lastAngleError;
+//         lastAngleError = angleError;
 
-        powerAngle = kPAngle * angleError + kIAngle * integralAngle + kDAngle * derivativeAngle;
+//         powerAngle = kPAngle * angleError + kIAngle * integralAngle + kDAngle * derivativeAngle;
 
-        if (kIDistance != 0)
-        {
-            if (abs(distanceError) < integralLimitDistance)
-            {
-                integralDistance += distanceError;
-            }
-            else
-            {
-                integralDistance = 0;
-            }
-        }
-        else
-        {
-            integralDistance = 0;
-        }
+//         if (kIDistance != 0)
+//         {
+//             if (abs(distanceError) < integralLimitDistance)
+//             {
+//                 integralDistance += distanceError;
+//             }
+//             else
+//             {
+//                 integralDistance = 0;
+//             }
+//         }
+//         else
+//         {
+//             integralDistance = 0;
+//         }
 
-        derivativeDistance = distanceError - lastDistanceError;
-        lastDistanceError = distanceError;
+//         derivativeDistance = distanceError - lastDistanceError;
+//         lastDistanceError = distanceError;
 
-        powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
+//         powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
 
-        if (kIDiff != 0)
-        {
-            if (abs(diffError) < integralLimitDiff)
-            {
-                integralDiff += diffError;
-            }
-            else
-            {
-                integralDiff = 0;
-            }
-        }
-        else
-        {
-            integralDiff = 0;
-        }
+//         if (kIDiff != 0)
+//         {
+//             if (abs(diffError) < integralLimitDiff)
+//             {
+//                 integralDiff += diffError;
+//             }
+//             else
+//             {
+//                 integralDiff = 0;
+//             }
+//         }
+//         else
+//         {
+//             integralDiff = 0;
+//         }
 
-        derivativeDiff = diffError - lastDiffError;
-        lastDiffError = diffError;
+//         derivativeDiff = diffError - lastDiffError;
+//         lastDiffError = diffError;
 
-        powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
+//         powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
 
-        double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
-        double leftBackSpeed = powerDistance + powerAngle - powerDiff;
-        double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
-        double rightBackSpeed = powerDistance - powerAngle + powerDiff;
-        double maxCurrSpeed = std::max(std::max(abs(leftFrontSpeed), abs(leftBackSpeed)), std::max(abs(rightFrontSpeed), abs(rightBackSpeed)));
+//         double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
+//         double leftBackSpeed = powerDistance + powerAngle - powerDiff;
+//         double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
+//         double rightBackSpeed = powerDistance - powerAngle + powerDiff;
+//         double maxCurrSpeed = std::max(std::max(abs(leftFrontSpeed), abs(leftBackSpeed)), std::max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 
 
-        if (maxCurrSpeed > 127) {
-        	leftFrontSpeed = leftFrontSpeed * (127 / maxCurrSpeed);
-        	leftBackSpeed = leftBackSpeed * (127 / maxCurrSpeed);
-        	rightFrontSpeed = rightFrontSpeed * (127 / maxCurrSpeed);
-        	rightBackSpeed = rightBackSpeed * (127 / maxCurrSpeed);
-        }
+//         if (maxCurrSpeed > 127) {
+//         	leftFrontSpeed = leftFrontSpeed * (127 / maxCurrSpeed);
+//         	leftBackSpeed = leftBackSpeed * (127 / maxCurrSpeed);
+//         	rightFrontSpeed = rightFrontSpeed * (127 / maxCurrSpeed);
+//         	rightBackSpeed = rightBackSpeed * (127 / maxCurrSpeed);
+//         }
 
-        printf("leftFront: %.3f\n", leftFrontSpeed);
-        printf("leftBack: %.3f\n", leftBackSpeed);
-        printf("rightFront: %.3f\n", rightFrontSpeed);
-        printf("rightBack: %.3f\n", rightBackSpeed);
-        printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
-        printf("Distance Error: %.3f\n", distanceError);
-        printf("Angle Error: %.3f\n", angleError);
-        printf("Diff Error: %.3f\n", diffError);
+//         printf("leftFront: %.3f\n", leftFrontSpeed);
+//         printf("leftBack: %.3f\n", leftBackSpeed);
+//         printf("rightFront: %.3f\n", rightFrontSpeed);
+//         printf("rightBack: %.3f\n", rightBackSpeed);
+//         printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
+//         printf("Distance Error: %.3f\n", distanceError);
+//         printf("Angle Error: %.3f\n", angleError);
+//         printf("Diff Error: %.3f\n", diffError);
 
-        // leftFrontMotor = leftFrontSpeed;
-        // leftBackMotor = leftBackSpeed;
-        // rightFrontMotor = rightFrontSpeed;
-        // rightBackMotor = rightBackSpeed;
-        // pros::delay(10);
-    }
+//         // leftFrontMotor = leftFrontSpeed;
+//         // leftBackMotor = leftBackSpeed;
+//         // rightFrontMotor = rightFrontSpeed;
+//         // rightBackMotor = rightBackSpeed;
+//         // pros::delay(10);
+//     }
 
-    // leftFrontMotor = 0;
-    // leftBackMotor = 0;
-    // rightFrontMotor = 0;
-    // rightBackMotor = 0;
-}
+//     // leftFrontMotor = 0;
+//     // leftBackMotor = 0;
+//     // rightFrontMotor = 0;
+//     // rightBackMotor = 0;
+// }
 
-int main()
-{
-    pidForwardBeta(10, 10, M_PI/4, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0);
-}
+// int main()
+// {
+//     pidForwardBeta(10, 10, M_PI/4, 127, 0.5, 20, 20, 20, 0, 0, 0, 0, 0, 0);
+// }
