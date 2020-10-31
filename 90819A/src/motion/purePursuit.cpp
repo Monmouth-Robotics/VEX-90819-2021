@@ -5,6 +5,11 @@ time_t currentTime;
 double WHEEL_DIAMETER2 = 2.75;
 
 PositionAlg position;
+
+//these are the reccomended ways to create the task
+// pros::Task positionController(bind(&PositionAlg::calcPosition, &position));
+// pros::Task positionController([&](){position.calcPosition();});
+
 pros::Task positionController(position.calcPosition, NULL, "Position Tracker");
 
 Indexing indexer;

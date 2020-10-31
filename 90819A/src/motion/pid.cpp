@@ -147,28 +147,53 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 	double b = 1;
 	double c = -tempB;
 
-	// printf("m: %.3f\n", m);
-	// printf("a: %.3f\n", a);
-	// printf("b: %.3f\n", b);
-	// printf("c: %.3f\n", c);
+	
 
 	while (abs(distanceError) > thresholdDistanceError)
 	{
+		printf("m: %.3f\n", m);
+	printf("a: %.3f\n", a);
+	printf("b: %.3f\n", b);
+	printf("c: %.3f\n", c);
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
 		double currTheta = position.getTheta();
 
-		double mPerp = -1 / m;
+		double perpA;
+		double perpB;
+		double perpC;
+
+		double mPerp = -1/m;
+
+		double x;
+		double y;
+
+		if (abs(mPerp) < 9999){
 
 		// Ax + By + C = 0
 		// (y-currY) = mPerp(x-currX)
 
-		double perpA = -mPerp;
-		double perpB = 1;
-		double perpC = mPerp * currX - currY;
+		perpA = -mPerp;
+		perpB = 1;
+	  	perpC = mPerp * currX - currY;
 
-		double x = (perpC - c) / (a - perpA);
-		double y = mPerp * (x - currX) + currY;
+		x = (perpC - c) / (a - perpA);
+		y = mPerp * (x - currX) + currY;
+		}
+
+		else{
+			perpA = 1;
+			perpB = 0;
+			perpC = -currX;
+			x = currX;
+			y = -c;
+		}
+
+		
+		
+
+		printf("(%.3f, %.3f, %.3f)", perpA, perpB, perpC);
+		printf("(%.3f, %.3f)", x, y);
 
 		distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
 		angleError = calcAngleDiff(targetTheta, currTheta);
@@ -178,6 +203,10 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 		if (currTheta > M_PI / 2 && currTheta < M_PI * 3 / 2)
 		{
 			diffError *= -1;
+		}
+
+		if (kDDiff == 1){
+			diffError *=-1;
 		}
 
 		if (kIAngle != 0)
@@ -241,8 +270,8 @@ void pidForward(double targetX, double targetY, double targetTheta, double maxVe
 		derivativeDiff = diffError - lastDiffError;
 		lastDiffError = diffError;
 
-		powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
-
+		// powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
+		powerDiff = kPDiff * diffError;
 		printf("Angle Power: %.3f", powerAngle);
 
 
@@ -520,7 +549,7 @@ void pidRight(double targetX, double targetY, double targetTheta, double maxVel,
 		distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
 		angleError = calcAngleDiff(targetTheta, currTheta);
 
-		diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
+		diffError = -1*(a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
 
 		if (currTheta > M_PI / 2 && currTheta < M_PI * 3 / 2)
 		{

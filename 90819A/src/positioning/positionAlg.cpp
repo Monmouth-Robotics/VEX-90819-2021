@@ -52,79 +52,75 @@ vector<double> PositionAlg::getPosition()
 }
 
 void PositionAlg::calcPosition(void *ignore)
-{   
-    while (true){
-    leftEncoderDegrees = leftEncoder.get_value();
-    rightEncoderDegrees = rightEncoder.get_value();
-    backEncoderDegrees = backEncoder.get_value();
-
-    leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
-    rightEncoderDegreesDifference = rightEncoderDegrees - previousRightEncoderDegrees;
-    backEncoderDegreesDifference = backEncoderDegrees - previousBackEncoderDegrees;
-
-    previousLeftEncoderDegrees = leftEncoderDegrees;
-    previousRightEncoderDegrees = rightEncoderDegrees;
-    previousBackEncoderDegrees = backEncoderDegrees;
-
-    leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
-    rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
-    backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
-
-    // printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-    // printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-    // printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-
-    deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
-
-    theta += deltaTheta;
-
-    if (deltaTheta != 0)
+{
+    while (true)
     {
-        x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
-        y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
+        leftEncoderDegrees = leftEncoder.get_value();
+        rightEncoderDegrees = rightEncoder.get_value();
+        backEncoderDegrees = backEncoder.get_value();
+
+        leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
+        rightEncoderDegreesDifference = rightEncoderDegrees - previousRightEncoderDegrees;
+        backEncoderDegreesDifference = backEncoderDegrees - previousBackEncoderDegrees;
+
+        previousLeftEncoderDegrees = leftEncoderDegrees;
+        previousRightEncoderDegrees = rightEncoderDegrees;
+        previousBackEncoderDegrees = backEncoderDegrees;
+
+        leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
+        rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
+        backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
+
+        // printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+        // printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+        // printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+
+        deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+
+        theta += deltaTheta;
+
+        if (deltaTheta != 0)
+        {
+            x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
+            y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
+        }
+        else
+        {
+            x = backEncoderDistance;
+            y = rightEncoderDistance;
+        }
+
+        while (theta > M_PI * 2)
+        {
+            theta -= M_PI * 2;
+        }
+        while (theta < 0)
+        {
+            theta += M_PI * 2;
+        }
+
+        //convert to polar, rotate by negative theta, convert back
+
+        thetaM = theta + deltaTheta / 2;
+
+        newX = x * cos(-thetaM) - y * sin(-thetaM);
+        newY = y * cos(-thetaM) + x * sin(-thetaM);
+
+        positionVector[0] = positionVector[0] + newX;
+        positionVector[1] = positionVector[1] + newY;
+
+        printf("x-coordinate: %.3f\n", positionVector[0]);
+        printf("y-coordinate: %.3f\n", positionVector[1]);
+        printf("change in raw x: %.3f\n", x);
+        printf("change in raw y: %.3f\n", y);
+        printf("change in x: %.3f\n", newX);
+        printf("change in y: %.3f\n", newY);
+        printf("x: %.3f\n", positionVector[0]);
+        printf("y: %.3f\n", positionVector[1]);
+        printf("theta: %.3f\n", theta);
+
+        pros::delay(10);
     }
-    else
-    {
-        x = backEncoderDistance;
-        y = rightEncoderDistance;
-    }
-
-    while (theta > M_PI * 2)
-    {
-        theta -= M_PI * 2;
-    }
-    while (theta < 0)
-    {
-        theta += M_PI * 2;
-    }
-
-    //convert to polar, rotate by negative theta, convert back
-
-    thetaM = theta + deltaTheta / 2;
-    
-    newX = x * cos(-thetaM) - y * sin(-thetaM);
-    newY = y * cos(-thetaM) + x * sin(-thetaM);
-
-    positionVector[0] = positionVector[0] + newX;
-    positionVector[1] = positionVector[1] + newY;
-
-    // printf("x-coordinate: %.3f\n", positionVector[0]);
-    // printf("y-coordinate: %.3f\n", positionVector[1]);
-    pros::delay(10);
-    }
-    
-
-    printf("change in raw x: %.3f\n", x);
-    printf("change in raw y: %.3f\n", y);
-    printf("change in x: %.3f\n", newX);
-    printf("change in y: %.3f\n", newY);
-    printf("x: %.3f\n", positionVector[0]);
-    printf("y: %.3f\n", positionVector[1]);
-    printf("theta: %.3f\n", theta);
-
-
-    // pros::delay(10000);
-    // runPositionTask();
 }
 
 void PositionAlg::resetGlobal()
@@ -165,4 +161,3 @@ void PositionAlg::resetGlobal()
     newX = 0;
     newY = 0;
 }
-
