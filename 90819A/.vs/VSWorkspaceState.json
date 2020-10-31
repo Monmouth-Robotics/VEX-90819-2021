@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\include",
+    "\\include\\autons",
+    "\\include\\motion",
+    "\\src",
+    "\\src\\autons",
+    "\\src\\init",
+    "\\src\\motion"
+  ],
+  "SelectedNode": "\\src\\autons\\progSkills.cpp",
+  "PreviewInSolutionExplorer": false
+}
