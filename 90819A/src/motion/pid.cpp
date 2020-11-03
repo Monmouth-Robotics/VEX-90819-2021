@@ -119,7 +119,7 @@ void pidForwardOld(double targetX, double targetY, double targetTheta, double ma
 	rightBackMotor = 0;
 }
 
-void pidForward(double targetX, double targetY, double targetTheta, vector<vector<double>> distanceLine, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff, bool stopMotors)
+void pidForward(double targetTheta, vector<vector<double>> distanceLine, double maxVel, double thresholdDistanceError, double kPAngle, double kPDistance, double kPDiff, double kIAngle, double kIDistance, double kIDiff, double kDAngle, double kDDistance, double kDDiff, bool stopMotors)
 {
 	double distanceError = 99999999;
 	double angleError = 99999;
@@ -141,10 +141,12 @@ void pidForward(double targetX, double targetY, double targetTheta, vector<vecto
 	double derivativeDiff = 0.0;
 
 	double m;
-	if (distanceLine[0][0] == distanceLine[1][0]) {
+	if (distanceLine[0][0] == distanceLine[1][0])
+	{
 		m = WINT_MAX;
 	}
-	else {
+	else
+	{
 		m = (distanceLine[0][1] - distanceLine[1][1]) / (distanceLine[0][0] - distanceLine[1][0]);
 	}
 
@@ -155,103 +157,55 @@ void pidForward(double targetX, double targetY, double targetTheta, vector<vecto
 	double a = -1 * m;
 	double b = 1;
 	double c = -tempB;
-	double hyp1 = sqrt(pow((distanceLine[0][1]),2) + pow((distanceLine[0][0]),2));
-	double adjTheta1 = atan(distanceLine[0][1] / distanceLine[0][0]) + atan(m);
-	double hyp2 = sqrt(pow((distanceLine[1][1]), 2) + pow((distanceLine[1][0]), 2));
-	double adjTheta2 = atan(distanceLine[1][1] / distanceLine[1][0]) + atan(m);
-	double rotatedX1 = cos(adjTheta1) * hyp1;
-	double rotatedX2 = cos(adjTheta2) * hyp2;
-	double rotatedY1 = sin(adjTheta1) * hyp1;
-	double rotatedY2 = sin(adjTheta2) * hyp2;
 
-	printf("Line: %.3fx+%.3f\n", m, tempB);
-	printf("(%.3f, %.3f) and (%.3f, %.3f)\n", rotatedX1, rotatedY1, rotatedX2, rotatedY2);
-	printf("hyp1: %.3f", hyp1);
-	printf("adjTheta1: %.3f", adjTheta1);
-	printf("hyp2: %.3f", hyp2);
-	printf("adjTheta2: %.3f", adjTheta2);
-	//printf("rotatedY1: %.3f\n", rotatedY1);
+	double origTheta = atan(m);
+	double p = -1 * c / sqrt(pow(a, 2) + pow(b, 2));
+	double beta = M_PI / 2;
 
-	double rotatedM;
-	if (distanceLine[0][0] == distanceLine[1][0]) {
-		rotatedM = WINT_MAX;
-	}
-	else {
-		rotatedM = (rotatedY1 - rotatedY2) / (rotatedX1 - rotatedX2);
-	}
 
-	//double m = tan((M_PI / 2) * ((int)(targetTheta / (M_PI / 2)) + 1) - targetTheta + (M_PI / 2) * ((int)(targetTheta / (M_PI / 2))));
 
-	double rotatedTempB = rotatedY1 - rotatedM * rotatedX1;
+	// New Equation: x * Cos(Beta) + y * Sin(Beta) - p = 0
 
+	double rotatedA = sin(beta);
+	double rotatedB = cos(beta);
+	double rotatedC = -1 * p;
+
+	double hypEndpoint = sqrt(pow((distanceLine[1][0]), 2) + pow((distanceLine[1][1]), 2));
+	double rotatedEndX = cos(beta) * hypEndpoint;
+	double rotatedEndY = sin(beta) * hypEndpoint;
+
+	printf("Original Line: %.3fx+%.3f\n", m, tempB);
+	printf("Original Line: %.3fx+%.3fy+%.3f=0\n", a, b, c);
+	printf("Rotated Line: %.3fx+%.3fy+%.3f=0\n", rotatedA, rotatedB, rotatedC);
+	printf("Orig Theta: %.3f\n", origTheta);
+	printf("Rotated Endpoint: (%.3f, %.3f)\n", rotatedEndX, rotatedEndY);
 
 
 	while (abs(distanceError) > thresholdDistanceError)
 	{
-		//printf("m: %.3f\n", m);
-		//printf("a: %.3f\n", a);
-		//printf("b: %.3f\n", b);
-		//printf("c: %.3f\n", c);
+	
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
 		double currTheta = position.getTheta();
 
-		double hypRobot = sqrt(pow((currY), 2) + pow((currX), 2));
-		double adjThetaRobot = atan(currY / currX) + currTheta;
-		double rotatedCurrX = cos(adjThetaRobot) * hypRobot;
-		double rotatedCurrY = sin(adjThetaRobot) * hypRobot;
+		double adjThetaRobot = currTheta + beta - origTheta;
+		double rotatedCurrX = currX * cos(beta - origTheta) - currY * sin(beta - origTheta);
+		double rotatedCurrY = currX * sin(beta - origTheta) + currY * cos(beta - origTheta);
 
-		double perpA;
-		double perpB;
-		double perpC;
-		double mPerp = -1 / m;
+		printf("rotatedCurrX: %.3f\n", rotatedCurrX);
+		printf("rotatedCurrY: %.3f\n", rotatedCurrY);
 
-		//double x;
-		//double y;
-
-		//if (abs(mPerp) < 9999) {
-
-		//	// Ax + By + C = 0
-		//	// (y-currY) = mPerp(x-currX)
-
-		//	perpA = -mPerp;
-		//	perpB = 1;
-		//	perpC = mPerp * currX - currY;
-
-		//	x = (perpC - c) / (a - perpA);
-		//	y = mPerp * (x - currX) + currY;
-		//}
-
-		//else {
-		//	perpA = 1;
-		//	perpB = 0;
-		//	perpC = -currX;
-		//	x = currX;
-		//	y = -c;
-		//}
-
-
-
-
-		//printf("(%.3f, %.3f, %.3f)", perpA, perpB, perpC);
-		//printf("(%.3f, %.3f)", x, y);
-
-		//distanceError = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2) * 1.0);
 		angleError = calcAngleDiff(targetTheta, currTheta);
+		distanceError = rotatedEndY - rotatedCurrY;
+		diffError = rotatedEndX - rotatedCurrX;
 
-		//diffError = (a * currX + b * currY + c) / sqrt(pow(a, 2) + pow(b, 2));
-
-		distanceError = sqrt(pow(rotatedX1 - rotatedX2, 2) + pow(rotatedY1 - rotatedY2, 2));
-		diffError = rotatedX1 - rotatedCurrX;
-
-		if (adjThetaRobot > M_PI / 2 && adjThetaRobot < M_PI * 3 / 2)
-		{
+		if (adjThetaRobot < 3 * M_PI / 2 && adjThetaRobot > M_PI / 2) {
 			diffError *= -1;
 		}
 
-		if (kDDiff == 1) {
-			diffError *= -1;
-		}
+		printf("Distance Error: %.3f\n", distanceError);
+		printf("Angle Error: %.3f\n", angleError);
+		printf("Diff Error: %.3f\n", diffError);
 
 		if (kIAngle != 0)
 		{
