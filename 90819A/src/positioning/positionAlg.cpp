@@ -71,9 +71,9 @@ void PositionAlg::calcPosition(void *ignore)
         rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
         backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
 
-         //printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-         //printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-         //printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+        //printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+        //printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+        //printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
 
         deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 

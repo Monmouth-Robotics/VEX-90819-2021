@@ -11,7 +11,8 @@
 
 using namespace std;
 
-class MacroFunctions {
+class MacroFunctions
+{
 public:
 	static void shootOneBall(void *ignore);
 	static void shootTwoBalls(void *ignore);

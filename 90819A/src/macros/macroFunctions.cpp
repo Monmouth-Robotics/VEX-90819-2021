@@ -1,7 +1,9 @@
 #include "macros/macroFunctions.h"
 
-void MacroFunctions::shootOneBall(void *ignore) {
-	if (indexer.getTopStatus()) {
+void MacroFunctions::shootOneBall(void *ignore)
+{
+	if (indexer.getTopStatus())
+	{
 		indexController.suspend();
 		while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) < 5)
 		{
@@ -11,7 +13,8 @@ void MacroFunctions::shootOneBall(void *ignore) {
 	}
 }
 
-void MacroFunctions::shootTwoBalls(void *ignore) {
+void MacroFunctions::shootTwoBalls(void *ignore)
+{
 	if (indexer.getTopStatus() && indexer.getBottomStatus())
 	{
 		indexController.suspend();
@@ -27,8 +30,10 @@ void MacroFunctions::shootTwoBalls(void *ignore) {
 		}
 
 		//wait for top ball detection, start bottom ball indexing
-		while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) < 5) {
-			if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10) {
+		while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) < 5)
+		{
+			if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10)
+			{
 				printf("Lower Ball Detected");
 				lowerStack = 0;
 				indexer.setBottomStatus(true);
@@ -37,8 +42,10 @@ void MacroFunctions::shootTwoBalls(void *ignore) {
 		}
 
 		//wait for top ball to leave, keep bottom ball indexing
-		while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) > 5) {
-			if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10) {
+		while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) > 5)
+		{
+			if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10)
+			{
 				printf("Lower Ball Detected");
 				lowerStack = 0;
 				indexer.setBottomStatus(true);

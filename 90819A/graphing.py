@@ -19,7 +19,7 @@ for line in f.readlines():
     rightDesired.append(line[1])
     leftActual.append(line[2])
     rightActual.append(line[3])
-    count+=10
+    count += 10
 
 fig, (ax1, ax2) = plt.subplots(2)
 x1 = np.asarray(x, dtype=np.float32)

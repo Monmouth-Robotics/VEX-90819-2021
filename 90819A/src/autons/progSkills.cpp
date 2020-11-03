@@ -1,11 +1,11 @@
 #include "autons/progSkills.h"
 
-void runProgSkills() {
+void runProgSkills()
+{
 
 	// pidRight(0, 24, M_PI*3/2, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
 
-	pidForward(0, { {0,0},{5,5} }, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
-
+	pidForward(0, {{0, 0}, {5, 5}}, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
 
 	//pidForward(0, 24, 0, 127, 0.25, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	//pidTurn(3*M_PI/2-M_PI/4, 160, 0.025, 120.0, 0.0, 0.0);
@@ -29,21 +29,9 @@ void runProgSkills() {
 	//pidTurn(M_PI*3/2+M_PI/4, 160, 0.025, 100.0, 0.0, 0.0);
 	//pidForward(-25, 85, M_PI*3/2+M_PI/4, 40, 0.5, 50, 20, 50, 0, 0, 0, 0, 0, 1, true);
 
-
-
-
-
-
-
-
-
-
-
 	// pidForward(-12, 24, 4.71, 63, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
 
-
-
-	// while (true){	
+	// while (true){
 	// 	printf("(%.3f, %.3f, %.3f)\n", position.getPosition()[0], position.getPosition()[1], position.getTheta()*180 / M_PI);
 	// 	pros::delay(1000);
 	// }
@@ -90,7 +78,6 @@ void runProgSkills() {
 	// lowerStack = 127;
 	// chassis->turnAngle(45_deg);
 	// chassisStrafe->moveDistance(12_in);
-
 
 	// pidTurn(M_PI / 2, 80, 0.025, 200.0, 0.0, 0.0);
 

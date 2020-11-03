@@ -9,7 +9,8 @@
 
 using namespace std;
 
-class Indexing {
+class Indexing
+{
 public:
 	static void initIndexing(void *ignore);
 	static void indexingTask(void *ignore);

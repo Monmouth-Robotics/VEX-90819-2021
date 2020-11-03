@@ -68,11 +68,13 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 	}
 }
 
-void shootOneBallFunction() {
+void shootOneBallFunction()
+{
 	pros::Task indexShootingController(indexerFunctions.shootOneBall, NULL, "Ball Shooter");
 }
 
-void shootTwoBallsFunction() {
+void shootTwoBallsFunction()
+{
 	pros::Task indexShootingController(indexerFunctions.shootTwoBalls, NULL, "Ball Shooter 2");
 }
 

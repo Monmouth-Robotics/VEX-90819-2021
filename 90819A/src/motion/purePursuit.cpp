@@ -89,7 +89,7 @@ vector<vector<double>> smooth(vector<vector<double>> pointsList, double a, doubl
             {
                 double aux = newPointsList[i][j];
                 newPointsList[i][j] += a * (pointsList[i][j] - newPointsList[i][j]) + b *
-				(newPointsList[i - 1][j] + newPointsList[i + 1][j] - (2.0 * newPointsList[i][j]));
+                                                                                          (newPointsList[i - 1][j] + newPointsList[i + 1][j] - (2.0 * newPointsList[i][j]));
                 change += abs(aux - newPointsList[i][j]);
             }
         }
@@ -719,10 +719,10 @@ void ppMoveLeft(vector<vector<double>> initPoints, double spacing, double smooth
 
         printf("%.3f,%.3f,%.3f,%.3f,%.3f\n", velocities[0], velocities[1], convertToMeters((leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2), convertToMeters((rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2), closestPoint * 1.0);
 
-        leftFrontMotor = -1* convertToRPM(leftFF + leftFB) * 127.0 / 200;
+        leftFrontMotor = -1 * convertToRPM(leftFF + leftFB) * 127.0 / 200;
         leftBackMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
         rightFrontMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
-        rightBackMotor = -1*convertToRPM(rightFF + rightFB) * 127.0 / 200;
+        rightBackMotor = -1 * convertToRPM(rightFF + rightFB) * 127.0 / 200;
 
         //printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);
         //printf("Right speed: %.3f m/s\n", rightFrontMotor.get_actual_velocitty() * 100 / (2 * M_PI * 4.0 * 2.54 * 60));
@@ -858,8 +858,8 @@ void ppMoveRight(vector<vector<double>> initPoints, double spacing, double smoot
         printf("%.3f,%.3f,%.3f,%.3f,%.3f\n", velocities[0], velocities[1], convertToMeters((leftFrontMotor.get_actual_velocity() + leftBackMotor.get_actual_velocity()) / 2), convertToMeters((rightFrontMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()) / 2), closestPoint * 1.0);
 
         leftFrontMotor = convertToRPM(leftFF + leftFB) * 127.0 / 200;
-        leftBackMotor = -1*convertToRPM(leftFF + leftFB) * 127.0 / 200;
-        rightFrontMotor = -1*convertToRPM(rightFF + rightFB) * 127.0 / 200;
+        leftBackMotor = -1 * convertToRPM(leftFF + leftFB) * 127.0 / 200;
+        rightFrontMotor = -1 * convertToRPM(rightFF + rightFB) * 127.0 / 200;
         rightBackMotor = convertToRPM(rightFF + rightFB) * 127.0 / 200;
 
         //printf("Left speed: %.3f m/s\n", leftFrontMotor.get_actual_velocity() * 100 / (2 * M_PI * 4.0 * 2.54 * 60);

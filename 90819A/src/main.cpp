@@ -9,10 +9,10 @@ void initialize()
 	pros::lcd::initialize();
 }
 
-void disabled() {
+void disabled()
+{
 	position.resetGlobal();
 }
-
 
 void competition_initialize()
 {
@@ -41,7 +41,8 @@ void autonomous()
 	rightEncoder.reset();
 	backEncoder.reset();
 
-	switch (getAutonCode()) {
+	switch (getAutonCode())
+	{
 	case 1:
 		break;
 	case 2:
@@ -59,6 +60,6 @@ void autonomous()
 }
 
 void opcontrol()
-{	
+{
 	driveControl();
 }

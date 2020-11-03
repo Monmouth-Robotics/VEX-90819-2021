@@ -17,5 +17,5 @@ pros::ADIEncoder leftEncoder('A', 'B', true);
 pros::ADIEncoder rightEncoder('G', 'H', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
 
-pros::ADIAnalogIn lineSensorTop ('C');
-pros::ADIAnalogIn lineSensorBottom ('D');
+pros::ADIAnalogIn lineSensorTop('C');
+pros::ADIAnalogIn lineSensorBottom('D');
