@@ -37,26 +37,26 @@ int Indexing::getBaseBottom()
 
 void Indexing::indexingTask(void *ignore)
 {
-	// while (true)
-	// {
-	// 	if (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
-	// 	{
-	// 		upperStack = 0;
-	// 		lowerStack = 63;
-	// 		printf("%lf", opticalSensor.get_hue());
-	// 		topBallDetected = true;
-	// 		if(opticalSensor.get_hue()<30)
-	// 		{
-	// 			lowerStack = 0;
-	// 			bottomBallDetected = true;
-	// 		}
-	// 	}
-	// 	else {
-	// 		topBallDetected = false;
-	// 		bottomBallDetected = false;
-	// 		upperStack = 127;
-	// 		lowerStack = 127;
-	// 	}
-	// 	pros::delay(10);
-	// }
+	while (true)
+	{
+		if (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+		{
+			upperStack = 0;
+			lowerStack = 63;
+			// printf("%lf", opticalSensor.get_hue());
+			topBallDetected = true;
+			if(opticalSensor.get_hue()<30)
+			{
+				lowerStack = 0;
+				bottomBallDetected = true;
+			}
+		}
+		else {
+			topBallDetected = false;
+			bottomBallDetected = false;
+			upperStack = 127;
+			lowerStack = 127;
+		}
+		pros::delay(10);
+	}
 }

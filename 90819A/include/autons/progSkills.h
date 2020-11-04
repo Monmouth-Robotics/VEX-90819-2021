@@ -8,6 +8,8 @@
 #include "motion/okapi.h"
 #include "motion/pid.h"
 #include "motion/purePursuit.h"
+#include "macros/macroFunctions.h"
+#include "macros/macroInstances.h"
 
 void runProgSkills();
 

@@ -15,6 +15,8 @@ class MacroFunctions
 {
 public:
 	static void shootOneBall(void *ignore);
+	static void shootOneBall();
+
 	static void shootTwoBalls(void *ignore);
 };
 

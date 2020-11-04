@@ -14,6 +14,26 @@ void MacroFunctions::shootOneBall(void *ignore)
 	}
 }
 
+void MacroFunctions::shootOneBall()
+{	
+	while (!indexer.getTopStatus())
+	{
+		pros::delay(10);
+	}
+	
+	if (indexer.getTopStatus())
+	{
+		indexController.suspend();
+		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+		{
+			upperStack = 127;
+			pros::delay(10);
+			// lowerStack = 127;
+		}
+		indexController.resume();
+	}
+}
+
 void MacroFunctions::shootTwoBalls(void *ignore)
 {
 	// if (indexer.getTopStatus() && indexer.getBottomStatus())

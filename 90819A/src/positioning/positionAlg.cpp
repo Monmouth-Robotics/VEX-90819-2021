@@ -115,9 +115,9 @@ void PositionAlg::calcPosition(void *ignore)
         //printf("change in raw y: %.3f\n", y);
         //printf("change in x: %.3f\n", newX);
         //printf("change in y: %.3f\n", newY);
-        //printf("x: %.3f\n", positionVector[0]);
-        //printf("y: %.3f\n", positionVector[1]);
-        //printf("theta: %.3f\n", theta);
+        // printf("x: %.3f\n", positionVector[0]);
+        // printf("y: %.3f\n", positionVector[1]);
+        // printf("theta: %.3f\n", theta);
 
         pros::delay(10);
     }

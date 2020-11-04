@@ -146,17 +146,18 @@ void driveControl()
 		// 	upperStack = 127;
 		// }
 
-		else if (controller.get_digital(DIGITAL_L2))
-		{
-			upperStack = 0;
-		}
+		// else if (controller.get_digital(DIGITAL_L2))
+		// {
+		// 	upperStack = -127;
+		// 	lowerStack = 127;
+		// }
 
 		if (controller.get_digital(DIGITAL_R1))
 		{
-			upperStack = 127;
-			lowerStack = 127;
+			// upperStack = 127;
+			// lowerStack = 127;
 
-			// shootOneBallFunction();
+			shootOneBallFunction();
 		}
 
 		if (controller.get_digital(DIGITAL_R2))
