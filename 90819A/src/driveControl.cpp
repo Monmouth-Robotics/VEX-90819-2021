@@ -95,9 +95,16 @@ void driveControl()
 		// printf("%d\n", lineSensorTop.get_value());
 		// calcPosition();
 		// resetGlobal();
-		printf("Left: %d\n", leftEncoder.get_value());
-		printf("Right: %d\n", rightEncoder.get_value());
-		printf("Back: %d\n", backEncoder.get_value());
+		printf("Ultrasonic Top: %d\n", ultrasonicTop.get_value());
+		printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
+
+
+		opticalSensor.set_led_pwm(100);
+		// printf("Optical: %lf\n", opticalSensor.get_hue());
+
+		// printf("Left: %d\n", leftEncoder.get_value());
+		// printf("Right: %d\n", rightEncoder.get_value());
+		// printf("Back: %d\n", backEncoder.get_value());
 
 		// printf(positionController.getPosition());
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
@@ -139,15 +146,17 @@ void driveControl()
 		// 	upperStack = 127;
 		// }
 
-		// else if (controller.get_digital(DIGITAL_L2))
-		// {
-		// 	upperStack = 0;
-		// }
+		else if (controller.get_digital(DIGITAL_L2))
+		{
+			upperStack = 0;
+		}
 
 		if (controller.get_digital(DIGITAL_R1))
 		{
 			upperStack = 127;
 			lowerStack = 127;
+
+			// shootOneBallFunction();
 		}
 
 		if (controller.get_digital(DIGITAL_R2))

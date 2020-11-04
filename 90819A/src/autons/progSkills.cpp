@@ -4,22 +4,23 @@ void runProgSkills()
 {
 
 	// pidRight(0, 24, M_PI*3/2, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
+	// pidForward(M_PI/4, {{12, 0}, {12, 24}}, 80, 0.5, 100, 50, 30, 0, 0, 0, 0, 0, 0, true);
 
-	pidForward(0, {{0, 0}, {5, 5}}, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
+	// pidRight(0, {{0, 0}, {24, 0}}, 63, 0.5, 50, 50, 30, 0, 0, 0, 0, 0, 0, true);
 
-	//pidForward(0, 24, 0, 127, 0.25, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
-	//pidTurn(3*M_PI/2-M_PI/4, 160, 0.025, 120.0, 0.0, 0.0);
-	//printf("Angle: %.3f\n", position.getTheta()*180/M_PI);
-	//intakeMotorLeft = 127;
-	//intakeMotorRight = 127;
-	//pidForward(-16, 8, 3*M_PI/2-M_PI/4, 80, 0.5, 50, 15, 30, 0, 0, 0, 0, 0, 0, true);
-	//upperStack = 127;
-	//lowerStack = 127;
-	//pros::delay(1000);
-	//pidBackward(0, 24, 3.92, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
-	//pidTurn(M_PI*3/2, 160, 0.025, 100.0, 0.0, 0.0);
-	//pidForward(-16, 24, M_PI*3/2, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
-	//pidTurn(0.135, 90, 0.025, 100.0, 0.0, 0.0);
+	pidForward(0, {{0, 0}, {0, 24}}, 80, 0.25, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidTurn(3*M_PI/2-M_PI/4, 160, 0.025, 120.0, 0.0, 0.0);
+	// printf("Angle: %.3f\n", position.getTheta()*180/M_PI);
+	intakeMotorLeft = 127;
+	intakeMotorRight = 127;
+	pidForward(3*M_PI/2-M_PI/4, {{0, 24}, {-16, 8}}, 80, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	upperStack = 127;
+	lowerStack = 127;
+	pros::delay(1000);
+	pidBackward(3.92, {{-16, 8}, {0, 24}}, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
+	pidTurn(M_PI*3/2, 160, 0.025, 100.0, 0.0, 0.0);
+	pidForward(M_PI*3/2, {{0,24}, {-16, 24}}, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
+	// pidTurn(0.135, 90, 0.025, 100.0, 0.0, 0.0);
 	//pidForward(-10, 58, 0.135, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
 	//pidTurn(M_PI*3/2, 160, 0.025, 100.0, 0.0, 0.0);
 	//// pidForward(-12, 60, 0.135, 80, 1.0, 0, 50, 5, 0, 0, 0, 0, 0, 0, true);

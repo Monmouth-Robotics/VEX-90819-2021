@@ -13,7 +13,6 @@ PositionAlg position;
 pros::Task positionController(position.calcPosition, NULL, "Position Tracker");
 
 Indexing indexer;
-pros::Task indexInitController(indexer.initIndexing, NULL, "Ball Tracker Initialization");
 pros::Task indexController(indexer.indexingTask, NULL, "Ball Tracker");
 
 vector<vector<double>> generateLinearPath(double initX, double initY, double finalX, double finalY, double spacing)

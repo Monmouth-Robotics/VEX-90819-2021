@@ -13,9 +13,11 @@ pros::Motor upperStack(10, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorLeft(4, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 pros::Motor intakeMotorRight(7, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
+pros::Optical opticalSensor (16);
+
 pros::ADIEncoder leftEncoder('A', 'B', true);
 pros::ADIEncoder rightEncoder('G', 'H', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
 
-pros::ADIAnalogIn lineSensorTop('C');
-pros::ADIAnalogIn lineSensorBottom('D');
+pros::ADIUltrasonic ultrasonicTop({{2, 'A', 'B'}});
+pros::ADIUltrasonic ultrasonicBottom({{2, 'C', 'D'}});

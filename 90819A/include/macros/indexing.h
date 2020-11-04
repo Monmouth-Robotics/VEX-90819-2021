@@ -12,7 +12,6 @@ using namespace std;
 class Indexing
 {
 public:
-	static void initIndexing(void *ignore);
 	static void indexingTask(void *ignore);
 	static void shootBall();
 	static bool getTopStatus();

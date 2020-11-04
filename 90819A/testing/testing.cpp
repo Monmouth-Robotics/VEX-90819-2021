@@ -192,8 +192,8 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 	double rotatedC = -1 * p;
 
 	double hypEndpoint = sqrt(pow((distanceLine[1][0]), 2) + pow((distanceLine[1][1]), 2));
-	double rotatedEndX = cos(beta) * hypEndpoint;
-	double rotatedEndY = sin(beta) * hypEndpoint;
+	double rotatedEndX = distanceLine[1][0] * cos(beta - origTheta) - distanceLine[1][1] * sin(beta - origTheta);
+	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	printf("Original Line: %.3fx+%.3f\n", m, tempB);
 	printf("Original Line: %.3fx+%.3fy+%.3f=0\n", a, b, c);
@@ -386,8 +386,8 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 	double rotatedC = -1 * p;
 
 	double hypEndpoint = sqrt(pow((distanceLine[1][0]), 2) + pow((distanceLine[1][1]), 2));
-	double rotatedEndX = cos(beta) * hypEndpoint;
-	double rotatedEndY = sin(beta) * hypEndpoint;
+	double rotatedEndX = distanceLine[1][0] * cos(beta - origTheta) - distanceLine[1][1] * sin(beta - origTheta);
+	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	printf("Original Line: %.3fx+%.3f\n", m, tempB);
 	printf("Original Line: %.3fx+%.3fy+%.3f=0\n", a, b, c);
@@ -581,8 +581,8 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 	double rotatedC = -1 * p;
 
 	double hypEndpoint = sqrt(pow((distanceLine[1][0]), 2) + pow((distanceLine[1][1]), 2));
-	double rotatedEndX = cos(beta) * hypEndpoint;
-	double rotatedEndY = sin(beta) * hypEndpoint;
+	double rotatedEndX = distanceLine[1][0] * cos(beta - origTheta) - distanceLine[1][1] * sin(beta - origTheta);
+	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	printf("Original Line: %.3fx+%.3f\n", m, tempB);
 	printf("Original Line: %.3fx+%.3fy+%.3f=0\n", a, b, c);
@@ -776,8 +776,8 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 	double rotatedC = -1 * p;
 
 	double hypEndpoint = sqrt(pow((distanceLine[1][0]), 2) + pow((distanceLine[1][1]), 2));
-	double rotatedEndX = cos(beta) * hypEndpoint;
-	double rotatedEndY = sin(beta) * hypEndpoint;
+	double rotatedEndX = distanceLine[1][0] * cos(beta - origTheta) - distanceLine[1][1] * sin(beta - origTheta);
+	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	printf("Original Line: %.3fx+%.3f\n", m, tempB);
 	printf("Original Line: %.3fx+%.3fy+%.3f=0\n", a, b, c);
