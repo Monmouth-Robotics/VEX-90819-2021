@@ -198,11 +198,6 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 		distanceError = abs(rotatedEndY - rotatedCurrY);
 		diffError = rotatedEndX - rotatedCurrX;
 
-		if (currTheta < 3 * M_PI / 2 && currTheta > M_PI / 2)
-		{
-			diffError *= -1;
-		}
-
 		printf("Distance Error: %.3f\n", distanceError);
 		printf("Angle Error: %.3f\n", angleError);
 		printf("Diff Error: %.3f\n", diffError);
@@ -384,11 +379,6 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 		angleError = calcAngleDiff(targetTheta, currTheta);
 		distanceError = rotatedEndY - rotatedCurrY;
 		diffError = rotatedEndX - rotatedCurrX;
-		
-		if (!(currTheta < 3 * M_PI / 2 && currTheta > M_PI / 2))
-		{
-			diffError *= -1;
-		}
 
 		printf("Distance Error: %.3f\n", distanceError);
 		printf("Angle Error: %.3f\n", angleError);
@@ -574,15 +564,6 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 		distanceError = rotatedEndY - rotatedCurrY;
 		diffError = rotatedEndX - rotatedCurrX;
 
-		if (currTheta<2*M_PI && currTheta > M_PI)
-		{
-			diffError *=-1;
-		}
-		// if (currTheta < 3 * M_PI / 2 && currTheta > M_PI / 2)
-		// {
-		// 	diffError *= -1;
-		// }
-
 		printf("Distance Error: %.3f\n", distanceError);
 		printf("Angle Error: %.3f\n", angleError);
 		printf("Diff Error: %.3f\n", diffError);
@@ -653,8 +634,8 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 		printf("Angle Power: %.3f", powerAngle);
 
 		double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
-		double leftBackSpeed = -powerDistance - powerAngle + powerDiff;
-		double rightFrontSpeed = -powerDistance + powerAngle + powerDiff;
+		double leftBackSpeed = -powerDistance + powerAngle + powerDiff;
+		double rightFrontSpeed = -powerDistance - powerAngle + powerDiff;
 		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
 
 		// if (powerDiff < 0)
@@ -775,11 +756,6 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 		distanceError = rotatedEndY - rotatedCurrY;
 		diffError = rotatedEndX - rotatedCurrX;
 
-		if (adjThetaRobot < 3 * M_PI / 2 && adjThetaRobot > M_PI / 2)
-		{
-			diffError *= -1;
-		}
-
 		printf("Distance Error: %.3f\n", distanceError);
 		printf("Angle Error: %.3f\n", angleError);
 		printf("Diff Error: %.3f\n", diffError);
@@ -849,10 +825,10 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 
 		printf("Angle Power: %.3f", powerAngle);
 
-		double leftFrontSpeed = -powerDistance + powerAngle - powerDiff;
-		double leftBackSpeed = powerDistance + powerAngle - powerDiff;
-		double rightFrontSpeed = powerDistance - powerAngle - powerDiff;
-		double rightBackSpeed = -powerDistance - powerAngle - powerDiff;
+		double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
+		double leftBackSpeed = -powerDistance + powerAngle + powerDiff;
+		double rightFrontSpeed = -powerDistance - powerAngle + powerDiff;
+		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
 
 		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 
