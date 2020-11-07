@@ -3,21 +3,17 @@
 void runProgSkills()
 {
 
-	// pidRight(0, 24, M_PI*3/2, 63, 0.5, 50, 50, 20, 0, 0, 0, 0, 0, 0, true);
-	// pidForward(M_PI/4, {{12, 0}, {12, 24}}, 80, 0.5, 100, 50, 30, 0, 0, 0, 0, 0, 0, true);
-
-	// pidRight(0, {{0, 0}, {24, 0}}, 63, 0.5, 50, 50, 30, 0, 0, 0, 0, 0, 0, true);
-
+	// first goal
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
 	pidForward(0, {{0, 0}, {0, 24}}, 80, 0.25, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
-	pidTurn(3*M_PI/2-M_PI/4, 80, 0.025, 120.0, 0.0, 0.0);
-	// printf("Angle: %.3f\n", position.getTheta()*180/M_PI);
-	
+	pidTurn(3*M_PI/2-M_PI/4, 80, 0.025, 120.0, 0.0, 0.0);	
 	pidForward(3*M_PI/2-M_PI/4, {{0, 24}, {-16, 8}}, 80, 0.5, 100, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
 	indexController.suspend();
+
+	// second goal
 	upperStack = -127;
 	lowerStack = -127;
 	intakeMotorLeft = -127;
@@ -40,13 +36,12 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-
-
 	intakeMotorRight = 0;
 	intakeMotorLeft = 0;
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
 
+	//third goal
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
@@ -56,25 +51,20 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	//start of part that doesnt work
 	pidRight(3*M_PI/2, {{-5, 57}, {-5, 96}}, 80, 0.5, 100, 50, -20, 0, 0, 0, 0, 0, 0, true);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
 	pidForward(3*M_PI/2, {{-5, 99}, {-14, 99}}, 63, 0.5, 400, 50, -20, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	pidBackward(3*M_PI/2, {{-13, 99}, {0, 99}}, 63, 0.5, 400, 50, -20, 0, 0, 0, 0, 0, 0, true);
-	// pros::delay(5000);
 	intakeMotorLeft = 0;
 	intakeMotorRight = 0;
-	// pros::delay(5000);
 	pidTurn(5.529, 127, 0.025, 100.0, 0.0, 0.0);
-	// pros::delay(5000);
-	// pros::delay(5000);
 	pidForward(5.529, {{0, 99}, {-13, 118}}, 80, 0.5, 100, 15, -20, 0, 0, 0, 0, 0, 0, true);
-
-
-	pros::delay(250);
+	// pros::delay(250);
 	indexerFunctions.shootOneBall();
+
+	//fourth goal
 	pidBackward(5.529, {{-12, 119}, {12, 84}}, 80, 0.5, 100, 50, -40, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI/2, 127, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 127;
@@ -86,6 +76,8 @@ void runProgSkills()
 	intakeMotorLeft = 0;
 	intakeMotorRight = 0;
 	indexerFunctions.shootOneBall();
+
+	//fifth goal
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
@@ -99,7 +91,6 @@ void runProgSkills()
 	intakeMotorRight = 127;
 	intakeMotorLeft = 127;
 	pidForward(M_PI/2, {{41, 104}, {70, 104}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
-	// pros::delay(5000);
 	leftBackMotor = -63;
 	leftFrontMotor = 63;
 	rightFrontMotor = -63;
@@ -118,18 +109,11 @@ void runProgSkills()
 	pros::delay(250);
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
-	// leftBackMotor = -63;
-	// leftFrontMotor = -63;
-	// rightFrontMotor = -63;
-	// rightBackMotor = -63;
-	// pros::delay(500);
-	// leftBackMotor = 0;
-	// leftFrontMotor = 0;
-	// rightFrontMotor = 0;
-	// rightBackMotor = 0;
-		// pidTurn(M_PI/4, 80, 0.025, 100.0, 0.0, 0.0);
+
+
+
+	//middle goal descore
 	pidBackward(M_PI/2, {{89, 105}, {60, 105}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
-	// pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
@@ -144,8 +128,6 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	// pidTurn(3*M_PI/2+M_PI/4, 80, 0.025, 100.0, 0.0, 0.0);
-	// indexerFunctions.shootOneBall();
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
@@ -155,10 +137,12 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
+
+	//sixth goal
 	pidTurn(M_PI/2, 80, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
-	pidForward(M_PI/2, {{60, 55}, {85, 60}}, 80, 0.5, 100, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{60, 55}, {85, 60}}, 80, 0.5, 100, 20, 40, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 
 
