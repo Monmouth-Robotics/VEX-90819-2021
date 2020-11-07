@@ -281,9 +281,9 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 		}
 
 		printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
-		printf("Distance Error: %.3f\n", distanceError);
-		printf("Angle Error: %.3f\n", angleError);
-		printf("Diff Error: %.3f\n\n", diffError);
+		printf("Distance Power: %.3f\n", powerDistance);
+		printf("Angle Power: %.3f\n", powerAngle);
+		printf("Diff Power: %.3f\n\n", powerDiff);
 
 		printf("leftFront: %.3f\n", leftFrontSpeed);
 		printf("leftBack: %.3f\n", leftBackSpeed);
@@ -377,7 +377,7 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 		printf("rotatedCurrY: %.3f\n", rotatedCurrY);
 
 		angleError = calcAngleDiff(targetTheta, currTheta);
-		distanceError = rotatedEndY - rotatedCurrY;
+		distanceError = abs(rotatedEndY - rotatedCurrY);
 		diffError = rotatedEndX - rotatedCurrX;
 
 		printf("Distance Error: %.3f\n", distanceError);
@@ -465,9 +465,9 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 		}
 
 		printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
-		printf("Distance Error: %.3f\n", distanceError);
-		printf("Angle Error: %.3f\n", angleError);
-		printf("Diff Error: %.3f\n\n", diffError);
+		printf("Distance Power: %.3f\n", powerDistance);
+		printf("Angle Power: %.3f\n", powerAngle);
+		printf("Diff Power: %.3f\n\n", powerDiff);
 
 		printf("leftFront: %.3f\n", leftFrontSpeed);
 		printf("leftBack: %.3f\n", leftBackSpeed);
@@ -557,16 +557,16 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 		double rotatedCurrX = currX * cos(beta - origTheta) - currY * sin(beta - origTheta);
 		double rotatedCurrY = currX * sin(beta - origTheta) + currY * cos(beta - origTheta);
 
-		printf("rotatedCurrX: %.3f\n", rotatedCurrX);
-		printf("rotatedCurrY: %.3f\n", rotatedCurrY);
+		// printf("rotatedCurrX: %.3f\n", rotatedCurrX);
+		// printf("rotatedCurrY: %.3f\n", rotatedCurrY);
 
 		angleError = calcAngleDiff(targetTheta, currTheta);
 		distanceError = rotatedEndY - rotatedCurrY;
 		diffError = rotatedEndX - rotatedCurrX;
 
-		printf("Distance Error: %.3f\n", distanceError);
-		printf("Angle Error: %.3f\n", angleError);
-		printf("Diff Error: %.3f\n", diffError);
+		// printf("Distance Error: %.3f\n", distanceError);
+		// printf("Angle Error: %.3f\n", angleError);
+		// printf("Diff Error: %.3f\n", diffError);
 
 		if (kIAngle != 0)
 		{
@@ -657,9 +657,9 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 		}
 
 		printf("Current Position: (%.3f, %.3f, %.3f)\n", currX, currY, currTheta);
-		printf("Distance Error: %.3f\n", distanceError);
-		printf("Angle Error: %.3f\n", angleError);
-		printf("Diff Error: %.3f\n\n", diffError);
+		printf("Distance Power: %.3f\n", powerDistance);
+		printf("Angle Power: %.3f\n", powerAngle);
+		printf("Diff Power: %.3f\n\n", powerDiff);
 
 		printf("leftFront: %.3f\n", leftFrontSpeed);
 		printf("leftBack: %.3f\n", leftBackSpeed);
