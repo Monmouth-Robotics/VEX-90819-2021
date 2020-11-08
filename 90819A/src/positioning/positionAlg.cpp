@@ -3,7 +3,7 @@
 double WHEEL_DIAMETER = 2.75;
 double DISTANCE_TO_LEFT_ENCODER = 5.375;
 double DISTANCE_TO_RIGHT_ENCODER = 5.375;
-double DISTANCE_TO_BACK_ENCODER = 6.375;
+double DISTANCE_TO_BACK_ENCODER = 6.06125;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -53,8 +53,10 @@ vector<double> PositionAlg::getPosition()
 
 void PositionAlg::calcPosition(void *ignore)
 {
+    // double offset = 0;
     while (true)
-    {
+    {   
+
         leftEncoderDegrees = leftEncoder.get_value();
         rightEncoderDegrees = rightEncoder.get_value();
         backEncoderDegrees = backEncoder.get_value();
@@ -83,12 +85,16 @@ void PositionAlg::calcPosition(void *ignore)
         {
             x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
             y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
+
+            // printf("Offset: %f\n", offset);
+
         }
         else
         {
             x = backEncoderDistance;
             y = rightEncoderDistance;
         }
+
 
         while (theta > M_PI * 2)
         {
@@ -106,6 +112,8 @@ void PositionAlg::calcPosition(void *ignore)
         newX = x * cos(-thetaM) - y * sin(-thetaM);
         newY = y * cos(-thetaM) + x * sin(-thetaM);
 
+        // offset = abs(atan2f(y, x));
+
         positionVector[0] = positionVector[0] + newX;
         positionVector[1] = positionVector[1] + newY;
 
@@ -117,7 +125,7 @@ void PositionAlg::calcPosition(void *ignore)
         //printf("change in y: %.3f\n", newY);
         printf("x: %.3f\n", positionVector[0]);
         printf("y: %.3f\n", positionVector[1]);
-        printf("theta: %.3f\n", theta);
+        printf("theta: %.3f\n", theta*180/M_PI);
 
         pros::delay(10);
     }

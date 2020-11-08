@@ -90,13 +90,30 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
+	imuLeft.reset();
+	imuRight.reset();
+
+	position.resetGlobal();
+
+	int time = pros::millis();
+	int iter = 0;
+	while (imuLeft.is_calibrating() || imuRight.is_calibrating())
+	{
+		printf("IMU calibrating... %d\n", iter);
+		iter += 10;
+		pros::delay(10);
+	}
+	printf("IMU is done calibrating (took %d ms)\n", iter - time);
+
 	while (true)
 	{
 		// printf("%d\n", lineSensorTop.get_value());
 		// calcPosition();
-		// resetGlobal();
-		printf("Ultrasonic Top: %d\n", ultrasonicTop.get_value());
-		printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
+		// printf("Ultrasonic Top: %d\n", ultrasonicTop.get_value());
+		// printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
+
+		// printf("Left IMU: %f\n", imuLeft.get_heading());
+		// printf("Right IMU: %f\n", imuRight.get_heading());
 
 
 		opticalSensor.set_led_pwm(100);

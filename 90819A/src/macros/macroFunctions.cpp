@@ -22,8 +22,9 @@ void MacroFunctions::shootOneBall()
 	}
 	
 	if (indexer.getTopStatus())
-	{
+	{	
 		indexController.suspend();
+		lowerStack = 0;
 		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
 		{
 			upperStack = 127;

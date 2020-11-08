@@ -19,5 +19,10 @@ pros::ADIEncoder leftEncoder('A', 'B', true);
 pros::ADIEncoder rightEncoder('G', 'H', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
 
+pros::ADIAnalogIn lineSensor('D');
+
+pros::Imu imuLeft(5);
+pros::Imu imuRight(6);
+
 pros::ADIUltrasonic ultrasonicTop({{2, 'A', 'B'}});
 pros::ADIUltrasonic ultrasonicBottom({{2, 'C', 'D'}});

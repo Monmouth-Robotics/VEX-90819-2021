@@ -12,6 +12,7 @@ void initialize()
 void disabled()
 {
 	position.resetGlobal();
+	
 }
 
 void competition_initialize()

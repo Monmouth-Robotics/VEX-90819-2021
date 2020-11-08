@@ -26,4 +26,9 @@ extern pros::Optical opticalSensor;
 extern pros::ADIUltrasonic ultrasonicTop;
 extern pros::ADIUltrasonic ultrasonicBottom;
 
+extern pros::Imu imuLeft;
+extern pros::Imu imuRight;
+
+extern pros::ADIAnalogIn lineSensor;
+
 #endif
