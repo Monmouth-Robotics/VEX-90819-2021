@@ -75,7 +75,7 @@ void Inertial::calcAngle(void* ignore)
 			lastDeltaL = leftEncoder.get_value();
 			lastDeltaR = rightEncoder.get_value();
 
-			pros::delay(20);
+			pros::delay(10);
 		}
 	}
 
