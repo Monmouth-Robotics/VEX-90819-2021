@@ -39,8 +39,8 @@ void Inertial::initialize(void* ignore)
 
 	while (imuLeft.is_calibrating() || imuRight.is_calibrating()) {
 		printf("IMU calibrating... %d\n", iter);
-		iter += 20;
-		pros::delay(20);
+		iter += 10;
+		pros::delay(10);
 		
 	}
 	printf("IMU is done calibrating (took %d ms)\n", iter - time);
