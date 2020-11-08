@@ -6,6 +6,7 @@
 
 #include "api.h"
 #include "init/devices.h"
+#include "positioning/inertial.h"
 #include <vector>
 
 using namespace std;
@@ -17,6 +18,7 @@ public:
 	static vector<double> getPosition(void);
 	static void resetGlobal(void);
 	static double getTheta(void);
+	static double getThetaInertial(void);
 };
 
 #endif

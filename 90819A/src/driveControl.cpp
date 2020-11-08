@@ -90,20 +90,20 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	imuLeft.reset();
-	imuRight.reset();
+	//imuLeft.reset();
+	//imuRight.reset();
 
-	position.resetGlobal();
+	//position.resetGlobal();
 
-	int time = pros::millis();
-	int iter = 0;
-	while (imuLeft.is_calibrating() || imuRight.is_calibrating())
-	{
-		printf("IMU calibrating... %d\n", iter);
-		iter += 10;
-		pros::delay(10);
-	}
-	printf("IMU is done calibrating (took %d ms)\n", iter - time);
+	//int time = pros::millis();
+	//int iter = 0;
+	//while (imuLeft.is_calibrating() || imuRight.is_calibrating())
+	//{
+	//	printf("IMU calibrating... %d\n", iter);
+	//	iter += 10;
+	//	pros::delay(10);
+	//}
+	//printf("IMU is done calibrating (took %d ms)\n", iter - time);
 
 	while (true)
 	{
