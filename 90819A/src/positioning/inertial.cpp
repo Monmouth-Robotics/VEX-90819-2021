@@ -34,7 +34,16 @@ void Inertial::initialize(void* ignore)
 	imuLeft.reset();
 	imuRight.reset();
 
-	while (imuLeft.is_calibrating() || imuRight.is_calibrating()) { pros::delay(20); }
+	int time = pros::millis();
+	int iter = 0;
+
+	while (imuLeft.is_calibrating() || imuRight.is_calibrating()) {
+		printf("IMU calibrating... %d\n", iter);
+		iter += 20;
+		pros::delay(20);
+		
+	}
+	printf("IMU is done calibrating (took %d ms)\n", iter - time);
 	ready = true;
 }
 
@@ -66,7 +75,7 @@ void Inertial::calcAngle(void* ignore)
 			lastDeltaL = leftEncoder.get_value();
 			lastDeltaR = rightEncoder.get_value();
 
-			pros::delay(10);
+			pros::delay(20);
 		}
 	}
 
