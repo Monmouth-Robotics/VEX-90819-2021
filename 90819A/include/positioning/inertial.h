@@ -12,7 +12,7 @@ using namespace std;
 class Inertial
 {
 public:
-	static void initialize(void* ignore);
+	static bool initialize();
 	static void calcAngle(void* ignore);
 	static void reset(void);
 	static double getTheta(void);

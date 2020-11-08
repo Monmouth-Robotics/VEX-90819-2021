@@ -29,7 +29,7 @@ double Inertial::getTheta()
 	return thetaRad;
 }
 
-void Inertial::initialize(void* ignore)
+bool Inertial::initialize()
 {
 	imuLeft.reset();
 	imuRight.reset();
@@ -41,10 +41,10 @@ void Inertial::initialize(void* ignore)
 		printf("IMU calibrating... %d\n", iter);
 		iter += 10;
 		pros::delay(10);
-		
 	}
-	printf("IMU is done calibrating (took %d ms)\n", iter - time);
+	printf("IMU is done calibrating (took %d ms)\n", iter);
 	ready = true;
+	return true;
 }
 
 void Inertial::calcAngle(void* ignore)
@@ -53,16 +53,19 @@ void Inertial::calcAngle(void* ignore)
 	// double offset = 0;
 	while (true)
 	{
-		if (ready) {
+		if(ready)
+		{
 			inertL = abs(imuLeft.get_heading() - 360) * M_PI / 180;
-			inertR = abs(imuLeft.get_heading() - 360) * M_PI / 180;
+			inertR = abs(imuRight.get_heading() - 360) * M_PI / 180;
 
+			// printf("Pre-angle: %.3f\n", (inertL+inertR/2)*180/M_PI);
 			float x = (cos(inertL - offset + M_PI) + cos(inertR - offset + M_PI)) / 2;
 			float y = (sin(inertL - offset + M_PI) + sin(inertR - offset + M_PI)) / 2;
 
 			thetaRad = abs(atan2f(y, x) + M_PI);
 			thetaDeg = thetaRad * 180 / M_PI;
 
+			// printf("Inertial Theta: %.3f\n", thetaDeg);
 			currentL = leftEncoder.get_value();
 			currentR = rightEncoder.get_value();
 

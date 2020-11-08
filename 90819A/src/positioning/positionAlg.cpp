@@ -3,7 +3,7 @@
 double WHEEL_DIAMETER = 2.75;
 double DISTANCE_TO_LEFT_ENCODER = 5.375;
 double DISTANCE_TO_RIGHT_ENCODER = 5.375;
-double DISTANCE_TO_BACK_ENCODER = 6.06125;
+double DISTANCE_TO_BACK_ENCODER = 6.375;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -43,8 +43,8 @@ int count2 = 0;
 
 Inertial imu;
 
-pros::Task imuInitializeController(imu.initialize, NULL, "Inertial Initializer");
-pros::Task imuController(imu.calcAngle, NULL, "Inertial Tracker");
+// bool spaghetti = imu.initialize();
+// pros::Task imuController(imu.calcAngle, NULL, "Inertial Tracker");
 
 double PositionAlg::getTheta()
 {
