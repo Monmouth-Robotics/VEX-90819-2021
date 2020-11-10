@@ -89,7 +89,7 @@ void PositionAlg::calcPosition(void* ignore)
 
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-		theta += deltaTheta;
+		theta -= deltaTheta;
 
 		if (deltaTheta != 0)
 		{
