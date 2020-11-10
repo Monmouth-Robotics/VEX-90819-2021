@@ -89,7 +89,7 @@ void PositionAlg::calcPosition(void* ignore)
 
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-		theta -= deltaTheta;
+		theta += deltaTheta;
 
 		if (deltaTheta != 0)
 		{
@@ -117,7 +117,7 @@ void PositionAlg::calcPosition(void* ignore)
 
 		//convert to polar, rotate by negative theta, convert back
 
-		thetaM = theta + deltaTheta / 2;
+		thetaM = theta - deltaTheta / 2;
 
 		newX = x * cos(-thetaM) - y * sin(-thetaM);
 		newY = y * cos(-thetaM) + x * sin(-thetaM);
