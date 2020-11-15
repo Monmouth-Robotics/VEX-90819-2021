@@ -100,7 +100,7 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pidForward(M_PI/2, {{94, 84}, {94, 95}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{94, 84}, {94, 95}}, 80, 0.5, 100, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	pidBackward(M_PI/2, {{94, 95}, {73, 95}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI/4, 80, 0.025, 100.0, 0.0, 0.0);
