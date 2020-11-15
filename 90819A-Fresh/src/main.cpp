@@ -7,12 +7,25 @@ using namespace std;
 void initialize()
 {
 	pros::lcd::initialize();
+
+	imuLeft.reset();
+	imuRight.reset();
+
+	int time = pros::millis();
+	int iter = 0;
+	while (imuLeft.is_calibrating() || imuRight.is_calibrating())
+	{
+		printf("IMU calibrating... %d\n", iter);
+		iter += 10;
+		pros::delay(10);
+	}
+	// should print about 2000 ms
+	printf("IMU is done calibrating (took %d ms)\n", iter - time);
 }
 
 void disabled()
 {
 	position.resetGlobal();
-	
 }
 
 void competition_initialize()

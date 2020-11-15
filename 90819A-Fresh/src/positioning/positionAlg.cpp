@@ -3,7 +3,7 @@
 double WHEEL_DIAMETER = 2.75;
 double DISTANCE_TO_LEFT_ENCODER = 5.375;
 double DISTANCE_TO_RIGHT_ENCODER = 5.375;
-double DISTANCE_TO_BACK_ENCODER = 6.375;
+double DISTANCE_TO_BACK_ENCODER = 6.0625;
 
 double previousLeftEncoderDegrees = 0;
 double previousRightEncoderDegrees = 0;
@@ -28,8 +28,12 @@ double backEncoderDistance = 0;
 double deltaTheta = 0;
 double polarTheta = 0;
 
-vector<double> positionVector = { 0, 0 };
-vector<double> newVector = { 0, 0 };
+vector<double> positionVector = {0, 0};
+vector<double> newVector = {0, 0};
+
+vector<double> testVector(1000, -1);
+vector<double> leftVector(1000, 999999);
+vector<double> rightVector(1000, 9999999);
 
 double x;
 double y;
@@ -39,6 +43,10 @@ double newX;
 double newY;
 double thetaM;
 
+double inertLast = 0;
+double inertLeft = 0;
+double inertRight = 0;
+double inertTheta = 0;
 int count2 = 0;
 
 Inertial imu;
@@ -61,11 +69,35 @@ vector<double> PositionAlg::getPosition()
 	return positionVector;
 }
 
-void PositionAlg::calcPosition(void* ignore)
+double PositionAlg::calcAngleDiff(double angle1, double angle2)
 {
+	double num1 = angle1 - angle2;
+	double num2 = (angle1 - 2 * M_PI) - angle2;
+	double num3 = angle1 - (angle2 - 2 * M_PI);
+	if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
+	{
+		return num1;
+	}
+	else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
+	{
+		return num2;
+	}
+	else
+	{
+		return num3;
+	}
+}
+
+void PositionAlg::calcPosition(void *ignore)
+{
+
 	// double offset = 0;
 	while (true)
 	{
+
+		// while (!(imuLeft.get_heading() >= 0 && imuLeft.get_heading()<=360)){
+		// 	pros::delay(10);
+		// }
 
 		leftEncoderDegrees = leftEncoder.get_value();
 		rightEncoderDegrees = rightEncoder.get_value();
@@ -79,32 +111,72 @@ void PositionAlg::calcPosition(void* ignore)
 		previousRightEncoderDegrees = rightEncoderDegrees;
 		previousBackEncoderDegrees = backEncoderDegrees;
 
-		leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
-		rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
-		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2;
+		leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
+		rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
+		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 
-		//printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-		//printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
-		//printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER/2);
+		printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
+		printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
+		printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
 
+		// deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+
+		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
+		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
+
+		printf("inertLeft: %.3f\n", inertLeft * 180 / M_PI);
+		printf("inertRight: %.3f\n", inertRight * 180 / M_PI);
+
+		// inertTheta = inertLeft;
+		printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
+
+		// if (inertTheta)
+		if (inertLeft != INFINITY && inertRight != INFINITY)
+		{
+			inertTheta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
+
+			while (inertTheta > M_PI * 2)
+			{
+				inertTheta -= M_PI * 2;
+			}
+			while (theta < 0)
+			{
+				inertTheta += M_PI * 2;
+			}
+			inertLast = inertTheta;
+			theta = inertTheta;
+			deltaTheta = inertTheta - inertLast;
+		}
+
+		// if (count2 % 2 == 0)
+		// {
+		// 	deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+		// 	theta += deltaTheta;
+		// }
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-		theta += deltaTheta;
+		// if (inertTheta>=0){
+		// 	deltaTheta = inertTheta - inertLast;
+		// }
+
+		// // printf("deltaTheta: %.3f\n", deltaTheta * 180.0 / M_PI);
+		// // testVector[count2] = deltaTheta;
+		// // leftVector[count2] = leftEncoderDistance;
+		// // rightVector[count2] = rightEncoderDistance;
+
+		// theta += deltaTheta;
 
 		if (deltaTheta != 0)
 		{
-			x = 2 * sin(deltaTheta / 2) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
-			y = 2 * sin(deltaTheta / 2) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
-
+			x = 2 * sin(deltaTheta / 2.0) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
+			y = 2 * sin(deltaTheta / 2.0) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
 			// printf("Offset: %f\n", offset);
-
 		}
 		else
 		{
 			x = backEncoderDistance;
 			y = rightEncoderDistance;
 		}
-
 
 		while (theta > M_PI * 2)
 		{
@@ -135,9 +207,10 @@ void PositionAlg::calcPosition(void* ignore)
 		//printf("change in y: %.3f\n", newY);
 		printf("x: %.3f\n", positionVector[0]);
 		printf("y: %.3f\n", positionVector[1]);
-		printf("theta: %.3f\n", theta * 180 / M_PI);
-		printf("line Sensor: %d\n", lineSensor.get_value());
+		printf("theta: %.3f\n", theta * 180.0 / M_PI);
+		// printf("line Sensor: %d\n", lineSensor.get_value());
 		pros::delay(10);
+		count2 += 1;
 	}
 }
 
