@@ -94,11 +94,6 @@ void PositionAlg::calcPosition(void *ignore)
 	// double offset = 0;
 	while (true)
 	{
-
-		// while (!(imuLeft.get_heading() >= 0 && imuLeft.get_heading()<=360)){
-		// 	pros::delay(10);
-		// }
-
 		leftEncoderDegrees = leftEncoder.get_value();
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
@@ -127,10 +122,7 @@ void PositionAlg::calcPosition(void *ignore)
 		printf("inertLeft: %.3f\n", inertLeft * 180 / M_PI);
 		printf("inertRight: %.3f\n", inertRight * 180 / M_PI);
 
-		// inertTheta = inertLeft;
-		printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
 
-		// if (inertTheta)
 		if (inertLeft != INFINITY && inertRight != INFINITY)
 		{
 			inertTheta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
@@ -143,26 +135,16 @@ void PositionAlg::calcPosition(void *ignore)
 			{
 				inertTheta += M_PI * 2;
 			}
+			// deltaTheta = calcAngleDiff(inertTheta, inertLast);
+			// printf("deltaTheta1: %.3f\n", deltaTheta);
 			inertLast = inertTheta;
 			theta = inertTheta;
-			deltaTheta = inertTheta - inertLast;
 		}
 
-		// if (count2 % 2 == 0)
-		// {
-		// 	deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
-		// 	theta += deltaTheta;
-		// }
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-		// if (inertTheta>=0){
-		// 	deltaTheta = inertTheta - inertLast;
-		// }
+		// printf("deltaTheta2: %.3f\n", deltaTheta);
 
-		// // printf("deltaTheta: %.3f\n", deltaTheta * 180.0 / M_PI);
-		// // testVector[count2] = deltaTheta;
-		// // leftVector[count2] = leftEncoderDistance;
-		// // rightVector[count2] = rightEncoderDistance;
 
 		// theta += deltaTheta;
 
@@ -170,7 +152,6 @@ void PositionAlg::calcPosition(void *ignore)
 		{
 			x = 2 * sin(deltaTheta / 2.0) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
 			y = 2 * sin(deltaTheta / 2.0) * (rightEncoderDistance / deltaTheta + DISTANCE_TO_RIGHT_ENCODER);
-			// printf("Offset: %f\n", offset);
 		}
 		else
 		{
@@ -194,8 +175,6 @@ void PositionAlg::calcPosition(void *ignore)
 		newX = x * cos(-thetaM) - y * sin(-thetaM);
 		newY = y * cos(-thetaM) + x * sin(-thetaM);
 
-		// offset = abs(atan2f(y, x));
-
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
@@ -208,6 +187,8 @@ void PositionAlg::calcPosition(void *ignore)
 		printf("x: %.3f\n", positionVector[0]);
 		printf("y: %.3f\n", positionVector[1]);
 		printf("theta: %.3f\n", theta * 180.0 / M_PI);
+		printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
+
 		// printf("line Sensor: %d\n", lineSensor.get_value());
 		pros::delay(10);
 		count2 += 1;

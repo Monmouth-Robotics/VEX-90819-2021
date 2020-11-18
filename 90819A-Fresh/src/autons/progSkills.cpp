@@ -23,9 +23,9 @@ void runProgSkills()
 	indexController.resume();
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
-	pidForward(M_PI*3/2, {{0,27}, {-16, 27}}, 63, 0.5, 50, 50, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI*3/2, {{0,27}, {-16, 27}}, 63, 0.5, 50, 50, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(0, 80, 0.025, 100.0, 0.0, 0.0);
-	pidForward(0, {{-8,24}, {-9, 59}}, 80, 0.5, 30, 50, -50, 0, 0, 0, 0, 0, 0, true);
+	pidForward(0, {{-7,24}, {-7, 59}}, 80, 0.5, 30, 50, 50, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI*3/2, 80, 0.025, 100.0, 0.0, 0.0);
 	leftBackMotor = 63;
 	leftFrontMotor = 63;
@@ -65,13 +65,13 @@ void runProgSkills()
 	indexerFunctions.shootOneBall();
 
 	//fourth goal
-	pidBackward(5.529, {{-12, 115}, {13, 84}}, 80, 0.5, 50, 20, -50, 0, 0, 0, 0, 0, 0, true);
+	pidBackward(5.76, {{-12, 115}, {12, 87}}, 80, 0.5, 50, 20, -50, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI/2, 127, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
-	pidForward(M_PI/2, {{12, 84}, {40, 84}}, 80, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{12, 85}, {40, 85}}, 80, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(0, 80, 0.025, 100.0, 0.0, 0.0);
-	pidForward(0, {{42, 84}, {42, 111}}, 80, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);
+	pidForward(0, {{40, 84}, {40, 111}}, 80, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	intakeMotorLeft = 0;
 	intakeMotorRight = 0;
@@ -90,7 +90,7 @@ void runProgSkills()
 	pidTurn(M_PI/2, 80, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorRight = 127;
 	intakeMotorLeft = 127;
-	pidForward(M_PI/2, {{41, 102}, {70, 102}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{41, 110}, {66, 110}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	leftBackMotor = -63;
 	leftFrontMotor = 63;
 	rightFrontMotor = -63;
@@ -100,13 +100,13 @@ void runProgSkills()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pidForward(M_PI/2, {{94, 84}, {94, 95}}, 80, 0.5, 100, 20, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{80, 95}, {92, 95}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	pidBackward(M_PI/2, {{94, 95}, {73, 95}}, 80, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI/4, 80, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 0;
 	intakeMotorRight = 0;
-	pidForward(M_PI/4, {{90, 113}, {92, 114}}, 80, 0.5, 100, 15, 20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/4, {{91, 113}, {92, 114}}, 80, 0.5, 100, 15, 20, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
@@ -116,7 +116,7 @@ void runProgSkills()
 	pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
-	pidForward(M_PI, {{64, 105}, {64, 55}}, 80, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI, {{62, 105}, {62, 57}}, 80, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(3*M_PI/2, 80, 0.025, 140.0, 0.0, 0.0);
 	leftBackMotor = 63;
 	leftFrontMotor = 63;
@@ -146,28 +146,46 @@ void runProgSkills()
 	leftFrontMotor = -63;
 	rightFrontMotor = 63;
 	rightBackMotor = -63;
-	pros::delay(250);
+	pros::delay(600);
 	leftBackMotor = 0;
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pidForward(M_PI/2, {{60, 60}, {90, 60}}, 80, 0.5, 100, 15, 30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2, {{60, 64}, {87, 64}}, 80, 0.5, 100, 15, 30, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 
 
 	//seventh goal
-	pidBackward(M_PI/2, {{83, 56}, {75, 21}}, 80, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidBackward(M_PI/2, {{83, 61}, {73, 61}}, 80, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 
-	pidForward(M_PI, {{70, 56}, {70, 15}}, 80, 0.5, 50, 20, -30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI, {{76, 61}, {76, 18}}, 80, 0.5, 50, 10, -30, 0, 0, 0, 0, 0, 0, true);
 
-	pidBackward(M_PI, {{69, 15}, {69, 21}}, 80, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
+	pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI/2+M_PI/4, 80, 0.025, 100.0, 0.0, 0.0);
-	pidForward(M_PI/2 +M_PI/4, {{69, 21}, {89, 1}}, 80, 0.5, 50, 20, 15, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI/2 + M_PI/4, {{94, 13}, {95, 12}}, 80, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 
-
 	//eight goal
+	pidBackward(M_PI/2+M_PI/4, {{95, 12}, {88, 18}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
+	pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
+	pidRight(M_PI, {{88, 18}, {34, 18}}, 80, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	leftBackMotor = 63;
+	leftFrontMotor = 63;
+	rightFrontMotor = 63;
+	rightBackMotor = 63;
+	pros::delay(750);
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
+	indexerFunctions.shootOneBall();
+
+	//ninth goal
+	pidTurn(2*M_PI, 80, 0.025, 100.0, 0.0, 0.0);
+	pidForward(2*M_PI, {{36, 20}, {36, 41}}, 80, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	indexerFunctions.shootOneBall();
+
 	// pidForward(M_PI, {{59, 56}, {59, 15}}, 80, 0.5, 100, 15, 60, 0, 0, 0, 0, 0, 0, true);
 
 	//end of part that doesnt work
