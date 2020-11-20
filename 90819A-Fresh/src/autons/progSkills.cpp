@@ -118,11 +118,11 @@ void runProgSkills()
 	intakeMotorRight = 127;
 	pidForward(M_PI, {{62, 105}, {62, 57}}, 80, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(3*M_PI/2, 80, 0.025, 140.0, 0.0, 0.0);
-	leftBackMotor = 63;
-	leftFrontMotor = 63;
-	rightFrontMotor = 63;
-	rightBackMotor = 63;
-	pros::delay(750);
+	leftBackMotor = 80;
+	leftFrontMotor = 80;
+	rightFrontMotor = 80;
+	rightBackMotor = 80;
+	pros::delay(600);
 	leftBackMotor = 0;
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
@@ -167,14 +167,16 @@ void runProgSkills()
 	indexerFunctions.shootOneBall();
 
 	//eight goal
-	pidBackward(M_PI/2+M_PI/4, {{95, 12}, {88, 18}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
+	pidBackward(M_PI/2+M_PI/4, {{95, 12}, {88, 18}}, 80, 0.5, 50, 10, 20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI, 80, 0.025, 100.0, 0.0, 0.0);
-	pidRight(M_PI, {{88, 18}, {34, 18}}, 80, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	pidRight(M_PI, {{88, 18}, {40, 18}}, 80, 0.5, 50, 10, 20, 0, 0, 0, 0, 0, 0, true);
+	// pidForward(M_PI, {{36, 18}, {36, 12}}, 63, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
+
 	leftBackMotor = 63;
 	leftFrontMotor = 63;
 	rightFrontMotor = 63;
 	rightBackMotor = 63;
-	pros::delay(750);
+	pros::delay(500);
 	leftBackMotor = 0;
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
@@ -182,9 +184,31 @@ void runProgSkills()
 	indexerFunctions.shootOneBall();
 
 	//ninth goal
+	leftBackMotor = -63;
+	leftFrontMotor = -63;
+	rightFrontMotor = -63;
+	rightBackMotor = -63;
+	pros::delay(250);
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 	pidTurn(2*M_PI, 80, 0.025, 100.0, 0.0, 0.0);
-	pidForward(2*M_PI, {{36, 20}, {36, 41}}, 80, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(2*M_PI, {{36, 20}, {36, 43}}, 80, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	pros::delay(250);
 	indexerFunctions.shootOneBall();
+	pros::delay(250);
+	intakeMotorLeft = -127;
+	intakeMotorRight = -127;
+	leftBackMotor = -63;
+	leftFrontMotor = -63;
+	rightFrontMotor = -63;
+	rightBackMotor = -63;
+	pros::delay(750);
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 
 	// pidForward(M_PI, {{59, 56}, {59, 15}}, 80, 0.5, 100, 15, 60, 0, 0, 0, 0, 0, 0, true);
 

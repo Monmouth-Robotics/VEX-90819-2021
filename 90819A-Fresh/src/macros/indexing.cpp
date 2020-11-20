@@ -56,7 +56,7 @@ void Indexing::indexingTask(void *ignore)
 			topBallDetected = false;
 			bottomBallDetected = false;
 			upperStack = 100;
-			lowerStack = 100;
+			lowerStack = 80;
 		}
 		pros::delay(10);
 	}

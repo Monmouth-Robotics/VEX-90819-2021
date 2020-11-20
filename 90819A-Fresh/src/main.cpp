@@ -8,6 +8,7 @@ void initialize()
 {
 	pros::lcd::initialize();
 
+	opticalSensor.set_led_pwm(100);
 	imuLeft.reset();
 	imuRight.reset();
 
