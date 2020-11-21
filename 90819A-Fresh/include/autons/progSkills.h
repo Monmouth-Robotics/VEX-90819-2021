@@ -12,5 +12,15 @@
 #include "macros/macroInstances.h"
 
 void runProgSkills();
+void firstGoal();
+void secondGoal();
+void thirdGoal();
+void fourthGoal();
+void fifthGoal();
+void sixthGoal();
+void seventhGoal();
+void eighthGoal();
+void ninthGoal();
+void descoreMiddle();
 
 #endif

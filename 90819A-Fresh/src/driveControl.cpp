@@ -70,12 +70,12 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 
 void shootOneBallFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootOneBall, NULL, "Ball Shooter");
+	pros::Task indexShootingController(indexerFunctions.shootOneBallAsync, NULL, "Ball Shooter");
 }
 
 void shootTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootTwoBalls, NULL, "Ball Shooter 2");
+	pros::Task indexShootingController(indexerFunctions.shootTwoBallsAsync, NULL, "Ball Shooter 2");
 }
 
 void driveControl()
@@ -171,10 +171,10 @@ void driveControl()
 
 		if (controller.get_digital(DIGITAL_R1))
 		{
-			// upperStack = 127;
-			// lowerStack = 127;
+			upperStack = 127;
+			lowerStack = 127;
 
-			shootOneBallFunction();
+			// shootOneBallFunction();
 		}
 
 		if (controller.get_digital(DIGITAL_R2))

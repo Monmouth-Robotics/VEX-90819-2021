@@ -1,6 +1,6 @@
 #include "macros/macroFunctions.h"
 
-void MacroFunctions::shootOneBall(void *ignore)
+void MacroFunctions::shootOneBallAsync(void *ignore)
 {
 	if (indexer.getTopStatus())
 	{
@@ -35,7 +35,7 @@ void MacroFunctions::shootOneBall()
 	}
 }
 
-void MacroFunctions::shootTwoBalls(void *ignore)
+void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
 	// if (indexer.getTopStatus() && indexer.getBottomStatus())
 	// {

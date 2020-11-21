@@ -14,10 +14,10 @@ using namespace std;
 class MacroFunctions
 {
 public:
-	static void shootOneBall(void *ignore);
+	static void shootOneBallAsync(void *ignore);
 	static void shootOneBall();
 
-	static void shootTwoBalls(void *ignore);
+	static void shootTwoBallsAsync(void *ignore);
 };
 
 #endif
