@@ -1,63 +1,98 @@
 #include "macros/indexing.h"
 
-int baseReadingTop = 0;
-int baseReadingBottom = 0;
-bool topBallDetected = false;
-bool bottomBallDetected = true;
+string topBallDetected = "";
+string bottomBallDetected = "";
+bool topDisabled = false;
+bool bottomDisabled = false;
 
-bool Indexing::getTopStatus()
+string Indexing::getTopStatus()
 {
 	return topBallDetected;
 }
 
-bool Indexing::getBottomStatus()
+string Indexing::getBottomStatus()
 {
 	return bottomBallDetected;
 }
 
-void Indexing::setBottomStatus(bool status)
+void Indexing::toggleTop(bool disabled)
 {
-	bottomBallDetected = status;
+	topDisabled = disabled;
 }
 
-void Indexing::setTopStatus(bool status)
+void Indexing::toggleBottom(bool disabled)
 {
-	topBallDetected = status;
-}
-
-int Indexing::getBaseTop()
-{
-	return baseReadingTop;
-}
-
-int Indexing::getBaseBottom()
-{
-	return baseReadingBottom;
+	bottomDisabled = disabled;
 }
 
 void Indexing::indexingTask(void *ignore)
 {
 	while (true)
 	{
-		if (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+		//figures out where balls are
+		if (ultrasonicTopOne.get_value() < 80 || ultrasonicTopTwo.get_value() < 80)
 		{
-			upperStack = 0;
-			lowerStack = 63;
-			// printf("%lf", opticalSensor.get_hue());
-			topBallDetected = true;
-			// printf(opticalSensor.get_hue();)
-			if(opticalSensor.get_hue()<30||opticalSensor.get_hue()>1000)
+			topBallDetected = "red";
+		}
+		else
+		{
+			topBallDetected = "";
+		}
+		if (ultrasonicBottomOne.get_value() < 80 || ultrasonicBottomTwo.get_value() < 80)
+		{
+			bottomBallDetected = "red";
+		}
+		else
+		{
+			bottomBallDetected = "";
+		}
+
+		
+		if (topBallDetected != "")
+		{
+			if (!topDisabled)
 			{
-				lowerStack = 0;
-				bottomBallDetected = true;
+				upperStack = 0;
+			}
+			if (!bottomDisabled)
+			{
+				lowerStack = 80;
+			}
+			if (bottomBallDetected != "")
+			{
+				if (!bottomDisabled)
+				{
+					lowerStack = 0;
+				}
 			}
 		}
-		else {
-			topBallDetected = false;
-			bottomBallDetected = false;
+		else{
+			lowerStack = 100;
 			upperStack = 100;
-			lowerStack = 80;
 		}
-		pros::delay(10);
+		//figure
 	}
+	// while (true)
+	// {
+	// 	if (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+	// 	{
+	// 		upperStack = 0;
+	// 		lowerStack = 63;
+	// 		// printf("%lf", opticalSensor.get_hue());
+	// 		topBallDetected = true;
+	// 		// printf(opticalSensor.get_hue();)
+	// 		if(opticalSensor.get_hue()<30||opticalSensor.get_hue()>1000)
+	// 		{
+	// 			lowerStack = 0;
+	// 			bottomBallDetected = true;
+	// 		}
+	// 	}
+	// 	else {
+	// 		topBallDetected = false;
+	// 		bottomBallDetected = false;
+	// 		upperStack = 100;
+	// 		lowerStack = 80;
+	// 	}
+	// 	pros::delay(10);
+	// }
 }

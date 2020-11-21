@@ -13,13 +13,10 @@ class Indexing
 {
 public:
 	static void indexingTask(void *ignore);
-	static void shootBall();
-	static bool getTopStatus();
-	static bool getBottomStatus();
-	static void setTopStatus(bool);
-	static void setBottomStatus(bool);
-	static int getBaseTop();
-	static int getBaseBottom();
+	static string getTopStatus();
+	static string getBottomStatus();
+	static void toggleTop(bool disabled);
+	static void toggleBottom(bool disabled);
 };
 
 #endif

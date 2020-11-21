@@ -2,37 +2,41 @@
 
 void MacroFunctions::shootOneBallAsync(void *ignore)
 {
-	if (indexer.getTopStatus())
-	{
-		indexController.suspend();
-		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+	indexer.toggleTop(true);
+	upperStack = 127;
+	if (indexer.getTopStatus() != "")
+	{	
+		while (indexer.getTopStatus()!= "")
 		{
-			upperStack = 127;
-			lowerStack = 70;
+			pros::delay(10);
 		}
-		indexController.resume();
 	}
+	indexer.toggleTop(false);
 }
 
 void MacroFunctions::shootOneBall()
 {	
-	while (!indexer.getTopStatus())
+	indexer.toggleTop(true);
+	upperStack = 127;
+
+	while (indexer.getTopStatus() == "")
 	{
 		pros::delay(10);
 	}
 	
-	if (indexer.getTopStatus())
+	if (indexer.getTopStatus() != "")
 	{	
-		indexController.suspend();
-		lowerStack = 40;
-		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+		while (indexer.getTopStatus()!= "")
 		{
-			upperStack = 127;
 			pros::delay(10);
-			// lowerStack = 127;
 		}
-		indexController.resume();
 	}
+
+	indexer.toggleTop(false);
+}
+
+void MacroFunctions::poopTwoBalls(void* ignore){
+
 }
 
 void MacroFunctions::shootTwoBallsAsync(void *ignore)
@@ -79,3 +83,4 @@ void MacroFunctions::shootTwoBallsAsync(void *ignore)
 	// 	indexController.resume();
 	// }
 }
+

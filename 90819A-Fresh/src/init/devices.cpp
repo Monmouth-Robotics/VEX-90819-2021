@@ -24,5 +24,9 @@ pros::ADIAnalogIn lineSensor('D');
 pros::Imu imuLeft(5);
 pros::Imu imuRight(6);
 
-pros::ADIUltrasonic ultrasonicTop({{2, 'A', 'B'}});
-pros::ADIUltrasonic ultrasonicBottom({{2, 'C', 'D'}});
+pros::ADIUltrasonic ultrasonicTopOne({{2, 'A', 'B'}});
+pros::ADIUltrasonic ultrasonicTopTwo({{2, 'C', 'D'}});
+pros::ADIUltrasonic ultrasonicBottomOne({{3, 'E', 'F'}});
+pros::ADIUltrasonic ultrasonicBottomTwo({{3, 'C', 'D'}});
+pros::ADIUltrasonic ultrasonicBack({{3, 'A', 'B'}});
+

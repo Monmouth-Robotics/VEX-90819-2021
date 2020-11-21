@@ -16,7 +16,7 @@ class MacroFunctions
 public:
 	static void shootOneBallAsync(void *ignore);
 	static void shootOneBall();
-
+	static void poopTwoBalls(void *ignore);
 	static void shootTwoBallsAsync(void *ignore);
 };
 
