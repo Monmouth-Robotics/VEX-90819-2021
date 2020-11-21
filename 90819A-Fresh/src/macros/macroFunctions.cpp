@@ -57,6 +57,7 @@ void MacroFunctions::poopTwoBalls(void* ignore){
 	while (indexer.getBackStatus() == ""){
 		upperStack = -127;
 		lowerStack = 0;
+		pros::delay(10);
 	}
 
 	while (indexer.getBackStatus() != ""){
@@ -66,6 +67,7 @@ void MacroFunctions::poopTwoBalls(void* ignore){
 	while (indexer.getBackStatus() == ""){
 		upperStack = -127;
 		lowerStack = 127;
+		pros::delay(10);
 	}
 
 	while (indexer.getBackStatus() != ""){
@@ -75,7 +77,6 @@ void MacroFunctions::poopTwoBalls(void* ignore){
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 }
-
 
 void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
@@ -122,3 +123,7 @@ void MacroFunctions::shootTwoBallsAsync(void *ignore)
 	// }
 }
 
+void MacroFunctions::toggleIntakes(int speed){
+	intakeMotorLeft = speed;
+	intakeMotorRight = speed;
+}

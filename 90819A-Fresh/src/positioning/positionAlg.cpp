@@ -110,17 +110,15 @@ void PositionAlg::calcPosition(void *ignore)
 		rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 
-		printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-		printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-		printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-
-		// deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+		// printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
+		// printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
+		// printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
 
 		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
 		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
 
-		printf("inertLeft: %.3f\n", inertLeft * 180 / M_PI);
-		printf("inertRight: %.3f\n", inertRight * 180 / M_PI);
+		// printf("inertLeft: %.3f\n", inertLeft * 180 / M_PI);
+		// printf("inertRight: %.3f\n", inertRight * 180 / M_PI);
 
 
 		if (inertLeft != INFINITY && inertRight != INFINITY)
@@ -184,10 +182,10 @@ void PositionAlg::calcPosition(void *ignore)
 		//printf("change in raw y: %.3f\n", y);
 		//printf("change in x: %.3f\n", newX);
 		//printf("change in y: %.3f\n", newY);
-		printf("x: %.3f\n", positionVector[0]);
-		printf("y: %.3f\n", positionVector[1]);
-		printf("theta: %.3f\n", theta * 180.0 / M_PI);
-		printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
+		// printf("x: %.3f\n", positionVector[0]);
+		// printf("y: %.3f\n", positionVector[1]);
+		// printf("theta: %.3f\n", theta * 180.0 / M_PI);
+		// printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
 
 		// printf("line Sensor: %d\n", lineSensor.get_value());
 		pros::delay(10);

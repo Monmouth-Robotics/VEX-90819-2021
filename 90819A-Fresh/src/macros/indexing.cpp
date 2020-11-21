@@ -39,7 +39,8 @@ void Indexing::toggleBottom(bool disabled)
 }
 
 void Indexing::indexingTask(void *ignore)
-{
+{	
+	opticalSensor.set_led_pwm(100);
 	while (true)
 	{
 		//is top ball there
@@ -53,7 +54,7 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//if bottom ball there
-		if (ultrasonicBottomOne.get_value() < 80 || ultrasonicBottomTwo.get_value() < 80)
+		if (ultrasonicBottom.get_value() < 80)
 		{
 			bottomBallDetected = "red";
 		}
@@ -107,6 +108,12 @@ void Indexing::indexingTask(void *ignore)
 			lowerStack = 127;
 			upperStack = 100;
 		}
+		printf("Top Status: %s\n", topBallDetected);
+		printf("Bottom Status: %s\n", bottomBallDetected);
+		printf("Back Status: %s\n", backBallDetected);
+		printf("Intake Color: %s\n", intakeBallColor);
+
+		pros::delay(10);
 	}
 	// while (true)
 	// {

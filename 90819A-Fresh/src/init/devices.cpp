@@ -26,7 +26,6 @@ pros::Imu imuRight(6);
 
 pros::ADIUltrasonic ultrasonicTopOne({{2, 'A', 'B'}});
 pros::ADIUltrasonic ultrasonicTopTwo({{2, 'C', 'D'}});
-pros::ADIUltrasonic ultrasonicBottomOne({{3, 'E', 'F'}});
-pros::ADIUltrasonic ultrasonicBottomTwo({{3, 'C', 'D'}});
+pros::ADIUltrasonic ultrasonicBottom({{3, 'E', 'F'}});
 pros::ADIUltrasonic ultrasonicBack({{3, 'A', 'B'}});
 

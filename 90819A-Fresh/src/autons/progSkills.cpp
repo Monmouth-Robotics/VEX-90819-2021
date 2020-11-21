@@ -1,28 +1,35 @@
 #include "autons/progSkills.h"
 
+bool intakeStatus = false;
+
+void stopIntakesAsync(void* ignore){
+	while (indexer.getIntakeColor() != "red"){
+		pros::delay(10);
+	}
+	indexerFunctions.toggleIntakes(-127);
+	intakeStatus = true;
+}
+
 void firstGoal()
 {
-	intakeMotorLeft = 127;
-	intakeMotorRight = 127;
+	indexerFunctions.toggleIntakes(127);
 	pidForward(0, {{0, 0}, {0, 24}}, 80, 0.25, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(3 * M_PI / 2 - M_PI / 4, 80, 0.025, 120.0, 0.0, 0.0);
 	pidForward(3 * M_PI / 2 - M_PI / 4, {{0, 24}, {-18, 8}}, 80, 0.5, 100, 20, -20, 0, 0, 0, 0, 0, 0, true);
+	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
-	indexController.suspend();
+	while (!intakeStatus){
+		pros::delay(10);
+	}
+	intakeStatus = false;
 }
 
 void secondGoal()
 {
-	upperStack = -127;
-	lowerStack = -127;
-	intakeMotorLeft = -127;
-	intakeMotorRight = -127;
 	pidBackward(3.92, {{-20, 0}, {0, 24}}, 63, 0.5, 50, 63, -20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI * 3 / 2, 80, 0.025, 100.0, 0.0, 0.0);
-	indexController.resume();
-	intakeMotorLeft = 127;
-	intakeMotorRight = 127;
+	indexerFunctions.toggleIntakes(127);
 	pidForward(M_PI * 3 / 2, {{0, 27}, {-16, 27}}, 63, 0.5, 50, 50, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(0, 80, 0.025, 100.0, 0.0, 0.0);
 	pidForward(0, {{-7, 24}, {-7, 59}}, 80, 0.5, 30, 50, 50, 0, 0, 0, 0, 0, 0, true);
@@ -237,14 +244,4 @@ void runProgSkills()
 	seventhGoal();
 	eighthGoal();
 	ninthGoal();
-
-	//middle goal descore
-
-	//sixth goal
-
-	//seventh goal
-
-	//eight goal
-
-	//ninth goal
 }
