@@ -2,6 +2,9 @@
 
 string topBallDetected = "";
 string bottomBallDetected = "";
+string backBallDetected = "";
+string intakeBallColor = "";
+
 bool topDisabled = false;
 bool bottomDisabled = false;
 
@@ -13,6 +16,16 @@ string Indexing::getTopStatus()
 string Indexing::getBottomStatus()
 {
 	return bottomBallDetected;
+}
+
+string Indexing::getBackStatus()
+{
+	return backBallDetected;
+}
+
+string Indexing::getIntakeColor()
+{
+	return intakeBallColor;
 }
 
 void Indexing::toggleTop(bool disabled)
@@ -29,7 +42,7 @@ void Indexing::indexingTask(void *ignore)
 {
 	while (true)
 	{
-		//figures out where balls are
+		//is top ball there
 		if (ultrasonicTopOne.get_value() < 80 || ultrasonicTopTwo.get_value() < 80)
 		{
 			topBallDetected = "red";
@@ -38,6 +51,8 @@ void Indexing::indexingTask(void *ignore)
 		{
 			topBallDetected = "";
 		}
+
+		//if bottom ball there
 		if (ultrasonicBottomOne.get_value() < 80 || ultrasonicBottomTwo.get_value() < 80)
 		{
 			bottomBallDetected = "red";
@@ -47,7 +62,28 @@ void Indexing::indexingTask(void *ignore)
 			bottomBallDetected = "";
 		}
 
-		
+		//if back ball there
+		if (ultrasonicBack.get_value() < 80)
+		{
+			backBallDetected = "red";
+		}
+		else
+		{
+			backBallDetected = "";
+		}
+
+		//intake ball color
+		if (opticalSensor.get_hue()<30){
+			intakeBallColor = "red";
+		}
+		else if (opticalSensor.get_hue() > 1000){
+			intakeBallColor = "blue";
+		}
+		else{
+			intakeBallColor = "";
+		}
+
+		//motor control
 		if (topBallDetected != "")
 		{
 			if (!topDisabled)
@@ -66,11 +102,11 @@ void Indexing::indexingTask(void *ignore)
 				}
 			}
 		}
-		else{
-			lowerStack = 100;
+		else
+		{
+			lowerStack = 127;
 			upperStack = 100;
 		}
-		//figure
 	}
 	// while (true)
 	// {

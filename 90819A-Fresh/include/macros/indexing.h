@@ -15,6 +15,8 @@ public:
 	static void indexingTask(void *ignore);
 	static string getTopStatus();
 	static string getBottomStatus();
+	static string getBackStatus();
+	static string getIntakeColor();
 	static void toggleTop(bool disabled);
 	static void toggleBottom(bool disabled);
 };

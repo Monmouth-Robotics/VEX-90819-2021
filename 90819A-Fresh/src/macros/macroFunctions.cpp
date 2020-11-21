@@ -35,9 +35,47 @@ void MacroFunctions::shootOneBall()
 	indexer.toggleTop(false);
 }
 
-void MacroFunctions::poopTwoBalls(void* ignore){
+void MacroFunctions::poopOneBall(void* ignore){
+	indexer.toggleTop(true);
 
+	while (indexer.getBackStatus() == ""){
+		upperStack = -127;
+		lowerStack = 0;
+	}
+
+	while (indexer.getBackStatus() != ""){
+		pros::delay(10);
+	}
+
+	indexer.toggleTop(false);
 }
+
+void MacroFunctions::poopTwoBalls(void* ignore){
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+
+	while (indexer.getBackStatus() == ""){
+		upperStack = -127;
+		lowerStack = 0;
+	}
+
+	while (indexer.getBackStatus() != ""){
+		pros::delay(10);
+	}
+
+	while (indexer.getBackStatus() == ""){
+		upperStack = -127;
+		lowerStack = 127;
+	}
+
+	while (indexer.getBackStatus() != ""){
+		pros::delay(10);
+	}
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+}
+
 
 void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
