@@ -82,7 +82,7 @@ void thirdGoal()
 	pidTurn(5.529, 127, 0.025, 100.0, 0.0, 0.0);
 	pidForward(5.529, {{10, 99}, {-12, 116}}, 80, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	// pros::delay(250);
-	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
+	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller");
 	indexerFunctions.shootOneBall();
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus){
