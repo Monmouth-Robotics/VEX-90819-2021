@@ -3,10 +3,16 @@
 bool intakeStatus = false;
 
 void stopIntakesAsync(void* ignore){
+	intakeStatus = false;
 	while (indexer.getIntakeColor() != "red"){
 		pros::delay(10);
 	}
-	indexerFunctions.toggleIntakes(-127);
+
+	while (indexer.getIntakeColor() == "red"){
+		indexerFunctions.toggleIntakes(-127);
+	}
+	indexerFunctions.toggleIntakes(0);
+
 	intakeStatus = true;
 }
 
@@ -19,10 +25,10 @@ void firstGoal()
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
+	indexer.toggleTopPosition(true);
 	while (!intakeStatus){
 		pros::delay(10);
 	}
-	intakeStatus = false;
 }
 
 void secondGoal()
@@ -32,7 +38,10 @@ void secondGoal()
 	indexerFunctions.toggleIntakes(127);
 	pidForward(M_PI * 3 / 2, {{0, 27}, {-16, 27}}, 63, 0.5, 50, 50, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(0, 80, 0.025, 100.0, 0.0, 0.0);
+	pros::Task poopController(indexerFunctions.poopTwoBalls, NULL, "Poop Controller");
+	// pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	pidForward(0, {{-7, 24}, {-7, 59}}, 80, 0.5, 30, 50, 50, 0, 0, 0, 0, 0, 0, true);
+	indexer.toggleTopPosition(false);
 	pidTurn(M_PI * 3 / 2, 80, 0.025, 100.0, 0.0, 0.0);
 	leftBackMotor = 63;
 	leftFrontMotor = 63;
@@ -43,10 +52,15 @@ void secondGoal()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	intakeMotorRight = 0;
-	intakeMotorLeft = 0;
+	indexerFunctions.toggleIntakes(0);
+	// pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 	indexerFunctions.shootOneBall();
 	indexerFunctions.shootOneBall();
+	indexerFunctions.toggleIntakes(-127);
+
+	// while (!intakeStatus){
+	// 	pros::delay(10);
+	// }
 }
 
 void thirdGoal()
@@ -61,23 +75,27 @@ void thirdGoal()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 	pidRight(3 * M_PI / 2, {{-5, 57}, {-6, 96}}, 80, 0.5, 100, 50, 20, 0, 0, 0, 0, 0, 0, true);
-	intakeMotorLeft = 127;
-	intakeMotorRight = 127;
+	indexerFunctions.toggleIntakes(127);
 	pidForward(3 * M_PI / 2, {{-5, 99}, {-11, 100}}, 63, 0.5, 400, 50, -20, 0, 0, 0, 0, 0, 0, true);
 	pros::delay(250);
 	pidBackward(3 * M_PI / 2, {{-13, 99}, {6, 97}}, 63, 0.5, 400, 50, -20, 0, 0, 0, 0, 0, 0, true);
-	intakeMotorLeft = 0;
-	intakeMotorRight = 0;
 	pidTurn(5.529, 127, 0.025, 100.0, 0.0, 0.0);
 	pidForward(5.529, {{10, 99}, {-12, 116}}, 80, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	// pros::delay(250);
+	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 	indexerFunctions.shootOneBall();
+	indexer.toggleTopPosition(true);
+	while (!intakeStatus){
+		pros::delay(10);
+	}
 }
 
 void fourthGoal()
 {
 	pidBackward(5.76, {{-12, 115}, {12, 87}}, 80, 0.5, 50, 20, -50, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI / 2, 127, 0.025, 100.0, 0.0, 0.0);
+	pros::Task poopController(indexerFunctions.poopTwoBalls, NULL, "Poop Controller");
+	indexer.toggleTopPosition(false);
 	intakeMotorLeft = 127;
 	intakeMotorRight = 127;
 	pidForward(M_PI / 2, {{12, 85}, {40, 85}}, 80, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);

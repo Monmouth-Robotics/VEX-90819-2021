@@ -13,12 +13,13 @@ class Indexing
 {
 public:
 	static void indexingTask(void *ignore);
-	static string getTopStatus();
-	static string getBottomStatus();
-	static string getBackStatus();
-	static string getIntakeColor();
+	static char* getTopStatus();
+	static char* getBottomStatus();
+	static char* getBackStatus();
+	static char* getIntakeColor();
 	static void toggleTop(bool disabled);
 	static void toggleBottom(bool disabled);
+	static void toggleTopPosition(bool disabled);
 };
 
 #endif

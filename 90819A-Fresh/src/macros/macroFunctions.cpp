@@ -1,5 +1,7 @@
 #include "macros/macroFunctions.h"
 
+bool poopingStatus = false;
+
 void MacroFunctions::shootOneBallAsync(void *ignore)
 {
 	indexer.toggleTop(true);
@@ -37,45 +39,54 @@ void MacroFunctions::shootOneBall()
 
 void MacroFunctions::poopOneBall(void* ignore){
 	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
 
 	while (indexer.getBackStatus() == ""){
 		upperStack = -127;
-		lowerStack = 0;
-	}
-
-	while (indexer.getBackStatus() != ""){
+		lowerStack = -127;
 		pros::delay(10);
 	}
 
+	// while (indexer.getBackStatus() != ""){
+	// 	pros::delay(10);
+	// 	printf("here\n");
+	// }
+
 	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
 }
 
 void MacroFunctions::poopTwoBalls(void* ignore){
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (indexer.getBackStatus() == ""){
-		upperStack = -127;
-		lowerStack = 0;
-		pros::delay(10);
-	}
+	// while (indexer.getBottomStatus() != ""){
+	// 	// upperStack = -127;
+	// 	upperStack = -50;
+	// 	lowerStack = 50;
+	// 	pros::delay(10);
+	// }
 
-	while (indexer.getBackStatus() != ""){
-		pros::delay(10);
-	}
+	// while (indexer.getBottomStatus() == "" || indexer.getBackStatus() != ""){
+	// 	pros::delay(10);
+	// } 
 
-	while (indexer.getBackStatus() == ""){
-		upperStack = -127;
-		lowerStack = 127;
-		pros::delay(10);
-	}
+	// while (indexer.getBottomStatus() != ""){
+	// 	// upperStack = -127;
+	// 	upperStack = -50;
+	// 	lowerStack = 50;
+	// 	pros::delay(10);
+	// }
 
-	while (indexer.getBackStatus() != ""){
-		pros::delay(10);
-	}
+	upperStack = -63;
+	lowerStack = 63;
+	pros::delay(1250);
 
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
+
+	poopingStatus = true;
 }
 
 void MacroFunctions::shootTwoBallsAsync(void *ignore)

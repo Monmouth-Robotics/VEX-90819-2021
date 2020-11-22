@@ -1,31 +1,37 @@
 #include "macros/indexing.h"
 
-string topBallDetected = "";
-string bottomBallDetected = "";
-string backBallDetected = "";
-string intakeBallColor = "";
+char *topBallDetected = "";
+char *bottomBallDetected = "";
+char *backBallDetected = "";
+char *intakeBallColor = "";
 
 bool topDisabled = false;
+bool topPositionDisabled = false;
 bool bottomDisabled = false;
 
-string Indexing::getTopStatus()
+char *Indexing::getTopStatus()
 {
 	return topBallDetected;
 }
 
-string Indexing::getBottomStatus()
+char *Indexing::getBottomStatus()
 {
 	return bottomBallDetected;
 }
 
-string Indexing::getBackStatus()
+char *Indexing::getBackStatus()
 {
 	return backBallDetected;
 }
 
-string Indexing::getIntakeColor()
+char *Indexing::getIntakeColor()
 {
 	return intakeBallColor;
+}
+
+void Indexing::toggleTopPosition(bool disabled)
+{
+	topPositionDisabled = disabled;
 }
 
 void Indexing::toggleTop(bool disabled)
@@ -39,7 +45,7 @@ void Indexing::toggleBottom(bool disabled)
 }
 
 void Indexing::indexingTask(void *ignore)
-{	
+{
 	opticalSensor.set_led_pwm(100);
 	while (true)
 	{
@@ -64,6 +70,7 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//if back ball there
+		printf("Ultrasonic Back: %d\n", ultrasonicBack.get_value());
 		if (ultrasonicBack.get_value() < 80)
 		{
 			backBallDetected = "red";
@@ -74,40 +81,81 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//intake ball color
-		if (opticalSensor.get_hue()<30){
+		if (opticalSensor.get_hue() < 30)
+		{
 			intakeBallColor = "red";
 		}
-		else if (opticalSensor.get_hue() > 1000){
+		else if (opticalSensor.get_hue() > 150)
+		{
 			intakeBallColor = "blue";
 		}
-		else{
+		else
+		{
 			intakeBallColor = "";
 		}
 
 		//motor control
-		if (topBallDetected != "")
+		if (topPositionDisabled)
 		{
-			if (!topDisabled)
+			if (topBallDetected != "")
 			{
-				upperStack = 0;
+				upperStack = -127;
+				lowerStack = -127;
 			}
-			if (!bottomDisabled)
+			else
 			{
-				lowerStack = 80;
-			}
-			if (bottomBallDetected != "")
-			{
-				if (!bottomDisabled)
+				if (bottomBallDetected != "")
 				{
-					lowerStack = 0;
+					if (!bottomDisabled)
+					{
+						upperStack = 0;
+						lowerStack = 0;
+					}
+				}
+				else
+				{
+					if (!bottomDisabled)
+					{
+						upperStack = 0;
+						lowerStack = 63;
+					}
 				}
 			}
 		}
 		else
 		{
-			lowerStack = 127;
-			upperStack = 100;
+			if (topBallDetected != "")
+			{
+				if (!topDisabled)
+				{
+					upperStack = 0;
+				}
+				if (!bottomDisabled)
+				{
+					lowerStack = 63;
+				}
+				if (bottomBallDetected != "")
+				{
+					if (!bottomDisabled)
+					{
+						lowerStack = 0;
+					}
+				}
+			}
+			else
+			{
+				if (!bottomDisabled)
+				{
+					lowerStack = 100;
+				}
+
+				if (!topDisabled)
+				{
+					upperStack = 80;
+				}
+			}
 		}
+
 		printf("Top Status: %s\n", topBallDetected);
 		printf("Bottom Status: %s\n", bottomBallDetected);
 		printf("Back Status: %s\n", backBallDetected);

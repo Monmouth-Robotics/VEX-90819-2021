@@ -100,7 +100,7 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-
+	indexer.toggleTopPosition(true);
 	while (true)
 	{
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
