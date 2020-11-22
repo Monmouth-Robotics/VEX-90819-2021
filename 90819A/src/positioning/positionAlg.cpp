@@ -115,7 +115,7 @@ void PositionAlg::calcPosition(void* ignore)
 			theta += M_PI * 2;
 		}
 
-		//convert to polar, rotate by negative theta, convert back
+		//rotate by negative theta, convert back
 
 		thetaM = theta - deltaTheta / 2;
 
@@ -136,7 +136,7 @@ void PositionAlg::calcPosition(void* ignore)
 		printf("x: %.3f\n", positionVector[0]);
 		printf("y: %.3f\n", positionVector[1]);
 		printf("theta: %.3f\n", theta * 180 / M_PI);
-
+		printf("line Sensor: %d\n", lineSensor.get_value());
 		pros::delay(10);
 	}
 }
