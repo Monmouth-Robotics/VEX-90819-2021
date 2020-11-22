@@ -92,13 +92,32 @@ void MacroFunctions::poopTwoBalls(void* ignore){
 
 void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
-	// if (indexer.getTopStatus() && indexer.getBottomStatus())
-	// {
-	// 	indexController.suspend();
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+	lowerStack = 0;
+	upperStack = 127;
 
-	// 	upperStack = 127;
-	// 	pros::delay(0);
-	// 	lowerStack = 127;
+	while (indexer.getTopStatus() != "") {
+		pros::delay(10);
+	}
+
+	lowerStack = 127;
+	upperStack = 127;
+
+	while (indexer.getTopStatus() == "") {
+		pros::delay(10);
+	}
+
+	lowerStack = 0;
+
+	while (indexer.getTopStatus() != "") {
+		pros::delay(10);
+	}
+
+	upperStack = 0;
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
 
 	// 	//wait for bottom ball to leave
 	// 	while (abs(lineSensorBottom.get_value() - indexer.getBaseBottom() > 5))
