@@ -8,12 +8,13 @@ void stopIntakesAsync(void* ignore){
 		pros::delay(10);
 	}
 
+	intakeStatus = true;
+
 	while (indexer.getIntakeColor() == "red"){
 		indexerFunctions.toggleIntakes(-127);
 	}
 	indexerFunctions.toggleIntakes(0);
 
-	intakeStatus = true;
 }
 
 void firstGoal()
