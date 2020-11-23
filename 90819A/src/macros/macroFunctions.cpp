@@ -1,49 +1,123 @@
 #include "macros/macroFunctions.h"
 
-void MacroFunctions::shootOneBall(void *ignore)
+bool poopingStatus = false;
+
+void MacroFunctions::shootOneBallAsync(void *ignore)
 {
-	if (indexer.getTopStatus())
-	{
-		indexController.suspend();
-		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+	indexer.toggleTop(true);
+	upperStack = 127;
+	if (indexer.getTopStatus() != "")
+	{	
+		while (indexer.getTopStatus()!= "")
 		{
-			upperStack = 127;
-			lowerStack = 127;
+			pros::delay(10);
 		}
-		indexController.resume();
 	}
+	indexer.toggleTop(false);
 }
 
 void MacroFunctions::shootOneBall()
 {	
-	while (!indexer.getTopStatus())
+	indexer.toggleTop(true);
+	upperStack = 127;
+
+	while (indexer.getTopStatus() == "")
 	{
 		pros::delay(10);
 	}
 	
-	if (indexer.getTopStatus())
+	if (indexer.getTopStatus() != "")
 	{	
-		indexController.suspend();
-		lowerStack = 0;
-		while (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
+		while (indexer.getTopStatus()!= "")
 		{
-			upperStack = 127;
 			pros::delay(10);
-			// lowerStack = 127;
 		}
-		indexController.resume();
 	}
+
+	indexer.toggleTop(false);
 }
 
-void MacroFunctions::shootTwoBalls(void *ignore)
-{
-	// if (indexer.getTopStatus() && indexer.getBottomStatus())
-	// {
-	// 	indexController.suspend();
+void MacroFunctions::poopOneBall(void* ignore){
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
 
-	// 	upperStack = 127;
-	// 	pros::delay(0);
-	// 	lowerStack = 127;
+	while (indexer.getBackStatus() == ""){
+		upperStack = -63;
+		lowerStack = 63;
+		pros::delay(10);
+	}
+
+	while (indexer.getBackStatus() != ""){
+		pros::delay(10);
+	}
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
+}
+
+void MacroFunctions::poopTwoBalls(void* ignore){
+	poopingStatus = false;
+	
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+
+	while (indexer.getBackStatus() == ""){
+		// upperStack = -127;
+		upperStack = -63;
+		lowerStack = 63;
+		pros::delay(10);
+	}
+
+	while (indexer.getBackStatus() != ""){
+		pros::delay(10);
+	} 
+
+	while (indexer.getBackStatus() == ""){
+		// upperStack = -127;
+		upperStack = -50;
+		lowerStack = 50;
+		pros::delay(10);
+	}
+
+	// upperStack = -63;
+	// lowerStack = 63;
+	// pros::delay(1250);
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
+	poopingStatus = true;
+}
+
+void MacroFunctions::shootTwoBallsAsync(void *ignore)
+{
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+	lowerStack = 0;
+	upperStack = 127;
+
+	while (indexer.getTopStatus() != "") {
+		pros::delay(10);
+	}
+
+	lowerStack = 127;
+	upperStack = 127;
+
+	while (indexer.getTopStatus() == "") {
+		pros::delay(10);
+	}
+
+	lowerStack = 0;
+
+	while (indexer.getTopStatus() != "") {
+		pros::delay(10);
+	}
+
+	upperStack = 0;
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
 
 	// 	//wait for bottom ball to leave
 	// 	while (abs(lineSensorBottom.get_value() - indexer.getBaseBottom() > 5))
@@ -78,4 +152,9 @@ void MacroFunctions::shootTwoBalls(void *ignore)
 	// 	//resume top ball indexing
 	// 	indexController.resume();
 	// }
+}
+
+void MacroFunctions::toggleIntakes(int speed){
+	intakeMotorLeft = speed;
+	intakeMotorRight = speed;
 }

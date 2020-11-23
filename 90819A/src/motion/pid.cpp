@@ -561,7 +561,7 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 		// printf("rotatedCurrY: %.3f\n", rotatedCurrY);
 
 		angleError = calcAngleDiff(targetTheta, currTheta);
-		distanceError = rotatedEndY - rotatedCurrY;
+		distanceError = abs(rotatedEndY - rotatedCurrY);
 		diffError = rotatedEndX - rotatedCurrX;
 
 		// printf("Distance Error: %.3f\n", distanceError);
@@ -753,7 +753,7 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 		printf("rotatedCurrY: %.3f\n", rotatedCurrY);
 
 		angleError = calcAngleDiff(targetTheta, currTheta);
-		distanceError = rotatedEndY - rotatedCurrY;
+		distanceError = abs(rotatedEndY - rotatedCurrY);
 		diffError = rotatedEndX - rotatedCurrX;
 
 		printf("Distance Error: %.3f\n", distanceError);

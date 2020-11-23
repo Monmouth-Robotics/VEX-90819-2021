@@ -70,12 +70,22 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 
 void shootOneBallFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootOneBall, NULL, "Ball Shooter");
+	pros::Task indexShootingController(indexerFunctions.shootOneBallAsync, NULL, "Ball Shooter");
 }
 
 void shootTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootTwoBalls, NULL, "Ball Shooter 2");
+	pros::Task indexShootingController(indexerFunctions.shootTwoBallsAsync, NULL, "Ball Shooter 2");
+}
+
+void poopOneBallFunction()
+{
+	pros::Task indexShootingController(indexerFunctions.poopOneBall, NULL, "Ball Pooper");
+}
+
+void poopTwoBallsFunction()
+{
+	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, NULL, "Ball Pooper 2");
 }
 
 void driveControl()
@@ -90,40 +100,9 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	// imuLeft.reset();
-	// imuRight.reset();
-
-	// position.resetGlobal();
-
-	// int time = pros::millis();
-	// int iter = 0;
-	// while (imuLeft.is_calibrating() || imuRight.is_calibrating())
-	// {
-	// 	printf("IMU calibrating... %d\n", iter);
-	// 	iter += 10;
-	// 	pros::delay(10);
-	// }
-	// printf("IMU is done calibrating (took %d ms)\n", iter);
-
+	indexer.toggleTopPosition(true);
 	while (true)
 	{
-		// printf("%d\n", lineSensorTop.get_value());
-		// calcPosition();
-		// printf("Ultrasonic Top: %d\n", ultrasonicTop.get_value());
-		// printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
-
-		// printf("Left IMU: %f\n", imuLeft.get_heading());
-		// printf("Right IMU: %f\n", imuRight.get_heading());
-
-
-		opticalSensor.set_led_pwm(100);
-		// printf("Optical: %lf\n", opticalSensor.get_hue());
-
-		// printf("Left: %d\n", leftEncoder.get_value());
-		// printf("Right: %d\n", rightEncoder.get_value());
-		// printf("Back: %d\n", backEncoder.get_value());
-
-		// printf(positionController.getPosition());
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
 		int strafeSpeed = controller.get_analog(ANALOG_LEFT_X);
 		int turnSpeed = controller.get_analog(ANALOG_RIGHT_X);
@@ -158,17 +137,6 @@ void driveControl()
 			lowerStack = -127;
 		}
 
-		// if (controller.get_digital(DIGITAL_L1))
-		// {
-		// 	upperStack = 127;
-		// }
-
-		// else if (controller.get_digital(DIGITAL_L2))
-		// {
-		// 	upperStack = -127;
-		// 	lowerStack = 127;
-		// }
-
 		if (controller.get_digital(DIGITAL_R1))
 		{
 			// upperStack = 127;
@@ -177,16 +145,13 @@ void driveControl()
 			shootOneBallFunction();
 		}
 
-		if (controller.get_digital(DIGITAL_R2))
-		{
-			upperStack = 0;
-			lowerStack = 0;
-		}
-
 		if (controller.get_digital(DIGITAL_L1))
 		{
-			upperStack = -127;
-			lowerStack = 127;
+			poopOneBallFunction();
+		}
+
+		else if (controller.get_digital(DIGITAL_L2)){
+			poopTwoBallsFunction();
 		}
 
 		if (controller.get_digital(DIGITAL_LEFT))

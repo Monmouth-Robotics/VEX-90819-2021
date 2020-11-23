@@ -11,6 +11,17 @@
 #include "macros/macroFunctions.h"
 #include "macros/macroInstances.h"
 
+static void stopIntakesAsync(void* ignore);
 void runProgSkills();
+void firstGoal();
+void secondGoal();
+void thirdGoal();
+void fourthGoal();
+void fifthGoal();
+void sixthGoal();
+void seventhGoal();
+void eighthGoal();
+void ninthGoal();
+void descoreMiddle();
 
 #endif

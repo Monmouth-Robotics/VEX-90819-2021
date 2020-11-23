@@ -23,6 +23,7 @@
 #include <cerrno>
 #include <cmath>
 #include <ctime>
+
 #include <cstdbool>
 #include <cstddef>
 #include <cstdint>
@@ -74,4 +75,4 @@
 #include "pros/vision.hpp"
 #endif
 
-#endif // _PROS_API_H_
+#endif  // _PROS_API_H_
