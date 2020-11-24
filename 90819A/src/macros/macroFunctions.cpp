@@ -2,7 +2,7 @@
 
 bool poopingStatus = false;
 
-void MacroFunctions::shootOneBallAsync(void *ignore)
+void MacroFunctions::shootOneBallAsync(void* ignore)
 {
 	indexer.toggleTop(true);
 	upperStack = 127;
@@ -37,21 +37,21 @@ void MacroFunctions::shootOneBall()
 	indexer.toggleTop(false);
 }
 
-void MacroFunctions::poopOneBall(void *ignore)
-{	
+void MacroFunctions::poopOneBall(void* ignore)
+{
 	poopingStatus = false;
 
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (limitSwitch.get_value() != 1){
+	while (limitSwitch.get_value() != 1) {
 		printf("limit: %d\n", limitSwitch.get_value());
 		upperStack = -60;
 		lowerStack = 60;
 		pros::delay(10);
 	}
 
-	while (limitSwitch.get_value() == 1){
+	while (limitSwitch.get_value() == 1) {
 		pros::delay(10);
 	}
 
@@ -78,21 +78,22 @@ void MacroFunctions::poopOneBall(void *ignore)
 	poopingStatus = true;
 }
 
-void MacroFunctions::poopTwoBalls(void *ignore)
+void MacroFunctions::poopTwoBalls(void* param)
 {
+	bool useTopRoller = (bool)param;
 	poopingStatus = false;
 
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (limitSwitch.get_value() != 1){
+	while (limitSwitch.get_value() != 1) {
 		printf("limit: %d\n", limitSwitch.get_value());
 		upperStack = -80;
 		lowerStack = 80;
 		pros::delay(10);
 	}
 
-	while (limitSwitch.get_value() == 1){
+	while (limitSwitch.get_value() == 1) {
 		pros::delay(10);
 	}
 
@@ -125,14 +126,14 @@ void MacroFunctions::poopTwoBalls(void *ignore)
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (limitSwitch.get_value() != 1){
+	while (limitSwitch.get_value() != 1) {
 		printf("limit: %d\n", limitSwitch.get_value());
 		upperStack = -127;
 		lowerStack = 127;
 		pros::delay(10);
 	}
 
-	while (limitSwitch.get_value() == 1){
+	while (limitSwitch.get_value() == 1) {
 		pros::delay(10);
 	}
 
@@ -159,7 +160,7 @@ void MacroFunctions::poopTwoBalls(void *ignore)
 	poopingStatus = true;
 }
 
-void MacroFunctions::shootTwoBallsAsync(void *ignore)
+void MacroFunctions::shootTwoBallsAsync(void* ignore)
 {
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
