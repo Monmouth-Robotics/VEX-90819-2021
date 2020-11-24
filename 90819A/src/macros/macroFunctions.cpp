@@ -7,8 +7,8 @@ void MacroFunctions::shootOneBallAsync(void *ignore)
 	indexer.toggleTop(true);
 	upperStack = 127;
 	if (indexer.getTopStatus() != "")
-	{	
-		while (indexer.getTopStatus()!= "")
+	{
+		while (indexer.getTopStatus() != "")
 		{
 			pros::delay(10);
 		}
@@ -17,7 +17,7 @@ void MacroFunctions::shootOneBallAsync(void *ignore)
 }
 
 void MacroFunctions::shootOneBall()
-{	
+{
 	indexer.toggleTop(true);
 	upperStack = 127;
 
@@ -25,10 +25,10 @@ void MacroFunctions::shootOneBall()
 	{
 		pros::delay(10);
 	}
-	
+
 	if (indexer.getTopStatus() != "")
-	{	
-		while (indexer.getTopStatus()!= "")
+	{
+		while (indexer.getTopStatus() != "")
 		{
 			pros::delay(10);
 		}
@@ -37,48 +37,117 @@ void MacroFunctions::shootOneBall()
 	indexer.toggleTop(false);
 }
 
-void MacroFunctions::poopOneBall(void* ignore){
+void MacroFunctions::poopOneBall(void *ignore)
+{	
+	poopingStatus = false;
+
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (indexer.getBackStatus() == ""){
-		upperStack = -63;
-		lowerStack = 63;
+	while (limitSwitch.get_value() != 1){
+		printf("limit: %d\n", limitSwitch.get_value());
+		upperStack = -60;
+		lowerStack = 60;
 		pros::delay(10);
 	}
 
-	while (indexer.getBackStatus() != ""){
+	while (limitSwitch.get_value() == 1){
 		pros::delay(10);
 	}
+
+	// while(indexer.getBottomStatus() == ""){
+	// 	pros::delay(10);
+	// }
+
+	// while (indexer.getBottomStatus() != "")
+	// {
+	// 	// upperStack = -127;
+	// 	upperStack = -55;
+	// 	lowerStack = 55;
+	// 	pros::delay(10);
+	// 	printf("first\n");
+	// }
+
+	// upperStack = -63;
+	// lowerStack = 63;
+	// pros::delay(1250);
 
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 
+	poopingStatus = true;
 }
 
-void MacroFunctions::poopTwoBalls(void* ignore){
+void MacroFunctions::poopTwoBalls(void *ignore)
+{
 	poopingStatus = false;
-	
+
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 
-	while (indexer.getBackStatus() == ""){
-		// upperStack = -127;
-		upperStack = -63;
-		lowerStack = 63;
+	while (limitSwitch.get_value() != 1){
+		printf("limit: %d\n", limitSwitch.get_value());
+		upperStack = -80;
+		lowerStack = 80;
 		pros::delay(10);
 	}
 
-	while (indexer.getBackStatus() != ""){
-		pros::delay(10);
-	} 
-
-	while (indexer.getBackStatus() == ""){
-		// upperStack = -127;
-		upperStack = -50;
-		lowerStack = 50;
+	while (limitSwitch.get_value() == 1){
 		pros::delay(10);
 	}
+
+	// while(indexer.getBottomStatus() == ""){
+	// 	pros::delay(10);
+	// }
+
+	// while (indexer.getBottomStatus() != "")
+	// {
+	// 	// upperStack = -127;
+	// 	upperStack = -55;
+	// 	lowerStack = 55;
+	// 	pros::delay(10);
+	// 	printf("first\n");
+	// }
+
+	// upperStack = -63;
+	// lowerStack = 63;
+	// pros::delay(1250);
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
+	poopingStatus = true;
+
+	pros::delay(500);
+
+	poopingStatus = false;
+
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+
+	while (limitSwitch.get_value() != 1){
+		printf("limit: %d\n", limitSwitch.get_value());
+		upperStack = -127;
+		lowerStack = 127;
+		pros::delay(10);
+	}
+
+	while (limitSwitch.get_value() == 1){
+		pros::delay(10);
+	}
+
+	// while(indexer.getBottomStatus() == ""){
+	// 	pros::delay(10);
+	// }
+
+	// while (indexer.getBottomStatus() != "")
+	// {
+	// 	// upperStack = -127;
+	// 	upperStack = -55;
+	// 	lowerStack = 55;
+	// 	pros::delay(10);
+	// 	printf("first\n");
+	// }
 
 	// upperStack = -63;
 	// lowerStack = 63;
@@ -97,20 +166,23 @@ void MacroFunctions::shootTwoBallsAsync(void *ignore)
 	lowerStack = 0;
 	upperStack = 127;
 
-	while (indexer.getTopStatus() != "") {
+	while (indexer.getTopStatus() != "")
+	{
 		pros::delay(10);
 	}
 
 	lowerStack = 127;
 	upperStack = 127;
 
-	while (indexer.getTopStatus() == "") {
+	while (indexer.getTopStatus() == "")
+	{
 		pros::delay(10);
 	}
 
 	lowerStack = 0;
 
-	while (indexer.getTopStatus() != "") {
+	while (indexer.getTopStatus() != "")
+	{
 		pros::delay(10);
 	}
 
@@ -154,7 +226,8 @@ void MacroFunctions::shootTwoBallsAsync(void *ignore)
 	// }
 }
 
-void MacroFunctions::toggleIntakes(int speed){
+void MacroFunctions::toggleIntakes(int speed)
+{
 	intakeMotorLeft = speed;
 	intakeMotorRight = speed;
 }

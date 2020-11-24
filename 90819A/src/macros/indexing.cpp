@@ -60,6 +60,7 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//if bottom ball there
+		printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
 		if (ultrasonicBottom.get_value() < 80)
 		{
 			bottomBallDetected = "red";

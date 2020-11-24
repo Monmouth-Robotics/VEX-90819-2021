@@ -19,7 +19,7 @@ pros::ADIEncoder leftEncoder('A', 'B', true);
 pros::ADIEncoder rightEncoder('G', 'H', false);
 pros::ADIEncoder backEncoder('E', 'F', false);
 
-pros::ADIAnalogIn lineSensor('D');
+pros::ADIDigitalIn limitSwitch('D');
 
 pros::Imu imuLeft(5);
 pros::Imu imuRight(6);

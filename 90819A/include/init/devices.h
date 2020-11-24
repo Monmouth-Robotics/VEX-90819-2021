@@ -32,6 +32,6 @@ extern pros::ADIUltrasonic ultrasonicBack;
 extern pros::Imu imuLeft;
 extern pros::Imu imuRight;
 
-extern pros::ADIAnalogIn lineSensor;
+extern pros::ADIDigitalIn limitSwitch;
 
 #endif
