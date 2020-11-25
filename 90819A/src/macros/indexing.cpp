@@ -49,7 +49,10 @@ void Indexing::indexingTask(void *ignore)
 	opticalSensor.set_led_pwm(100);
 	while (true)
 	{
-		//is top ball there
+		// //is top ball there
+		// printf("Top Ultrasonic: %d\n", ultrasonicTopOne.get_value());
+		// printf("Top Ultrasonic 2: %d\n", ultrasonicTopTwo.get_value());
+
 		if (ultrasonicTopOne.get_value() < 80 || ultrasonicTopTwo.get_value() < 80)
 		{
 			topBallDetected = "red";
@@ -60,8 +63,8 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//if bottom ball there
-		printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
-		if (ultrasonicBottom.get_value() < 80)
+		// printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
+		if (ultrasonicBottomOne.get_value() < 80 || ultrasonicBottomTwo.get_value()<80)
 		{
 			bottomBallDetected = "red";
 		}
@@ -71,15 +74,15 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		//if back ball there
-		printf("Ultrasonic Back: %d\n", ultrasonicBack.get_value());
-		if (ultrasonicBack.get_value() < 80)
-		{
-			backBallDetected = "red";
-		}
-		else
-		{
-			backBallDetected = "";
-		}
+		// printf("Ultrasonic Back: %d\n", ultrasonicBack.get_value());
+		// if (ultrasonicBack.get_value() < 80)
+		// {
+		// 	backBallDetected = "red";
+		// }
+		// else
+		// {
+		// 	backBallDetected = "";
+		// }
 
 		//intake ball color
 		if (opticalSensor.get_hue() < 30)
@@ -109,8 +112,8 @@ void Indexing::indexingTask(void *ignore)
 				{
 					if (!bottomDisabled)
 					{
-						upperStack = 0;
 						lowerStack = 0;
+						upperStack = 0;
 					}
 				}
 				else
@@ -129,7 +132,19 @@ void Indexing::indexingTask(void *ignore)
 			{
 				if (!topDisabled)
 				{
-					upperStack = 0;
+					if (ultrasonicTopOne.get_value() < 80 && ultrasonicTopTwo.get_value() > 80)
+					{
+						upperStack = -40;
+					}
+					else if (ultrasonicTopTwo.get_value() < 80 && ultrasonicTopOne.get_value() > 80)
+					{
+						upperStack = 10;
+					}
+
+					else
+					{
+						upperStack = 0;
+					}
 				}
 				if (!bottomDisabled)
 				{
@@ -139,7 +154,19 @@ void Indexing::indexingTask(void *ignore)
 				{
 					if (!bottomDisabled)
 					{
-						lowerStack = 0;
+						if (ultrasonicBottomOne.get_value() < 80 && ultrasonicBottomTwo.get_value() > 80)
+						{
+							lowerStack = -40;
+						}
+						else if (ultrasonicBottomTwo.get_value() < 80 && ultrasonicBottomOne.get_value() > 80)
+						{
+							lowerStack = 20;
+						}
+
+						else
+						{
+							lowerStack = 0;
+						}
 					}
 				}
 			}
@@ -147,7 +174,7 @@ void Indexing::indexingTask(void *ignore)
 			{
 				if (!bottomDisabled)
 				{
-					lowerStack = 100;
+					lowerStack = 127;
 				}
 
 				if (!topDisabled)

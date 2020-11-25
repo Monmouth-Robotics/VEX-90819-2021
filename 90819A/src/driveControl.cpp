@@ -85,7 +85,7 @@ void poopOneBallFunction()
 
 void poopTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, NULL, "Ball Pooper 2");
+	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void*) false, "Ball Pooper 2");
 }
 
 void driveControl()
@@ -100,7 +100,9 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	indexer.toggleTopPosition(true);
+	// indexer.toggleTop(true);
+	// indexer.toggleBottom(true);
+	// indexer.toggleTopPosition(true);
 	while (true)
 	{
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);

@@ -2,7 +2,7 @@
 
 bool poopingStatus = false;
 
-void MacroFunctions::shootOneBallAsync(void* ignore)
+void MacroFunctions::shootOneBallAsync(void *ignore)
 {
 	indexer.toggleTop(true);
 	upperStack = 127;
@@ -37,66 +37,45 @@ void MacroFunctions::shootOneBall()
 	indexer.toggleTop(false);
 }
 
-void MacroFunctions::poopOneBall(void* ignore)
+void MacroFunctions::poopOneBall(void *param)
 {
 	poopingStatus = false;
 
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
-
-	while (limitSwitch.get_value() != 1) {
-		printf("limit: %d\n", limitSwitch.get_value());
-		upperStack = -60;
-		lowerStack = 60;
-		pros::delay(10);
-	}
-
-	while (limitSwitch.get_value() == 1) {
-		pros::delay(10);
-	}
-
-	// while(indexer.getBottomStatus() == ""){
-	// 	pros::delay(10);
-	// }
-
-	// while (indexer.getBottomStatus() != "")
-	// {
-	// 	// upperStack = -127;
-	// 	upperStack = -55;
-	// 	lowerStack = 55;
-	// 	pros::delay(10);
-	// 	printf("first\n");
-	// }
-
-	// upperStack = -63;
-	// lowerStack = 63;
-	// pros::delay(1250);
-
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
-
-	poopingStatus = true;
-}
-
-void MacroFunctions::poopTwoBalls(void* param)
-{
 	bool useTopRoller = (bool)param;
-	poopingStatus = false;
 
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
+	if (useTopRoller)
+	{
+		indexer.toggleTop(true);
+		indexer.toggleBottom(true);
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			upperStack = -127;
+			lowerStack = 127;
+			pros::delay(10);
+		}
 
-	while (limitSwitch.get_value() != 1) {
-		printf("limit: %d\n", limitSwitch.get_value());
-		upperStack = -80;
-		lowerStack = 80;
-		pros::delay(10);
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
 	}
 
-	while (limitSwitch.get_value() == 1) {
-		pros::delay(10);
-	}
+	else
+	{
+		indexer.toggleBottom(true);
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			lowerStack = 127;
+			pros::delay(10);
+		}
 
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
+	}
 	// while(indexer.getBottomStatus() == ""){
 	// 	pros::delay(10);
 	// }
@@ -114,45 +93,7 @@ void MacroFunctions::poopTwoBalls(void* param)
 	// lowerStack = 63;
 	// pros::delay(1250);
 
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
-
-	poopingStatus = true;
-
-	pros::delay(500);
-
-	poopingStatus = false;
-
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
-
-	while (limitSwitch.get_value() != 1) {
-		printf("limit: %d\n", limitSwitch.get_value());
-		upperStack = -127;
-		lowerStack = 127;
-		pros::delay(10);
-	}
-
-	while (limitSwitch.get_value() == 1) {
-		pros::delay(10);
-	}
-
-	// while(indexer.getBottomStatus() == ""){
-	// 	pros::delay(10);
-	// }
-
-	// while (indexer.getBottomStatus() != "")
-	// {
-	// 	// upperStack = -127;
-	// 	upperStack = -55;
-	// 	lowerStack = 55;
-	// 	pros::delay(10);
-	// 	printf("first\n");
-	// }
-
-	// upperStack = -63;
-	// lowerStack = 63;
-	// pros::delay(1250);
+	indexer.toggleTopPosition(false);
 
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
@@ -160,7 +101,89 @@ void MacroFunctions::poopTwoBalls(void* param)
 	poopingStatus = true;
 }
 
-void MacroFunctions::shootTwoBallsAsync(void* ignore)
+void MacroFunctions::poopTwoBalls(void *param)
+{
+	poopingStatus = false;
+	bool useTopRoller = (bool)param;
+
+	if (useTopRoller)
+	{
+		indexer.toggleTop(true);
+		indexer.toggleBottom(true);
+
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			upperStack = -80;
+			lowerStack = 80;
+			pros::delay(10);
+		}
+
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
+
+		lowerStack = 0;
+		upperStack = 0;
+		pros::delay(500);
+
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			upperStack = -127;
+			lowerStack = 127;
+			pros::delay(10);
+		}
+
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
+	}
+	else
+	{
+		indexer.toggleBottom(true);
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			lowerStack = 127;
+			pros::delay(10);
+		}
+
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
+
+		lowerStack = 0;
+		upperStack = 0;
+		pros::delay(250);
+
+		while (limitSwitch.get_value() != 1)
+		{
+			printf("limit: %d\n", limitSwitch.get_value());
+			lowerStack = 127;
+			pros::delay(10);
+		}
+
+		while (limitSwitch.get_value() == 1)
+		{
+			pros::delay(10);
+		}
+
+	}
+
+	
+	indexer.toggleTopPosition(false);
+
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
+	poopingStatus = true;
+}
+
+void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);

@@ -47,8 +47,8 @@ void autonomous()
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 
-	lowerStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	lowerStack.set_brake_mode(MOTOR_BRAKE_HOLD);
+	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 

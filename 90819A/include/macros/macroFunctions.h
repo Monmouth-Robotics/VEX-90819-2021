@@ -16,7 +16,7 @@ class MacroFunctions
 public:
 	static void shootOneBallAsync(void* ignore);
 	static void shootOneBall();
-	static void poopOneBall(void* ignore);
+	static void poopOneBall(void* param);
 	static void poopTwoBalls(void* param);
 	static void shootTwoBallsAsync(void* ignore);
 	static void toggleIntakes(int speed);
