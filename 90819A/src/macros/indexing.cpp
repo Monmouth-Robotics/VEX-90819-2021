@@ -156,7 +156,7 @@ void Indexing::indexingTask(void *ignore)
 					{
 						if (ultrasonicBottomOne.get_value() < 80 && ultrasonicBottomTwo.get_value() > 80)
 						{
-							lowerStack = -40;
+							lowerStack = -50;
 						}
 						else if (ultrasonicBottomTwo.get_value() < 80 && ultrasonicBottomOne.get_value() > 80)
 						{
@@ -184,10 +184,10 @@ void Indexing::indexingTask(void *ignore)
 			}
 		}
 
-		printf("Top Status: %s\n", topBallDetected);
-		printf("Bottom Status: %s\n", bottomBallDetected);
-		printf("Back Status: %s\n", backBallDetected);
-		printf("Intake Color: %s\n", intakeBallColor);
+		// printf("Top Status: %s\n", topBallDetected);
+		// printf("Bottom Status: %s\n", bottomBallDetected);
+		// printf("Back Status: %s\n", backBallDetected);
+		// printf("Intake Color: %s\n", intakeBallColor);
 
 		pros::delay(10);
 	}

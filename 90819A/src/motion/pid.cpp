@@ -825,10 +825,10 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 
 		printf("Angle Power: %.3f", powerAngle);
 
-		double leftFrontSpeed = powerDistance + powerAngle + powerDiff;
-		double leftBackSpeed = -powerDistance + powerAngle + powerDiff;
-		double rightFrontSpeed = -powerDistance - powerAngle + powerDiff;
-		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
+		double leftFrontSpeed = -powerDistance + powerAngle + powerDiff;
+		double leftBackSpeed = powerDistance + powerAngle + powerDiff;
+		double rightFrontSpeed = powerDistance - powerAngle + powerDiff;
+		double rightBackSpeed = -powerDistance - powerAngle + powerDiff;
 
 		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 

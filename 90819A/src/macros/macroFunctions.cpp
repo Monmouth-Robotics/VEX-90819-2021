@@ -114,8 +114,8 @@ void MacroFunctions::poopTwoBalls(void *param)
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
-			upperStack = -80;
-			lowerStack = 80;
+			upperStack = -127;
+			lowerStack = 127;
 			pros::delay(10);
 		}
 
@@ -156,9 +156,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 			pros::delay(10);
 		}
 
-		lowerStack = 0;
-		upperStack = 0;
-		pros::delay(250);
+		pros::delay(100);
 
 		while (limitSwitch.get_value() != 1)
 		{
