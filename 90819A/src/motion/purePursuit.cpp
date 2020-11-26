@@ -86,8 +86,7 @@ vector<vector<double>> smooth(vector<vector<double>> pointsList, double a, doubl
             for (int j = 0; j < pointsList[i].size(); j++)
             {
                 double aux = newPointsList[i][j];
-                newPointsList[i][j] += a * (pointsList[i][j] - newPointsList[i][j]) + b *
-                                                                                          (newPointsList[i - 1][j] + newPointsList[i + 1][j] - (2.0 * newPointsList[i][j]));
+                newPointsList[i][j] += a * (pointsList[i][j] - newPointsList[i][j]) + b * (newPointsList[i - 1][j] + newPointsList[i + 1][j] - (2.0 * newPointsList[i][j]));
                 change += abs(aux - newPointsList[i][j]);
             }
         }
