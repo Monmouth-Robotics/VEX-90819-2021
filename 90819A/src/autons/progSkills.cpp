@@ -293,11 +293,6 @@ void ninthGoal()
 	indexerFunctions.toggleIntakes(127);
 	pidTurn(2 * M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	// indexer.toggleTop(true);
-	// indexer.toggleBottom(true);
-	// upperStack = 127;
-	// lowerStack = 127;
-	
 	pidForward(2 * M_PI, {{36, 20}, {36, 43}}, 80, 1, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 
