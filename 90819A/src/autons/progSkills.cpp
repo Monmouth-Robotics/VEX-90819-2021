@@ -300,11 +300,8 @@ void ninthGoal()
 	
 	pidForward(2 * M_PI, {{36, 20}, {36, 43}}, 80, 1, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
-	indexer.toggleTop(true);
-	upperStack = 127;
-	
 
-	pros::delay(500);
+	pros::delay(250);
 	intakeMotorLeft = -127;
 	intakeMotorRight = -127;
 	leftBackMotor = -63;
