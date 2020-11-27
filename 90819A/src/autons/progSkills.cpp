@@ -115,7 +115,7 @@ void thirdGoal()
 	indexer.toggleTopPosition(true);
 	pidTurn(2 * M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	pidForward(0, {{5, 60}, {5, 104}}, 80, 0.5, 30, 50, 50, 0, 0, 0, 0, 0, 0, true);
+	pidForward(0, {{0, 60}, {0, 104}}, 80, 0.5, 30, 50, 50, 0, 0, 0, 0, 0, 0, true);
 	// leftBackMotor = -63;
 	// leftFrontMotor = -63;
 	// rightFrontMotor = -63;
