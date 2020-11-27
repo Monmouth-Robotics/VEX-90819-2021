@@ -24,10 +24,10 @@ extern pros::ADIEncoder backEncoder;
 
 extern pros::Optical opticalSensor;
 
-extern pros::ADIUltrasonic ultrasonicTopOne;
-extern pros::ADIUltrasonic ultrasonicTopTwo;
-extern pros::ADIUltrasonic ultrasonicBottomOne;
-extern pros::ADIUltrasonic ultrasonicBottomTwo;
+extern pros::ADIUltrasonic ultrasonicTopUpper;
+extern pros::ADIUltrasonic ultrasonicTopLower;
+extern pros::ADIUltrasonic ultrasonicBottomUpper;
+extern pros::ADIUltrasonic ultrasonicBottomLower;
 
 extern pros::Imu imuLeft;
 extern pros::Imu imuRight;

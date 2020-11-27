@@ -2,30 +2,87 @@
 
 bool poopingStatus = false;
 
+/**
+ * Shoots one ball (specifically for async shooting)
+*/
 void MacroFunctions::shootOneBallAsync(void *ignore)
 {
+	//Disables automated control of top roller
 	indexer.toggleTop(true);
+
 	upperStack = 127;
+
 	if (indexer.getTopStatus() != "")
 	{
+		//Shoots until ball leaves top indexing position
 		while (indexer.getTopStatus() != "")
 		{
 			pros::delay(10);
 		}
 	}
+
+	//Resume automated control of top roller
 	indexer.toggleTop(false);
 }
 
-void MacroFunctions::shootOneBall()
+/**
+ * Shoots two balls (specifically for async shooting)
+*/
+void MacroFunctions::shootTwoBallsAsync(void *ignore)
 {
+	//Disables automated control of top and bottom rollers
 	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+	
+	lowerStack = 0;
 	upperStack = 127;
 
+	//Shoots until ball leaves top indexing position
+	while (indexer.getTopStatus() != "")
+	{
+		pros::delay(10);
+	}
+
+	lowerStack = 127;
+	upperStack = 127;
+
+	//Waits for ball to be located in top indexing position
 	while (indexer.getTopStatus() == "")
 	{
 		pros::delay(10);
 	}
 
+	lowerStack = 0;
+
+	//Shoots until ball leaves top indexing position
+	while (indexer.getTopStatus() != "")
+	{
+		pros::delay(10);
+	}
+
+	upperStack = 0;
+
+	//Resumes automated control of top and bottom rollers
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+}
+
+/**
+ * Shoots one ball
+*/
+void MacroFunctions::shootOneBall()
+{
+	//Disables automated control of top roller
+	indexer.toggleTop(true);
+	upperStack = 127;
+
+	//Waits for ball to be located in top indexing position
+	while (indexer.getTopStatus() == "")
+	{
+		pros::delay(10);
+	}
+
+	//Shoots until ball leaves top indexing position
 	if (indexer.getTopStatus() != "")
 	{
 		while (indexer.getTopStatus() != "")
@@ -34,19 +91,25 @@ void MacroFunctions::shootOneBall()
 		}
 	}
 
+	//Resumes automated control of top roller
 	indexer.toggleTop(false);
 }
 
+/**
+ * Ejects one ball
+*/
 void MacroFunctions::poopOneBall(void *param)
 {
 	poopingStatus = false;
-
 	bool useTopRoller = (bool)param;
 
 	if (useTopRoller)
-	{
+	{	
+		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
+
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -55,6 +118,7 @@ void MacroFunctions::poopOneBall(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
@@ -63,7 +127,10 @@ void MacroFunctions::poopOneBall(void *param)
 
 	else
 	{
+		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
+
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -71,46 +138,38 @@ void MacroFunctions::poopOneBall(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
 		}
 	}
-	// while(indexer.getBottomStatus() == ""){
-	// 	pros::delay(10);
-	// }
 
-	// while (indexer.getBottomStatus() != "")
-	// {
-	// 	// upperStack = -127;
-	// 	upperStack = -55;
-	// 	lowerStack = 55;
-	// 	pros::delay(10);
-	// 	printf("first\n");
-	// }
-
-	// upperStack = -63;
-	// lowerStack = 63;
-	// pros::delay(1250);
-
+	//Enables use of top indexing position
 	indexer.toggleTopPosition(false);
 
+	//Resumes automated control of top and bottom rollers
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 
 	poopingStatus = true;
 }
 
+/**
+ * Ejects two balls
+*/
 void MacroFunctions::poopTwoBalls(void *param)
 {
 	poopingStatus = false;
 	bool useTopRoller = (bool)param;
 
 	if (useTopRoller)
-	{
+	{	
+		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
 
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -119,6 +178,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
@@ -128,6 +188,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 		upperStack = 0;
 		pros::delay(500);
 
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -136,14 +197,18 @@ void MacroFunctions::poopTwoBalls(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
 		}
 	}
 	else
-	{
+	{	
+		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
+
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -151,6 +216,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
@@ -158,6 +224,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 
 		pros::delay(100);
 
+		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
 			printf("limit: %d\n", limitSwitch.get_value());
@@ -165,89 +232,26 @@ void MacroFunctions::poopTwoBalls(void *param)
 			pros::delay(10);
 		}
 
+		//Waits while limit switch is still triggered
 		while (limitSwitch.get_value() == 1)
 		{
 			pros::delay(10);
 		}
-
 	}
 
-	
+	//Enables use of top indexing position
 	indexer.toggleTopPosition(false);
 
+	//Resumes automated control of top and bottom rollers
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 
 	poopingStatus = true;
 }
 
-void MacroFunctions::shootTwoBallsAsync(void *ignore)
-{
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
-	lowerStack = 0;
-	upperStack = 127;
-
-	while (indexer.getTopStatus() != "")
-	{
-		pros::delay(10);
-	}
-
-	lowerStack = 127;
-	upperStack = 127;
-
-	while (indexer.getTopStatus() == "")
-	{
-		pros::delay(10);
-	}
-
-	lowerStack = 0;
-
-	while (indexer.getTopStatus() != "")
-	{
-		pros::delay(10);
-	}
-
-	upperStack = 0;
-
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
-
-	// 	//wait for bottom ball to leave
-	// 	while (abs(lineSensorBottom.get_value() - indexer.getBaseBottom() > 5))
-	// 	{
-	// 		pros::delay(10);
-	// 	}
-
-	// 	//wait for top ball detection, start bottom ball indexing
-	// 	while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) < 5)
-	// 	{
-	// 		if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10)
-	// 		{
-	// 			printf("Lower Ball Detected");
-	// 			lowerStack = 0;
-	// 			indexer.setBottomStatus(true);
-	// 		}
-	// 		pros::delay(10);
-	// 	}
-
-	// 	//wait for top ball to leave, keep bottom ball indexing
-	// 	while (abs(lineSensorTop.get_value() - indexer.getBaseTop()) > 5)
-	// 	{
-	// 		if (abs(lineSensorBottom.get_value() - indexer.getBaseBottom()) > 10)
-	// 		{
-	// 			printf("Lower Ball Detected");
-	// 			lowerStack = 0;
-	// 			indexer.setBottomStatus(true);
-	// 		}
-	// 		pros::delay(10);
-	// 	}
-
-	// 	//resume top ball indexing
-	// 	indexController.resume();
-	// }
-}
-
+/**
+ * Toggles intakes to given speed
+*/
 void MacroFunctions::toggleIntakes(int speed)
 {
 	intakeMotorLeft = speed;

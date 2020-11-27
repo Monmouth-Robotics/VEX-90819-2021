@@ -49,26 +49,25 @@ double inertRight = 0;
 double inertTheta = 0;
 int count2 = 0;
 
-Inertial imu;
-
-// bool spaghetti = imu.initialize();
-// pros::Task imuController(imu.calcAngle, NULL, "Inertial Tracker");
-
+/**
+ * Returns robot heading
+ */
 double PositionAlg::getTheta()
 {
 	return theta;
 }
 
-double PositionAlg::getThetaInertial()
-{
-	return imu.getTheta();
-}
-
+/**
+ * Returns robot position
+ */
 vector<double> PositionAlg::getPosition()
 {
 	return positionVector;
 }
 
+/**
+ * Calculates signed difference between two angles
+ */
 double PositionAlg::calcAngleDiff(double angle1, double angle2)
 {
 	double num1 = angle1 - angle2;
@@ -88,64 +87,61 @@ double PositionAlg::calcAngleDiff(double angle1, double angle2)
 	}
 }
 
+
+/**
+ * Calculates robot position using odometry algorithm
+ */
 void PositionAlg::calcPosition(void *ignore)
 {
 
-	// double offset = 0;
 	while (true)
-	{
+	{	
+		//Gets raw values from encoders
 		leftEncoderDegrees = leftEncoder.get_value();
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
 
+
+		//Finds the amount of degrees turned since last reading
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
 		rightEncoderDegreesDifference = rightEncoderDegrees - previousRightEncoderDegrees;
 		backEncoderDegreesDifference = backEncoderDegrees - previousBackEncoderDegrees;
-
+		
+		//Sets last encoder measurement
 		previousLeftEncoderDegrees = leftEncoderDegrees;
 		previousRightEncoderDegrees = rightEncoderDegrees;
 		previousBackEncoderDegrees = backEncoderDegrees;
-
+		
+		//Converts encoder degrees to distance in inches
 		leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 		rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 
-		// printf("Left: %.3f\n", leftEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-		// printf("right: %.3f\n", rightEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-		// printf("Back: %.3f\n", backEncoderDegrees * M_PI / 180.0 * WHEEL_DIAMETER / 2);
-
+		//Gets heading values from inertial
 		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
 		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
-
-		// printf("inertLeft: %.3f\n", inertLeft * 180 / M_PI);
-		// printf("inertRight: %.3f\n", inertRight * 180 / M_PI);
-
-
+		
+		//Checks if calibration in complete
 		if (inertLeft != INFINITY && inertRight != INFINITY)
 		{
-			inertTheta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
-
-			while (inertTheta > M_PI * 2)
+			//Calculates average of inertial readings
+			theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
+			
+			//Adjusts theta to be between 0 and 2pi
+			while (theta > M_PI * 2)
 			{
-				inertTheta -= M_PI * 2;
+				theta -= M_PI * 2;
 			}
 			while (theta < 0)
 			{
-				inertTheta += M_PI * 2;
+				theta += M_PI * 2;
 			}
-			// deltaTheta = calcAngleDiff(inertTheta, inertLast);
-			// printf("deltaTheta1: %.3f\n", deltaTheta);
-			inertLast = inertTheta;
-			theta = inertTheta;
 		}
 
+		//Calculates change in heading during previous cycle
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
 
-		// printf("deltaTheta2: %.3f\n", deltaTheta);
-
-
-		// theta += deltaTheta;
-
+		//Uses delta theta to calculate relative changes in x and y
 		if (deltaTheta != 0)
 		{
 			x = 2 * sin(deltaTheta / 2.0) * (backEncoderDistance / deltaTheta + DISTANCE_TO_BACK_ENCODER);
@@ -157,42 +153,24 @@ void PositionAlg::calcPosition(void *ignore)
 			y = rightEncoderDistance;
 		}
 
-		while (theta > M_PI * 2)
-		{
-			theta -= M_PI * 2;
-		}
-		while (theta < 0)
-		{
-			theta += M_PI * 2;
-		}
-
-		//rotate by negative theta, convert back
-
+		//Calculates average heading during previous cycle
 		thetaM = theta - deltaTheta / 2;
 
+		//Rotates relative changes in x and y onto global coordinate grid
 		newX = x * cos(-thetaM) - y * sin(-thetaM);
 		newY = y * cos(-thetaM) + x * sin(-thetaM);
 
+		//Finds new coordinates by adjusting previous coordinates by change values
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		//printf("x-coordinate: %.3f\n", positionVector[0]);
-		//printf("y-coordinate: %.3f\n", positionVector[1]);
-		//printf("change in raw x: %.3f\n", x);
-		//printf("change in raw y: %.3f\n", y);
-		//printf("change in x: %.3f\n", newX);
-		//printf("change in y: %.3f\n", newY);
-		printf("x: %.3f\n", positionVector[0]);
-		printf("y: %.3f\n", positionVector[1]);
-		printf("theta: %.3f\n", theta * 180.0 / M_PI);
-		// printf("inertTheta: %.3f\n", inertTheta * 180 / M_PI);
-
-		// printf("line Sensor: %d\n", lineSensor.get_value());
 		pros::delay(10);
-		count2 += 1;
 	}
 }
 
+/**
+ * Resets all positioning variables back to 0
+ */
 void PositionAlg::resetGlobal()
 {
 	previousLeftEncoderDegrees = 0;

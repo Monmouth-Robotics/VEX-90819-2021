@@ -6,7 +6,6 @@
 
 #include "api.h"
 #include "init/devices.h"
-#include "positioning/inertial.h"
 #include <vector>
 
 using namespace std;

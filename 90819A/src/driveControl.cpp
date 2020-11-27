@@ -1,14 +1,13 @@
 #include "driveControl.h"
 
-bool digitalR1Pressed = false;
-bool digitalR2Pressed = false;
-
+/**
+ * Assigns motor speeds according to parameters:
+ * motorSpeed: forward or backward speeds
+ * turnSpeed: speed for rotating about the robot
+ * strafeSpeed: speed for moving left and right
+ */
 void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 {
-	//forward: all positive
-	//right: lF and rB positive, lB and rF negative
-	//back: all negative
-	//left: lB and rF positive, lF and rB negative
 
 	if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20 && abs(strafeSpeed) > 20)
 	{
@@ -68,29 +67,46 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 	}
 }
 
+/**
+ * Creates task to shoot one ball 
+ */
 void shootOneBallFunction()
 {
 	pros::Task indexShootingController(indexerFunctions.shootOneBallAsync, NULL, "Ball Shooter");
 }
 
+/**
+ * Creates task to shoot two balls 
+ */
 void shootTwoBallsFunction()
 {
 	pros::Task indexShootingController(indexerFunctions.shootTwoBallsAsync, NULL, "Ball Shooter 2");
 }
 
+/**
+ * Creates task to eject one ball
+ */
 void poopOneBallFunction()
 {
 	pros::Task indexShootingController(indexerFunctions.poopOneBall, NULL, "Ball Pooper");
 }
 
+/**
+ * Creates task to eject two balls
+ */
 void poopTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void*) false, "Ball Pooper 2");
+	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void *)false, "Ball Pooper 2");
 }
 
+/**
+ * Takes input from controller joysticks
+ * Controls intakes and macro execution using button presses
+ */
 void driveControl()
 {
 
+	//Sets break modes for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -100,11 +116,9 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	// indexer.toggleTop(true);
-	// indexer.toggleBottom(true);
-	// indexer.toggleTopPosition(true);
 	while (true)
 	{
+		//Gets input from controller joysticks
 		int motorSpeed = controller.get_analog(ANALOG_LEFT_Y);
 		int strafeSpeed = controller.get_analog(ANALOG_LEFT_X);
 		int turnSpeed = controller.get_analog(ANALOG_RIGHT_X);
@@ -116,12 +130,12 @@ void driveControl()
 
 		moveDrive(motorSpeed, turnSpeed, strafeSpeed);
 
+		//Control intakes
 		if (controller.get_digital(DIGITAL_B))
 		{
 			intakeMotorLeft = 0;
 			intakeMotorRight = 0;
 		}
-
 		else if (controller.get_digital(DIGITAL_A))
 		{
 			intakeMotorLeft = 127;
@@ -133,36 +147,22 @@ void driveControl()
 			intakeMotorRight = -127;
 		}
 
-		else if (controller.get_digital(DIGITAL_X))
-		{
-			upperStack = -127;
-			lowerStack = -127;
-		}
 
+		//Controls shooting
 		if (controller.get_digital(DIGITAL_R1))
 		{
-			// upperStack = 127;
-			// lowerStack = 127;
-
 			shootOneBallFunction();
 		}
 
+		//Controls ejecting
 		if (controller.get_digital(DIGITAL_L1))
 		{
 			poopOneBallFunction();
 		}
-
-		else if (controller.get_digital(DIGITAL_L2)){
+		else if (controller.get_digital(DIGITAL_L2))
+		{
 			poopTwoBallsFunction();
 		}
-
-		if (controller.get_digital(DIGITAL_LEFT))
-		{
-			upperStack = -127;
-			lowerStack = 127;
-		}
-
-		//pros::Task indexShootingController(indexerFunctions.shootBall, NULL, "Ball Shooter");
 
 		pros::delay(10);
 	}

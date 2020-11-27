@@ -9,51 +9,66 @@ bool topDisabled = false;
 bool topPositionDisabled = false;
 bool bottomDisabled = false;
 
+/**
+ * Returns status of top indexing position
+*/
 char *Indexing::getTopStatus()
 {
 	return topBallDetected;
 }
 
+/**
+ * Returns status of bottom indexing position
+*/
 char *Indexing::getBottomStatus()
 {
 	return bottomBallDetected;
 }
 
-char *Indexing::getBackStatus()
-{
-	return backBallDetected;
-}
-
+/**
+ * Returns status of ball in intakes
+*/
 char *Indexing::getIntakeColor()
 {
 	return intakeBallColor;
 }
 
+/**
+ * Toggles usage of top indexing position
+*/
 void Indexing::toggleTopPosition(bool disabled)
 {
 	topPositionDisabled = disabled;
 }
 
+/**
+ * Toggles automatic control of top indexing position
+*/
 void Indexing::toggleTop(bool disabled)
 {
 	topDisabled = disabled;
 }
 
+/**
+ * Toggles automatic control of bottom indexing position
+*/
 void Indexing::toggleBottom(bool disabled)
 {
 	bottomDisabled = disabled;
 }
 
+/**
+ * Automates indexing of balls in robot
+*/
 void Indexing::indexingTask(void *ignore)
 {
+	//Turn on LED for optical sensor
 	opticalSensor.set_led_pwm(100);
-	while (true)
-	{
-		// //is top ball there
-		// printf("Top Ultrasonic: %d\n", ultrasonicTopOne.get_value());
-		// printf("Top Ultrasonic 2: %d\n", ultrasonicTopTwo.get_value());
 
-		if (ultrasonicTopOne.get_value() < 80 || ultrasonicTopTwo.get_value() < 80)
+	while (true)
+	{	
+		//Determines status of top indexing position (not color sensitive)
+		if (ultrasonicTopUpper.get_value() < 80 || ultrasonicTopLower.get_value() < 80)
 		{
 			topBallDetected = "red";
 		}
@@ -62,9 +77,8 @@ void Indexing::indexingTask(void *ignore)
 			topBallDetected = "";
 		}
 
-		//if bottom ball there
-		// printf("Ultrasonic Bottom: %d\n", ultrasonicBottom.get_value());
-		if (ultrasonicBottomOne.get_value() < 80 || ultrasonicBottomTwo.get_value()<80)
+		//Determines status of top bottom indexing position (not color sensitive)
+		if (ultrasonicBottomUpper.get_value() < 80 || ultrasonicBottomLower.get_value() < 80)
 		{
 			bottomBallDetected = "red";
 		}
@@ -73,18 +87,7 @@ void Indexing::indexingTask(void *ignore)
 			bottomBallDetected = "";
 		}
 
-		//if back ball there
-		// printf("Ultrasonic Back: %d\n", ultrasonicBack.get_value());
-		// if (ultrasonicBack.get_value() < 80)
-		// {
-		// 	backBallDetected = "red";
-		// }
-		// else
-		// {
-		// 	backBallDetected = "";
-		// }
-
-		//intake ball color
+		//Determines status of ball in intakes
 		if (opticalSensor.get_hue() < 30)
 		{
 			intakeBallColor = "red";
@@ -98,9 +101,8 @@ void Indexing::indexingTask(void *ignore)
 			intakeBallColor = "";
 		}
 
-		//motor control
 		if (topPositionDisabled)
-		{
+		{	
 			if (topBallDetected != "")
 			{
 				upperStack = -127;
@@ -131,12 +133,15 @@ void Indexing::indexingTask(void *ignore)
 			if (topBallDetected != "")
 			{
 				if (!topDisabled)
-				{
-					if (ultrasonicTopOne.get_value() < 80 && ultrasonicTopTwo.get_value() > 80)
+				{	
+					//Spins top roller backwards if only the top upper ultrasonic is triggered
+					if (ultrasonicTopUpper.get_value() < 80 && ultrasonicTopLower.get_value() > 80)
 					{
 						upperStack = -40;
 					}
-					else if (ultrasonicTopTwo.get_value() < 80 && ultrasonicTopOne.get_value() > 80)
+
+					//Spins top roller forwards slowly if only the top lower ultrasonic is triggered
+					else if (ultrasonicTopLower.get_value() < 80 && ultrasonicTopUpper.get_value() > 80)
 					{
 						upperStack = 10;
 					}
@@ -153,12 +158,15 @@ void Indexing::indexingTask(void *ignore)
 				if (bottomBallDetected != "")
 				{
 					if (!bottomDisabled)
-					{
-						if (ultrasonicBottomOne.get_value() < 80 && ultrasonicBottomTwo.get_value() > 80)
+					{	
+						//Spins bottom roller backwards if only the bottom upper ultrasonic is triggered
+						if (ultrasonicBottomUpper.get_value() < 80 && ultrasonicBottomLower.get_value() > 80)
 						{
 							lowerStack = -50;
 						}
-						else if (ultrasonicBottomTwo.get_value() < 80 && ultrasonicBottomOne.get_value() > 80)
+						
+						//Spins bottom roller forwards slowly if only the bottom lower ultrasonic is triggered
+						else if (ultrasonicBottomLower.get_value() < 80 && ultrasonicBottomUpper.get_value() > 80)
 						{
 							lowerStack = 20;
 						}
@@ -184,34 +192,6 @@ void Indexing::indexingTask(void *ignore)
 			}
 		}
 
-		// printf("Top Status: %s\n", topBallDetected);
-		// printf("Bottom Status: %s\n", bottomBallDetected);
-		// printf("Back Status: %s\n", backBallDetected);
-		// printf("Intake Color: %s\n", intakeBallColor);
-
 		pros::delay(10);
 	}
-	// while (true)
-	// {
-	// 	if (ultrasonicTop.get_value()<80 || ultrasonicBottom.get_value()<80)
-	// 	{
-	// 		upperStack = 0;
-	// 		lowerStack = 63;
-	// 		// printf("%lf", opticalSensor.get_hue());
-	// 		topBallDetected = true;
-	// 		// printf(opticalSensor.get_hue();)
-	// 		if(opticalSensor.get_hue()<30||opticalSensor.get_hue()>1000)
-	// 		{
-	// 			lowerStack = 0;
-	// 			bottomBallDetected = true;
-	// 		}
-	// 	}
-	// 	else {
-	// 		topBallDetected = false;
-	// 		bottomBallDetected = false;
-	// 		upperStack = 100;
-	// 		lowerStack = 80;
-	// 	}
-	// 	pros::delay(10);
-	// }
 }
