@@ -101,6 +101,7 @@ void PositionAlg::calcPosition(void *ignore)
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
 
+		printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees);
 
 		//Finds the amount of degrees turned since last reading
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
@@ -164,6 +165,7 @@ void PositionAlg::calcPosition(void *ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
+		printf("Coordinates: (%.3f, %.3f, %.3f)\n", positionVector[0], positionVector[1], theta);
 		pros::delay(10);
 	}
 }
