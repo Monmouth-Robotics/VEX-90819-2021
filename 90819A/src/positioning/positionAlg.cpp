@@ -27,6 +27,7 @@ double backEncoderDistance = 0;
 
 double deltaTheta = 0;
 double polarTheta = 0;
+double theta = 0;
 
 vector<double> positionVector = {0, 0};
 vector<double> newVector = {0, 0};
@@ -38,7 +39,6 @@ vector<double> rightVector(1000, 9999999);
 double x;
 double y;
 double r;
-double theta;
 double newX;
 double newY;
 double thetaM;
@@ -101,7 +101,7 @@ void PositionAlg::calcPosition(void *ignore)
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
 
-		printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees);
+		// printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees );
 
 		//Finds the amount of degrees turned since last reading
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
@@ -165,7 +165,7 @@ void PositionAlg::calcPosition(void *ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		printf("Coordinates: (%.3f, %.3f, %.3f)\n", positionVector[0], positionVector[1], theta);
+		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta*180/M_PI);
 		pros::delay(10);
 	}
 }

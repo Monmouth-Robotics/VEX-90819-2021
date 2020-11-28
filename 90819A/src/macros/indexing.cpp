@@ -141,10 +141,10 @@ void Indexing::indexingTask(void *ignore)
 					}
 
 					//Spins top roller forwards slowly if only the top lower ultrasonic is triggered
-					else if (ultrasonicTopLower.get_value() < 80 && ultrasonicTopUpper.get_value() > 80)
-					{
-						upperStack = 10;
-					}
+					// else if (ultrasonicTopLower.get_value() < 80 && ultrasonicTopUpper.get_value() > 80)
+					// {
+					// 	upperStack = 10;
+					// }
 
 					else
 					{
@@ -159,22 +159,23 @@ void Indexing::indexingTask(void *ignore)
 				{
 					if (!bottomDisabled)
 					{	
+						lowerStack = 0;
 						//Spins bottom roller backwards if only the bottom upper ultrasonic is triggered
-						if (ultrasonicBottomUpper.get_value() < 80 && ultrasonicBottomLower.get_value() > 80)
-						{
-							lowerStack = -50;
-						}
+						// if (ultrasonicBottomUpper.get_value() < 80 && ultrasonicBottomLower.get_value() > 80)
+						// {
+						// 	lowerStack = -50;
+						// }
 						
-						//Spins bottom roller forwards slowly if only the bottom lower ultrasonic is triggered
-						else if (ultrasonicBottomLower.get_value() < 80 && ultrasonicBottomUpper.get_value() > 80)
-						{
-							lowerStack = 20;
-						}
+						// //Spins bottom roller forwards slowly if only the bottom lower ultrasonic is triggered
+						// else if (ultrasonicBottomLower.get_value() < 80 && ultrasonicBottomUpper.get_value() > 80)
+						// {
+						// 	lowerStack = 20;
+						// }
 
-						else
-						{
-							lowerStack = 0;
-						}
+						// else
+						// {
+						// 	lowerStack = 0;
+						// }
 					}
 				}
 			}

@@ -108,7 +108,6 @@ void MacroFunctions::poopOneBall(void *param)
 		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
-
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
@@ -129,6 +128,8 @@ void MacroFunctions::poopOneBall(void *param)
 	{
 		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
+		upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
@@ -152,6 +153,7 @@ void MacroFunctions::poopOneBall(void *param)
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 
+	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 	poopingStatus = true;
 }
 
@@ -208,6 +210,8 @@ void MacroFunctions::poopTwoBalls(void *param)
 		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
 
+		upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
@@ -245,6 +249,8 @@ void MacroFunctions::poopTwoBalls(void *param)
 	//Resumes automated control of top and bottom rollers
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
+	
+	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	poopingStatus = true;
 }
