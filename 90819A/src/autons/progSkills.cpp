@@ -214,14 +214,13 @@ void fifthGoal()
 */
 void descoreMiddle()
 {
-	indexerFunctions.toggleIntakes(127);
 	pidBackward(M_PI / 4, {{64, 109}, {62, 108}}, 100, 0.5, 100, 15, 20, 0, 0, 0, 0, 0, 0, true);
-	pidTurn(M_PI, 80, 0.025, 120.0, 0.0, 0.0);
 	indexerFunctions.toggleIntakes(127);
+	pidTurn(M_PI, 80, 0.025, 120.0, 0.0, 0.0);
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
 	pidForward(M_PI, {{62, 105}, {62, 57}}, 80, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(3 * M_PI / 2, 80, 0.025, 140.0, 0.0, 0.0);
-	// indexerFunctions.toggleIntakes(0);
+	indexerFunctions.toggleIntakes(0);
 	pidForward(3 * M_PI / 2, {{62, 57.5}, {54, 57.5}}, 100, 0.5, 80, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	leftBackMotor = -63;
 	leftFrontMotor = -63;

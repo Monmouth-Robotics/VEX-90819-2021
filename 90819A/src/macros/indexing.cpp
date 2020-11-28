@@ -151,10 +151,6 @@ void Indexing::indexingTask(void *ignore)
 						upperStack = 0;
 					}
 				}
-				if (!bottomDisabled)
-				{
-					lowerStack = 63;
-				}
 				if (bottomBallDetected != "")
 				{
 					if (!bottomDisabled)
@@ -177,6 +173,9 @@ void Indexing::indexingTask(void *ignore)
 						// 	lowerStack = 0;
 						// }
 					}
+				}
+				else {
+					lowerStack = 63;
 				}
 			}
 			else
