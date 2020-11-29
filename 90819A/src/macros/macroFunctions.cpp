@@ -3,36 +3,9 @@
 bool poopingStatus = false;
 
 /**
- * Shoots one ball (specifically for async shooting)
+ * Shoots two balls
 */
-void MacroFunctions::deploy(void *ignore)
-{
-}
-
-void MacroFunctions::shootOneBallAsync(void *ignore)
-{
-	//Disables automated control of top roller
-	indexer.toggleTop(true);
-
-	upperStack = 127;
-
-	if (indexer.getTopStatus() != "")
-	{
-		//Shoots until ball leaves top indexing position
-		while (indexer.getTopStatus() != "")
-		{
-			pros::delay(10);
-		}
-	}
-
-	//Resume automated control of top roller
-	indexer.toggleTop(false);
-}
-
-/**
- * Shoots two balls (specifically for async shooting)
-*/
-void MacroFunctions::shootTwoBallsAsync(void *ignore)
+void MacroFunctions::shootTwoBalls(void* ignore)
 {
 	//Disables automated control of top and bottom rollers
 	indexer.toggleTop(true);
@@ -102,7 +75,7 @@ void MacroFunctions::shootOneBall()
 /**
  * Ejects one ball
 */
-void MacroFunctions::poopOneBall(void *param)
+void MacroFunctions::poopOneBall(void* param)
 {
 	poopingStatus = false;
 	bool useTopRoller = (bool)param;
@@ -112,6 +85,16 @@ void MacroFunctions::poopOneBall(void *param)
 		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
+
+		// Reverse upper stack to allow upper ball to be ejected
+		if (indexer.getTopStatus != "") {
+			while (indexer.getTopStatus != "") {
+				upperStack = -127;
+				lowerStack = -127;
+			}
+		}
+
+
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
 		{
@@ -163,7 +146,7 @@ void MacroFunctions::poopOneBall(void *param)
 /**
  * Ejects two balls
 */
-void MacroFunctions::poopTwoBalls(void *param)
+void MacroFunctions::poopTwoBalls(void* param)
 {
 	poopingStatus = false;
 	bool useTopRoller = (bool)param;
@@ -173,6 +156,14 @@ void MacroFunctions::poopTwoBalls(void *param)
 		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
+
+		// Reverse upper stack to allow upper ball to be ejected
+		if (indexer.getTopStatus != "") {
+			while (indexer.getTopStatus != "") {
+				upperStack = -127;
+				lowerStack = -127;
+			}
+		}
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)

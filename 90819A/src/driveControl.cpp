@@ -1,5 +1,17 @@
 #include "driveControl.h"
 
+
+// Variables to control states of buttons
+bool r1Pressed = false;
+bool r2Pressed = false;
+bool l1Pressed = false;
+bool l2Pressed = false;
+bool rightArrowPressed = false;
+bool rightArrowActive = false;
+bool topArrowPressed = false;
+bool topArrowActive = false;
+
+
 /**
  * Assigns motor speeds according to parameters:
  * motorSpeed: forward or backward speeds
@@ -68,35 +80,35 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 }
 
 /**
- * Creates task to shoot one ball 
+ * Creates task to shoot one ball
  */
 void shootOneBallFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootOneBallAsync, NULL, "Ball Shooter");
+	pros::Task indexShootingController(indexerFunctions.shootOneBall, NULL, "Ball Shooter");
 }
 
 /**
- * Creates task to shoot two balls 
+ * Creates task to shoot two balls
  */
 void shootTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootTwoBallsAsync, NULL, "Ball Shooter 2");
+	pros::Task indexShootingController(indexerFunctions.shootTwoBalls, NULL, "Ball Shooter 2");
 }
 
 /**
  * Creates task to eject one ball
  */
-void poopOneBallFunction()
+void poopOneBallFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(indexerFunctions.poopOneBall, NULL, "Ball Pooper");
+	pros::Task indexShootingController(indexerFunctions.poopOneBall, (void*)(useTopRoller), "Ball Pooper");
 }
 
 /**
  * Creates task to eject two balls
  */
-void poopTwoBallsFunction()
+void poopTwoBallsFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void *)false, "Ball Pooper 2");
+	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void*)(useTopRoller), "Ball Pooper 2");
 }
 
 /**
@@ -147,21 +159,81 @@ void driveControl()
 			intakeMotorRight = -127;
 		}
 
-
-		//Controls shooting
-		if (controller.get_digital(DIGITAL_R1))
+		//Controls shooting two balls
+		if (controller.get_digital(DIGITAL_R2))
 		{
+			r2Pressed = true;
+		}
+		else if (r2Pressed) {
+			shootTwoBallsFunction();
+			r2Pressed = false;
+		}
+
+		//Controls shooting one ball
+		else if (controller.get_digital(DIGITAL_R1))
+		{
+			r1Pressed = true;
+		}
+		else if (r1Pressed) {
 			shootOneBallFunction();
+			r1Pressed = false;
 		}
 
-		//Controls ejecting
-		if (controller.get_digital(DIGITAL_L1))
+		//Controls ejecting two balls
+		if (controller.get_digital(DIGITAL_L2))
 		{
-			poopOneBallFunction();
+			l2Pressed = true;
 		}
-		else if (controller.get_digital(DIGITAL_L2))
+		else if (l2Pressed) {
+			poopTwoBallsFunction(controller.get_digital(DIGITAL_LEFT));
+			l2Pressed = false;
+		}
+
+		//Controls ejecting one ball
+		else if (controller.get_digital(DIGITAL_L1))
 		{
-			poopTwoBallsFunction();
+			l1Pressed = true;
+		}
+		else if (l1Pressed) {
+			poopOneBallFunction(controller.get_digital(DIGITAL_LEFT));
+			l1Pressed = false;
+		}
+
+		if (controller.get_digital(DIGITAL_RIGHT)) {
+			rightArrowPressed = true;
+		}
+		else if (rightArrowPressed) {
+			if (rightArrowActive) {
+				indexer.toggleBottom(false);
+				indexer.toggleTop(false);
+				rightArrowActive = false;
+			}
+			else {
+				indexer.toggleBottom(true);
+				indexer.toggleTop(true);
+				upperStack = -127;
+				lowerStack = -127;
+				topArrowActive = false;
+				rightArrowActive = true;
+			}
+			rightArrowPressed = false;
+		}
+		else if (controller.get_digital(DIGITAL_TOP)) {
+			topArrowPressed = true;
+		}
+		else if (topArrowPressed) {
+			if (topArrowActive) {
+				indexer.toggleBottom(false);
+				indexer.toggleTop(false);
+				topArrowActive = false;
+			}
+			else {
+				indexer.toggleBottom(true);
+				lowerStack = -127;
+				rightArrowActive = false;
+				topArrowActive = true;
+			}
+			topArrowPressed = false;
 		}
 
 		pros::delay(10);
