@@ -20,6 +20,7 @@ public:
 	static void poopTwoBalls(void* param);
 	static void shootTwoBallsAsync(void* ignore);
 	static void toggleIntakes(int speed);
+	static void deploy(void* ignore);
 };
 
 #endif

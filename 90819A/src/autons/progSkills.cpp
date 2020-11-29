@@ -226,19 +226,19 @@ void descoreMiddle()
 	pidForward(M_PI, {{62, 105}, {62, 57}}, 80, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(3 * M_PI / 2, 80, 0.025, 140.0, 0.0, 0.0);
 	indexerFunctions.toggleIntakes(0);
-	pidForward(3 * M_PI / 2, {{62, 55}, {53, 55}}, 100, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(3 * M_PI / 2, {{62, 54.5}, {53, 54.5}}, 100, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
 	rightBackMotor = -63;
 	pros::delay(750);
-	pidForward(3 * M_PI / 2, {{62, 55}, {53, 55}}, 100, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(3 * M_PI / 2, {{62, 54.5}, {53, 54.5}}, 100, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
 	rightBackMotor = -63;
 	pros::delay(750);
-	pidForward(3 * M_PI / 2, {{62, 55}, {53, 55}}, 100, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(3 * M_PI / 2, {{62, 54.5}, {53, 54.5}}, 127, 0.5, 80, 40, -20, 0, 0, 0, 0, 0, 0, true);
 	leftBackMotor = -63;
 	leftFrontMotor = -63;
 	rightFrontMotor = -63;
@@ -303,7 +303,7 @@ void seventhGoal()
 	pidForward(M_PI, {{77, 61}, {77, 18}}, 100, 0.5, 50, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	// pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI / 2 + M_PI / 4, 80, 0.025, 100.0, 0.0, 0.0);
-	pidForward(M_PI / 2 + M_PI / 4, {{92, 12}, {93, 11}}, 100, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI / 2 + M_PI / 4, {{93, 12}, {94, 11}}, 100, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	indexerFunctions.shootOneBall();
 	while (!intakeStatus)
@@ -362,7 +362,7 @@ void ninthGoal()
 	// indexer.toggleBottom(true);
 	// upperStack = 100;
 	// lowerStack = 127;
-	pidForward(2 * M_PI, {{36, 20}, {36, 44}}, 80, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(2 * M_PI, {{36, 20}, {36, 43}}, 63, 0.5, 50, 40, 30, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootOneBall();
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);

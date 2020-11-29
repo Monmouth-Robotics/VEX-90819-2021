@@ -5,6 +5,10 @@ bool poopingStatus = false;
 /**
  * Shoots one ball (specifically for async shooting)
 */
+void MacroFunctions::deploy(void *ignore)
+{
+}
+
 void MacroFunctions::shootOneBallAsync(void *ignore)
 {
 	//Disables automated control of top roller
@@ -33,7 +37,7 @@ void MacroFunctions::shootTwoBallsAsync(void *ignore)
 	//Disables automated control of top and bottom rollers
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
-	
+
 	lowerStack = 0;
 	upperStack = 127;
 
@@ -104,7 +108,7 @@ void MacroFunctions::poopOneBall(void *param)
 	bool useTopRoller = (bool)param;
 
 	if (useTopRoller)
-	{	
+	{
 		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
@@ -129,7 +133,6 @@ void MacroFunctions::poopOneBall(void *param)
 		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
 		upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
-
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
@@ -166,7 +169,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 	bool useTopRoller = (bool)param;
 
 	if (useTopRoller)
-	{	
+	{
 		//Disables automated control of top and bottom rollers
 		indexer.toggleTop(true);
 		indexer.toggleBottom(true);
@@ -206,7 +209,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 		}
 	}
 	else
-	{	
+	{
 		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
 
@@ -249,7 +252,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 	//Resumes automated control of top and bottom rollers
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
-	
+
 	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	poopingStatus = true;

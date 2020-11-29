@@ -37,6 +37,8 @@ pros::Optical opticalSensor (9);
 
 //Limit switches
 pros::ADIDigitalIn limitSwitch('D');
+pros::ADIDigitalIn limitSwitchTop('C');
+
 
 
 
