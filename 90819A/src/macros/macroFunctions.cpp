@@ -210,7 +210,7 @@ void MacroFunctions::poopTwoBalls(void *param)
 		//Disables automated control of bottom roller
 		indexer.toggleBottom(true);
 
-		upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
+		upperStack.set_brake_mode(MOTOR_BRAKE_COAST);
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
