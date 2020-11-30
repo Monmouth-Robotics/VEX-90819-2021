@@ -185,7 +185,7 @@ void driveControl()
 			l2Pressed = true;
 		}
 		else if (l2Pressed) {
-			poopTwoBallsFunction(controller.get_digital(DIGITAL_LEFT));
+			poopTwoBallsFunction(!(controller.get_digital(DIGITAL_LEFT)));
 			l2Pressed = false;
 		}
 
@@ -194,8 +194,9 @@ void driveControl()
 		{
 			l1Pressed = true;
 		}
+
 		else if (l1Pressed) {
-			poopOneBallFunction(controller.get_digital(DIGITAL_LEFT));
+			poopOneBallFunction(!(controller.get_digital(DIGITAL_LEFT)));
 			l1Pressed = false;
 		}
 
@@ -218,7 +219,7 @@ void driveControl()
 			}
 			rightArrowPressed = false;
 		}
-		else if (controller.get_digital(DIGITAL_TOP)) {
+		else if (controller.get_digital(DIGITAL_UP)) {
 			topArrowPressed = true;
 		}
 		else if (topArrowPressed) {

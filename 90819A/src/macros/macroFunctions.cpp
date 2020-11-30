@@ -47,7 +47,7 @@ void MacroFunctions::shootTwoBalls(void* ignore)
 /**
  * Shoots one ball
 */
-void MacroFunctions::shootOneBall()
+void MacroFunctions::shootOneBall(void* ignore)
 {
 	//Disables automated control of top roller
 	indexer.toggleTop(true);
@@ -87,12 +87,10 @@ void MacroFunctions::poopOneBall(void* param)
 		indexer.toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-		if (indexer.getTopStatus != "") {
-			while (indexer.getTopStatus != "") {
+			while (indexer.getTopStatus() != "") {
 				upperStack = -127;
 				lowerStack = -127;
 			}
-		}
 
 
 		//Waits until ball is ejected
@@ -158,12 +156,10 @@ void MacroFunctions::poopTwoBalls(void* param)
 		indexer.toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-		if (indexer.getTopStatus != "") {
-			while (indexer.getTopStatus != "") {
+			while (indexer.getTopStatus() != "") {
 				upperStack = -127;
 				lowerStack = -127;
 			}
-		}
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
