@@ -10,6 +10,7 @@ bool rightArrowPressed = false;
 bool rightArrowActive = false;
 bool topArrowPressed = false;
 bool topArrowActive = false;
+bool shiftKeyPressed = false;
 
 
 /**
@@ -185,21 +186,29 @@ void driveControl()
 		if (controller.get_digital(DIGITAL_L2))
 		{
 			l2Pressed = true;
+			if (controller.get_digital(DIGITAL_LEFT)) {
+				shiftKeyPressed = true;
+			}
 		}
 		else if (l2Pressed) {
-			poopTwoBallsFunction(!(controller.get_digital(DIGITAL_LEFT)));
+			poopTwoBallsFunction(!(shiftKeyPressed));
 			l2Pressed = false;
+			shiftKeyPressed = false;
 		}
 
 		//Controls ejecting one ball
 		else if (controller.get_digital(DIGITAL_L1))
 		{
 			l1Pressed = true;
+			if (controller.get_digital(DIGITAL_LEFT)) {
+				shiftKeyPressed = true;
+			}
 		}
 
 		else if (l1Pressed) {
-			poopOneBallFunction(!(controller.get_digital(DIGITAL_LEFT)));
+			poopOneBallFunction(!(shiftKeyPressed));
 			l1Pressed = false;
+			shiftKeyPressed = false;
 		}
 
 		if (controller.get_digital(DIGITAL_RIGHT)) {
