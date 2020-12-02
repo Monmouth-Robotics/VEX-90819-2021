@@ -19,6 +19,7 @@ public:
 	static void poopOneBall(void* param);
 	static void poopTwoBalls(void* param);
 	static void toggleIntakes(int speed);
+	static void deploy(void* ignore);
 };
 
 #endif

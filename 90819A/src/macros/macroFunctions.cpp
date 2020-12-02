@@ -9,35 +9,37 @@ void MacroFunctions::shootTwoBalls(void* ignore)
 {
 	//Disables automated control of top and bottom rollers
 	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
 
-	lowerStack = 0;
 	upperStack = 127;
 
 	//Shoots until ball leaves top indexing position
-	while (indexer.getTopStatus() != "")
-	{
+	while (limitSwitchTop.get_value() == 0){
 		pros::delay(10);
 	}
 
-	lowerStack = 127;
-	upperStack = 127;
+	while (limitSwitchTop.get_value() == 1)
+	{	
+		pros::delay(10);
+	}
+
+	// lowerStack = 127;
+	// upperStack = 127;
 
 	//Waits for ball to be located in top indexing position
-	while (indexer.getTopStatus() == "")
+	while (limitSwitchTop.get_value() == 0)
 	{
 		pros::delay(10);
 	}
 
-	lowerStack = 0;
+	// lowerStack = 0;
 
 	//Shoots until ball leaves top indexing position
-	while (indexer.getTopStatus() != "")
+	while (limitSwitchTop.get_value()==1)
 	{
 		pros::delay(10);
 	}
 
-	upperStack = 0;
+	// upperStack = 0;
 
 	//Resumes automated control of top and bottom rollers
 	indexer.toggleTop(false);
@@ -249,7 +251,18 @@ void MacroFunctions::poopTwoBalls(void* param)
  * Toggles intakes to given speed
 */
 void MacroFunctions::toggleIntakes(int speed)
+
 {
 	intakeMotorLeft = speed;
 	intakeMotorRight = speed;
+}
+
+void MacroFunctions::deploy(void* ignore){
+	// indexer.toggleTop(true);
+	// upperStack = -80;
+	// pros::delay(2000);
+	// toggleIntakes(127);
+	// // pros::delay(1000);
+	// indexer.toggleTop(false);
+
 }
