@@ -300,7 +300,7 @@ void seventhGoal()
 	// indexerFunctions.poopOneBall(NULL);
 	// indexer.toggleTopPosition(false);
 
-	pidForward(M_PI, { {77, 61}, {77, 18} }, 100, 0.5, 50, 15, -30, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI, { {77, 61}, {77, 18} }, 100, 0.5, 100, 15, -30, 0, 0, 0, 0, 0, 0, true);
 	// pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI / 2 + M_PI / 4, 80, 0.025, 100.0, 0.0, 0.0);
 	pidForward(M_PI / 2 + M_PI / 4, { {93, 12}, {94, 11} }, 100, 0.5, 50, 20, 30, 0, 0, 0, 0, 0, 0, true);
