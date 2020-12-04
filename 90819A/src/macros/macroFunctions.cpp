@@ -257,19 +257,19 @@ void MacroFunctions::toggleIntakes(int speed)
 {
 	intakeMotorLeft = speed;
 	intakeMotorRight = speed;
-	intakeMotorLeft = speed;
-	intakeMotorRight = speed;
-	intakeMotorLeft = speed;
-	intakeMotorRight = speed;
 	
 }
 
 void MacroFunctions::deploy(void* ignore){
-	// indexer.toggleTop(true);
-	// upperStack = -80;
-	// pros::delay(2000);
-	// toggleIntakes(127);
-	// // pros::delay(1000);
-	// indexer.toggleTop(false);
-
+	indexer.toggleTop(true);
+	indexer.toggleTop(true);
+	lowerStack = 0;
+	upperStack = -80;
+	pros::delay(1500);
+	toggleIntakes(127);
+	indexer.toggleTop(false);
+	upperStack = 0;
+	lowerStack = 127;
+	pros::delay(1000);
+	indexer.toggleBottom(false);
 }
