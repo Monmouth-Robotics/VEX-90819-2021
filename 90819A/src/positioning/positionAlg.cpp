@@ -29,8 +29,8 @@ double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
 
-vector<double> positionVector = {0, 0};
-vector<double> newVector = {0, 0};
+vector<double> positionVector = { 0, 0 };
+vector<double> newVector = { 0, 0 };
 
 vector<double> testVector(1000, -1);
 vector<double> leftVector(1000, 999999);
@@ -87,15 +87,81 @@ double PositionAlg::calcAngleDiff(double angle1, double angle2)
 	}
 }
 
+/**
+ * Calculates the average heading for two inertial sensors
+ */
+double averageHeadings(double angle1, double angle2) {
+	double diff1, diff2;
+	if (angle1 > M_PI) {
+		diff1 = angle1 - 2 * M_PI;
+	}
+	else {
+		diff1 = angle1;
+	}
+
+	if (angle2 > M_PI) {
+		diff2 = angle2 - 2 * M_PI;
+	}
+	else {
+		diff2 = angle2;
+	}
+
+
+	double avgAngle = (diff1 + diff2) / 2;
+
+	if (avgAngle < 0) {
+		return 2 * M_PI + avgAngle;
+	}
+	else {
+		return avgAngle;
+	}
+}
+
+/**
+ * Calculates the average heading for three inertial sensors
+ */
+double averageHeadings(double angle1, double angle2, double angle3) {
+	double diff1, diff2, diff3;
+	if (angle1 > M_PI) {
+		diff1 = angle1 - 2 * M_PI;
+	}
+	else {
+		diff1 = angle1;
+	}
+
+	if (angle2 > M_PI) {
+		diff2 = angle2 - 2 * M_PI;
+	}
+	else {
+		diff2 = angle2;
+	}
+
+	if (angle3 > M_PI) {
+		diff3 = angle3 - 2 * M_PI;
+	}
+	else {
+		diff3 = angle3;
+	}
+
+	double avgAngle = (diff1 + diff2 + diff3) / 3;
+
+	if (avgAngle < 0) {
+		return 2 * M_PI + avgAngle;
+	}
+	else {
+		return avgAngle;
+	}
+}
+
 
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionAlg::calcPosition(void *ignore)
+void PositionAlg::calcPosition(void* ignore)
 {
 
 	while (true)
-	{	
+	{
 		//Gets raw values from encoders
 		leftEncoderDegrees = leftEncoder.get_value();
 		rightEncoderDegrees = rightEncoder.get_value();
@@ -107,12 +173,12 @@ void PositionAlg::calcPosition(void *ignore)
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
 		rightEncoderDegreesDifference = rightEncoderDegrees - previousRightEncoderDegrees;
 		backEncoderDegreesDifference = backEncoderDegrees - previousBackEncoderDegrees;
-		
+
 		//Sets last encoder measurement
 		previousLeftEncoderDegrees = leftEncoderDegrees;
 		previousRightEncoderDegrees = rightEncoderDegrees;
 		previousBackEncoderDegrees = backEncoderDegrees;
-		
+
 		//Converts encoder degrees to distance in inches
 		leftEncoderDistance = leftEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 		rightEncoderDistance = rightEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
@@ -121,13 +187,14 @@ void PositionAlg::calcPosition(void *ignore)
 		//Gets heading values from inertial
 		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
 		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
-		
+
 		//Checks if calibration in complete
 		if (inertLeft != INFINITY && inertRight != INFINITY)
 		{
 			//Calculates average of inertial readings
-			theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
-			
+			theta = averageHeadings(inertLeft, inertRight);
+			//theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
+
 			//Adjusts theta to be between 0 and 2pi
 			while (theta > M_PI * 2)
 			{
@@ -165,7 +232,7 @@ void PositionAlg::calcPosition(void *ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta*180/M_PI);
+		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
 	}
 }

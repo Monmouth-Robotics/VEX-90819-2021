@@ -19,7 +19,6 @@ public:
 	static double getTheta(void);
 	static double getThetaInertial(void);
 	static double calcAngleDiff(double angle1, double angle2);
-
 };
 
 #endif
