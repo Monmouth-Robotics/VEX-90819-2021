@@ -31,6 +31,7 @@ extern pros::ADIUltrasonic ultrasonicBottomLower;
 
 extern pros::Imu imuLeft;
 extern pros::Imu imuRight;
+extern pros::Imu imuCenter;
 
 extern pros::ADIDigitalIn limitSwitch;
 extern pros::ADIDigitalIn limitSwitchTop;

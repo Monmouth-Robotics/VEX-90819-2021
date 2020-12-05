@@ -24,6 +24,8 @@ void MacroFunctions::shootTwoBalls(void* ignore)
 		pros::delay(10);
 	}
 
+	pros::delay(250);
+
 	lowerStack = 127;
 	upperStack = 127;
 
@@ -263,14 +265,16 @@ void MacroFunctions::toggleIntakes(int speed)
 void MacroFunctions::deploy(void* ignore){
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
-	lowerStack = -55;
-	upperStack = 0;
-	pros::delay(1000);
+	lowerStack = -63;
+	upperStack = -80;
+	pros::delay(500);
 	// upperStack = -80;
 	// lowerStack = 0;
 	// pros::delay(1000);
-	toggleIntakes(127);
-	
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
+	toggleIntakes(127);
+	pros::delay(500);
+	
+
 }

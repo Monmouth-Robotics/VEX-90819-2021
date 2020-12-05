@@ -66,7 +66,7 @@ void Indexing::indexingTask(void *ignore)
 	opticalSensor.set_led_pwm(100);
 
 	while (true)
-	{	
+	{
 		//Determines status of top indexing position (not color sensitive)
 		if (ultrasonicTopUpper.get_value() < 80 || ultrasonicTopLower.get_value() < 80)
 		{
@@ -102,7 +102,7 @@ void Indexing::indexingTask(void *ignore)
 		}
 
 		if (topPositionDisabled)
-		{	
+		{
 			if (topBallDetected != "")
 			{
 				upperStack = -127;
@@ -133,9 +133,9 @@ void Indexing::indexingTask(void *ignore)
 			if (topBallDetected != "")
 			{
 				if (!topDisabled)
-				{	
+				{
 					//Spins top roller backwards if only the top upper ultrasonic is triggered
-					if ((ultrasonicTopUpper.get_value() < 80 && ultrasonicTopLower.get_value() > 80) || limitSwitchTop.get_value() == 1) 
+					if ((ultrasonicTopUpper.get_value() < 80 && ultrasonicTopLower.get_value() > 80) || limitSwitchTop.get_value() == 1)
 					{
 						upperStack = -50;
 					}
@@ -154,14 +154,14 @@ void Indexing::indexingTask(void *ignore)
 				if (bottomBallDetected != "")
 				{
 					if (!bottomDisabled)
-					{	
+					{
 						lowerStack = 0;
 						//Spins bottom roller backwards if only the bottom upper ultrasonic is triggered
 						// if (ultrasonicBottomUpper.get_value() < 80 && ultrasonicBottomLower.get_value() > 80)
 						// {
 						// 	lowerStack = -50;
 						// }
-						
+
 						// //Spins bottom roller forwards slowly if only the bottom lower ultrasonic is triggered
 						// else if (ultrasonicBottomLower.get_value() < 80 && ultrasonicBottomUpper.get_value() > 80)
 						// {
@@ -174,11 +174,15 @@ void Indexing::indexingTask(void *ignore)
 						// }
 					}
 				}
-				else {
-					lowerStack = 63;
+				else
+				{
+					if (!bottomDisabled)
+					{
+						lowerStack = 63;
+					}
 				}
 			}
-		 	else
+			else
 			{
 				if (!bottomDisabled)
 				{

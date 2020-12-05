@@ -29,8 +29,8 @@ double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
 
-vector<double> positionVector = { 0, 0 };
-vector<double> newVector = { 0, 0 };
+vector<double> positionVector = {0, 0};
+vector<double> newVector = {0, 0};
 
 vector<double> testVector(1000, -1);
 vector<double> leftVector(1000, 999999);
@@ -47,6 +47,7 @@ double inertLast = 0;
 double inertLeft = 0;
 double inertRight = 0;
 double inertTheta = 0;
+double inertCenter = 0;
 int count2 = 0;
 
 /**
@@ -68,6 +69,29 @@ vector<double> PositionAlg::getPosition()
 /**
  * Calculates signed difference between two angles
  */
+
+double PositionAlg::headingAverageBeta(double angle1, double angle2, double angle3)
+{
+	double oneTwo = calcAngleDiff(angle1, angle2);
+	double twoThree = calcAngleDiff(angle2, angle3);
+	double oneThree = calcAngleDiff(angle1, angle3);
+
+	if (abs(oneTwo) < abs(twoThree) && abs(oneTwo) < abs(oneThree))
+	{
+		return angle1 + calcAngleDiff(angle2, angle1) / 2;
+			
+	}
+	else if (abs(twoThree) < abs(oneTwo) && abs(twoThree) < abs(oneThree))
+	{
+		return angle2 + calcAngleDiff(angle3, angle2) / 2;
+	}
+	else
+	{
+		return angle3 + calcAngleDiff(angle1, angle3) / 2;
+	}
+	
+}
+
 double PositionAlg::calcAngleDiff(double angle1, double angle2)
 {
 	double num1 = angle1 - angle2;
@@ -90,29 +114,35 @@ double PositionAlg::calcAngleDiff(double angle1, double angle2)
 /**
  * Calculates the average heading for two inertial sensors
  */
-double averageHeadings(double angle1, double angle2) {
+double averageHeadings(double angle1, double angle2)
+{
 	double diff1, diff2;
-	if (angle1 > M_PI) {
+	if (angle1 > M_PI)
+	{
 		diff1 = angle1 - 2 * M_PI;
 	}
-	else {
+	else
+	{
 		diff1 = angle1;
 	}
 
-	if (angle2 > M_PI) {
+	if (angle2 > M_PI)
+	{
 		diff2 = angle2 - 2 * M_PI;
 	}
-	else {
+	else
+	{
 		diff2 = angle2;
 	}
 
-
 	double avgAngle = (diff1 + diff2) / 2;
 
-	if (avgAngle < 0) {
+	if (avgAngle < 0)
+	{
 		return 2 * M_PI + avgAngle;
 	}
-	else {
+	else
+	{
 		return avgAngle;
 	}
 }
@@ -120,44 +150,52 @@ double averageHeadings(double angle1, double angle2) {
 /**
  * Calculates the average heading for three inertial sensors
  */
-double averageHeadings(double angle1, double angle2, double angle3) {
+double averageHeadings(double angle1, double angle2, double angle3)
+{
 	double diff1, diff2, diff3;
-	if (angle1 > M_PI) {
+	if (angle1 > M_PI)
+	{
 		diff1 = angle1 - 2 * M_PI;
 	}
-	else {
+	else
+	{
 		diff1 = angle1;
 	}
 
-	if (angle2 > M_PI) {
+	if (angle2 > M_PI)
+	{
 		diff2 = angle2 - 2 * M_PI;
 	}
-	else {
+	else
+	{
 		diff2 = angle2;
 	}
 
-	if (angle3 > M_PI) {
+	if (angle3 > M_PI)
+	{
 		diff3 = angle3 - 2 * M_PI;
 	}
-	else {
+	else
+	{
 		diff3 = angle3;
 	}
 
 	double avgAngle = (diff1 + diff2 + diff3) / 3;
 
-	if (avgAngle < 0) {
+	if (avgAngle < 0)
+	{
 		return 2 * M_PI + avgAngle;
 	}
-	else {
+	else
+	{
 		return avgAngle;
 	}
 }
 
-
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionAlg::calcPosition(void* ignore)
+void PositionAlg::calcPosition(void *ignore)
 {
 
 	while (true)
@@ -167,7 +205,7 @@ void PositionAlg::calcPosition(void* ignore)
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
 
-		// printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees );
+		printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees);
 
 		//Finds the amount of degrees turned since last reading
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
@@ -187,13 +225,14 @@ void PositionAlg::calcPosition(void* ignore)
 		//Gets heading values from inertial
 		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
 		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
-
+		inertCenter = abs(imuCenter.get_heading()) * M_PI / 180;
 		//Checks if calibration in complete
-		if (inertLeft != INFINITY && inertRight != INFINITY)
+		if (inertLeft != INFINITY && inertRight != INFINITY && inertCenter != INFINITY)
 		{
 			//Calculates average of inertial readings
-			theta = averageHeadings(inertLeft, inertRight);
-			//theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
+			theta = headingAverageBeta(inertLeft, inertRight, inertCenter);
+			// theta = averageHeadings(inertLeft, inertRight, inertCenter);
+			// theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
 
 			//Adjusts theta to be between 0 and 2pi
 			while (theta > M_PI * 2)
@@ -232,6 +271,7 @@ void PositionAlg::calcPosition(void* ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
+		printf("IMUs: %.3f, %.3f, %.3f\n", inertLeft * 180 / M_PI, inertRight * 180 / M_PI, inertCenter * 180 / M_PI);
 		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
 	}
