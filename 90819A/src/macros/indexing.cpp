@@ -137,13 +137,13 @@ void Indexing::indexingTask(void *ignore)
 					//Spins top roller backwards if only the top upper ultrasonic is triggered
 					if ((ultrasonicTopUpper.get_value() < 80 && ultrasonicTopLower.get_value() > 80) || limitSwitchTop.get_value() == 1)
 					{
-						upperStack = -63;
+						upperStack = -50;
 					}
 
 					//Spins top roller forwards slowly if only the top lower ultrasonic is triggered
 					else if (ultrasonicTopLower.get_value() < 80 && ultrasonicTopUpper.get_value() > 80)
 					{
-						upperStack = 10;
+						upperStack = 30;
 					}
 
 					else
