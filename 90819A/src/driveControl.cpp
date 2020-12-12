@@ -6,6 +6,7 @@ bool r1Pressed = false;
 bool r2Pressed = false;
 bool l1Pressed = false;
 bool l2Pressed = false;
+bool xPressed = false;
 bool rightArrowPressed = false;
 bool rightArrowActive = false;
 bool topArrowPressed = false;
@@ -97,6 +98,14 @@ void shootTwoBallsFunction()
 }
 
 /**
+ * Creates task to shoot powerful
+ */
+void shootPowerfulFunction()
+{
+	pros::Task indexShootingController(indexerFunctions.shootPowerful, NULL, "Shoot Powerful");
+}
+
+/**
  * Creates task to eject one ball
  */
 void poopOneBallFunction(bool useTopRoller)
@@ -160,6 +169,17 @@ void driveControl()
 		{
 			intakeMotorLeft = -127;
 			intakeMotorRight = -127;
+		}
+
+		//Controls shooting powerful
+		if (controller.get_digital(DIGITAL_X))
+		{
+			xPressed = true;
+		}
+		else if (xPressed)
+		{
+			shootPowerfulFunction();
+			xPressed = false;
 		}
 
 		//Controls shooting two balls

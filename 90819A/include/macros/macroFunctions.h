@@ -14,6 +14,7 @@ using namespace std;
 class MacroFunctions
 {
 public:
+	static void shootPowerful(void *ignore);
 	static void shootOneBall(void* ignore);
 	static void shootTwoBalls(void* ignore);
 	static void poopOneBall(void* param);

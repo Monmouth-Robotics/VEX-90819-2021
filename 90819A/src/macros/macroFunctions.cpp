@@ -5,6 +5,27 @@ bool poopingStatus = false;
 /**
  * Shoots two balls
 */
+void MacroFunctions::shootPowerful(void* ignore)
+{
+	//disables automated control of top and bottom roller
+	indexer.toggleTop(true);
+	indexer.toggleBottom(true);
+
+	upperStack = -127;
+	lowerStack = -63;
+	// lowerStack = -127;
+
+	pros::delay(250);
+	
+	indexer.toggleTop(false);
+	indexer.toggleBottom(false);
+
+	// upperStack = 127;
+	// lowerStack = 127;
+	
+	shootOneBall(NULL);
+}
+
 void MacroFunctions::shootTwoBalls(void* ignore)
 {
 	//Disables automated control of top and bottom rollers
@@ -60,18 +81,15 @@ void MacroFunctions::shootOneBall(void* ignore)
 	upperStack = 127;
 
 	//Waits for ball to be located in top indexing position
-	while (indexer.getTopStatus() == "")
+	while (limitSwitchTop.get_value() == 0)
 	{
 		pros::delay(10);
 	}
 
 	//Shoots until ball leaves top indexing position
-	if (indexer.getTopStatus() != "")
+	while (limitSwitchTop.get_value() == 1)
 	{
-		while (indexer.getTopStatus() != "")
-		{
-			pros::delay(10);
-		}
+		pros::delay(10);
 	}
 
 	//Resumes automated control of top roller
