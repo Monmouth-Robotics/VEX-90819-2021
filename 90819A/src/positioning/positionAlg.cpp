@@ -1,5 +1,7 @@
 #include "positioning/positionAlg.h"
 
+//eric/#4 test
+
 double WHEEL_DIAMETER = 2.75;
 double DISTANCE_TO_LEFT_ENCODER = 5.375;
 double DISTANCE_TO_RIGHT_ENCODER = 5.375;
