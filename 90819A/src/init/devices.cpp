@@ -1,7 +1,5 @@
 #include "init/devices.h"
 
-//made a change
-
 //Controllers
 pros::Controller controller(CONTROLLER_MASTER);
 
