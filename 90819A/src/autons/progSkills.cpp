@@ -326,7 +326,7 @@ void seventhGoal()
 	// indexerFunctions.poopOneBall(NULL);
 	// indexer.toggleTopPosition(false);
 
-	pidForward(M_PI, { {79, 61}, {79, 24} }, 100, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(M_PI, { {78, 61}, {78, 24} }, 100, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
 	// pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
 	pidTurn(M_PI / 2 + M_PI / 4, 100, 0.025, 120.0, 0.0, 0.0);
 	pidForward(M_PI / 2 + M_PI / 4, { {96, 14}, {97, 13} }, 100, 0.5, 50, 40, 30, 0, 0, 0, 0, 0, 0, true);
@@ -405,7 +405,7 @@ void ninthGoal()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pidTurn(2 * M_PI, 63, 0.025, 100.0, 0.0, 0.0);
+	pidTurn(2 * M_PI, 80, 0.025, 100.0, 0.0, 0.0);
 	// indexerFunctions.poopOneBall((void *) true);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void*)true, "Poop Controller");
 	// indexer.toggleTop(true);
