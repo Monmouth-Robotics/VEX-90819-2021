@@ -1,4 +1,4 @@
-#include "display.h"
+#include "init/display.h"
 
 lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
 int autonCode = 5;

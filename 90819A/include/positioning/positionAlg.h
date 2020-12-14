@@ -6,6 +6,8 @@
 
 #include "api.h"
 #include "init/devices.h"
+#include "init/utility.h"
+
 #include <vector>
 
 using namespace std;
@@ -15,11 +17,9 @@ class PositionAlg
 public:
 	static void calcPosition(void *ignore);
 	static vector<double> getPosition(void);
-	static double headingAverageBeta(double angle1, double angle2, double angle3);
 	static void resetGlobal(void);
 	static double getTheta(void);
 	static double getThetaInertial(void);
-	static double calcAngleDiff(double angle1, double angle2);
 };
 
 #endif
