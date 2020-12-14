@@ -184,7 +184,7 @@ vector<vector<double>> generatePath(vector<vector<double>> initPoints, double sp
     //Invalid call if no points are defined
     if (initPoints.size() == 0)
     {
-        return;
+        return pointsList;
     }
 
     //Generates path from current robot position to provided coordinate

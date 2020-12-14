@@ -1,28 +1,6 @@
 #include "motion/pid.h"
 
 /**
- * Calculates signed difference between two headings
- */
-double calcAngleDiff(double angle1, double angle2)
-{
-	double num1 = angle1 - angle2;
-	double num2 = (angle1 - 2 * M_PI) - angle2;
-	double num3 = angle1 - (angle2 - 2 * M_PI);
-	if (abs(num1) < abs(num2) && abs(num1) < abs(num3))
-	{
-		return num1;
-	}
-	else if (abs(num2) < abs(num1) && abs(num2) < abs(num3))
-	{
-		return num2;
-	}
-	else
-	{
-		return num3;
-	}
-}
-
-/**
  * Turns using PID control
  * 
  * Parameters:
