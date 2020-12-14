@@ -6,7 +6,7 @@
 #include "api.h"
 #include "init/devices.h"
 #include "motion/pid.h"
-#include "motion/purePursuit.h"
+#include "motion/purePursuit/purePursuitOld.h"
 #include "macros/macroFunctions.h"
 #include "macros/macroInstances.h"
 

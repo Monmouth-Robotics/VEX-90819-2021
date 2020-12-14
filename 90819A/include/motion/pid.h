@@ -5,7 +5,7 @@
 #define PROS_USE_LITERALS
 #include "api.h"
 #include "positioning/positionAlg.h"
-#include "motion/purePursuit.h"
+#include "motion/purePursuit/purePursuitOld.h"
 #include "init/devices.h"
 #include <vector>
 
