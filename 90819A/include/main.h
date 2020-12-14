@@ -38,7 +38,7 @@
 #include "init/devices.h"
 #include "init/display.h"
 #include "autons/progSkills.h"
-#include "motion/purePursuit.h"
+#include "motion/purePursuit/purePursuitOld.h"
 #include "driveControl.h"
 
 /**
