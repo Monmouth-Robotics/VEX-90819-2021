@@ -176,7 +176,7 @@ vector<double> calculateVelocity(vector<vector<double>> pointsList, vector<doubl
     return velList;
 }
 
-void generatePath(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant){
+vector<vector<double>> generatePath(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant){
     //Initialize points list as an empty vector
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
@@ -221,4 +221,6 @@ void generatePath(vector<vector<double>> initPoints, double spacing, double smoo
     for (int i = 0; i<velList.size(); i++){
         pointsList[i][2] = velList[i];
     }
+
+    return pointsList;
 }
