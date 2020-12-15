@@ -73,10 +73,10 @@ void autonomous()
 	position.resetGlobal();
 
 	//Set brake modes for all motors
-	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	lowerStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
