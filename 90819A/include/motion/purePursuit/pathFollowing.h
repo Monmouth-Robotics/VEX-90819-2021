@@ -8,5 +8,6 @@
 using namespace std;
 
 vector<double> getErrors(vector<double> currentPosition, vector<double>lookAheadPosition);
+void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle);
 
 #endif

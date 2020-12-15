@@ -445,10 +445,16 @@ void ninthGoal()
 */
 void runProgSkills()
 {	
-	// printf("here\n");
-	printf("banana\n");
+	// generatePath({{0, 0, 0}, {0, 10, 0}, {5, 15, M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0);
 
-	generatePath({{0, 0, 0}, {0, 10, 0}, {5, 15, M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0);
+	moveRobot({4, 1, 0.01}, 100, 100, 200);
+	// 	moveRobot({1, 4, 50}, 100, 100, 100);
+	// moveRobot({-4, 1, 50}, 100, 100, 100);
+	// moveRobot({-1, 4, 50}, 100, 100, 100);
+	// moveRobot({1, -4, 50}, 100, 100, 100);
+	// moveRobot({4, -1, 50}, 100, 100, 100);
+	// moveRobot({-1, -4, 50}, 100, 100, 100);
+	// moveRobot({-4, -1, 50}, 100, 100, 100);
 
 	// firstGoal();
 	// secondGoal();

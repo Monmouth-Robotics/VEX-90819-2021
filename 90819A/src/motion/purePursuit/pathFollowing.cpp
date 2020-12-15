@@ -5,7 +5,7 @@ Creates function that takes in current x, y, and theta and lookahead point x, y,
 Function rotates the lookahead position about the robot origin.
 */
 
-vector<double> getErrors(vector<double> currentPosition, vector<double>lookAheadPosition)
+vector<double> getErrors(vector<double> currentPosition, vector<double> lookAheadPosition)
 {
 	vector<double> adjustedError;
 
@@ -26,6 +26,110 @@ vector<double> getErrors(vector<double> currentPosition, vector<double>lookAhead
 	adjustedError[1] = yError;
 	adjustedError[2] = angleError;
 
-
 	return adjustedError;
+}
+
+double findPercentage(double xError, double yError)
+{
+	if (abs(xError) < abs(yError))
+	{
+		return (1 - abs(xError / yError));
+	}
+	else
+	{
+		return (1 - abs(yError / xError));
+	}
+}
+
+double signum(double number)
+{
+	if (number > 0)
+	{
+		return 1.0;
+	}
+	else if (number < 0)
+	{
+		return -1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle)
+{
+	double maxPower = kPDistance * distanceError; //127
+
+	if (maxPower > 127)
+	{
+		maxPower = 127;
+	}
+	else if (maxPower < -127)
+	{
+		maxPower = -127;
+	}
+	double xError = errors[0];
+	double yError = errors[1];
+	double angleError = errors[2];
+
+	double leftFrontPower;
+	double leftBackPower;
+	double rightFrontPower;
+	double rightBackPower;
+
+	if (signum(xError) == signum(yError))
+	{
+		leftFrontPower = maxPower * signum(xError);
+		rightBackPower = maxPower * signum(xError);
+		if (xError > yError)
+		{
+			leftBackPower = -1 * maxPower * findPercentage(xError, yError);
+			rightFrontPower = -1 * maxPower * findPercentage(xError, yError);
+		}
+		else
+		{
+			leftBackPower = maxPower * findPercentage(xError, yError);
+			rightFrontPower = maxPower * findPercentage(xError, yError);
+		}
+	}
+	else
+	{
+		leftBackPower = maxPower * signum(yError);
+		rightFrontPower = maxPower * signum(yError);
+
+		if (abs(xError) > abs(yError))
+		{
+			leftFrontPower = signum(xError) * maxPower * findPercentage(xError, yError);
+			rightBackPower = signum(xError) * maxPower * findPercentage(xError, yError);
+		}
+		else
+		{
+			leftFrontPower = signum(yError) * maxPower * findPercentage(xError, yError);
+			rightBackPower = signum(yError) * maxPower * findPercentage(xError, yError);
+		}
+	}
+
+	double anglePower = angleError * kPAngle;
+
+	leftFrontPower += anglePower;
+	leftBackPower += anglePower;
+	rightFrontPower -= anglePower;
+	rightBackPower -= anglePower;
+
+	//Limits voltage of each motor under threshold and scales accordingly
+	double maxCurrSpeed = max(max(abs(leftFrontPower), abs(leftBackPower)), max(abs(rightFrontPower), abs(rightBackPower)));
+	if (maxCurrSpeed > maxPower)
+	{
+		leftFrontPower = leftFrontPower * (maxPower / maxCurrSpeed);
+		leftBackPower = leftBackPower * (maxPower / maxCurrSpeed);
+		rightFrontPower = rightFrontPower * (maxPower / maxCurrSpeed);
+		rightBackPower = rightBackPower * (maxPower / maxCurrSpeed);
+	}
+
+	// leftFrontMotor = leftFrontPower;
+	// leftBackMotor = leftBackPower;
+	// rightFrontMotor = rightFrontPower;
+	// rightBackMotor = rightBackPower;
+
+	printf("Motor speeds: %.3f, %.3f, %.3f, %.3f\n", leftFrontPower, rightBackPower, rightFrontPower, leftBackPower);
 }
