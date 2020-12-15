@@ -1,5 +1,6 @@
 #include "init/utility.h"
 
+
 /**
  * Calculates signed difference between two headings
  */
