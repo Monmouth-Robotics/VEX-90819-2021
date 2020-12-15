@@ -7,6 +7,7 @@
 #include "init/devices.h"
 #include "init/taskManagement.h"
 #include "motion/pid.h"
+#include "motion/purePursuit/pathGeneration.h"
 #include "macros/macroFunctions.h"
 #include "macros/macroInstances.h"
 

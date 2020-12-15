@@ -72,6 +72,7 @@ void autonomous()
 	//Reset position to (0,0,0)
 	position.resetGlobal();
 
+	// printf("here\n");
 	//Set brake modes for all motors
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
