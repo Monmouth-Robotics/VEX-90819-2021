@@ -15,7 +15,7 @@ using namespace std;
 class PositionAlg
 {
 public:
-	static void calcPosition(void *ignore);
+	static void calcPosition(void* ignore);
 	static vector<double> getPosition(void);
 	static void resetGlobal(void);
 	static double getTheta(void);

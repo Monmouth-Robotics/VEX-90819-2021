@@ -32,7 +32,7 @@ void stopIntakesAsync(void* ignore)
 	// indexerFunctions.toggleIntakes(0);
 
 	// pros::delay(500);
-	
+
 	indexerFunctions.toggleIntakes(0);
 
 }
@@ -57,7 +57,7 @@ void stopIntakesAsyncOne(void* ignore)
  * Route to score first goal
 */
 void firstGoal()
-{	
+{
 	indexerFunctions.deploy(NULL);
 	// pros::Task deploy(indexerFunctions.deploy, NULL, "Robot Deploy");
 	// indexerFunctions.toggleIntakes(127);
@@ -168,7 +168,7 @@ void fourthGoal()
 	pidBackward(5.76, { {-12, 115}, {11, 92} }, 100, 0.5, 50, 20, -50, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.toggleIntakes(127);
 	pros::delay(250);
-	pidTurn(M_PI / 2-0.008, 100, 0.025, 120.0, 0.0, 0.0);
+	pidTurn(M_PI / 2 - 0.008, 100, 0.025, 120.0, 0.0, 0.0);
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void*)true, "Poop Controller");
 	// indexerFunctions.poopOneBall(NULL);
 	// pros::delay(500);
@@ -262,14 +262,14 @@ void descoreMiddle()
 	rightFrontMotor = -63;
 	rightBackMotor = -63;
 	pros::delay(600);
-	
+
 	// pidBackward(3 * M_PI / 2, { {53, 55.5}, {62, 55.5} }, 127, 0.5, 100, 50, 20, 0, 0, 0, 0, 0, 0, true);
 	// pidForward(3 * M_PI / 2, { {62, 55.5}, {53, 55.5} }, 127, 0.5, 100, 50, -20, 0, 0, 0, 0, 0, 0, true);
 	// pidBackward(3 * M_PI / 2, { {53, 55.5}, {62, 55.5} }, 127, 0.5, 100, 50, 20, 0, 0, 0, 0, 0, 0, true);
 	// pidForward(3 * M_PI / 2, { {62, 55.5}, {53, 55.5} }, 127, 0.5, 100, 50, -20, 0, 0, 0, 0, 0, 0, true);
 	// pidBackward(3 * M_PI / 2, { {53, 55.5}, {62, 55.5} }, 127, 0.5, 100, 50, 20, 0, 0, 0, 0, 0, 0, true);
 
-	
+
 	indexerFunctions.toggleIntakes(127);
 
 	// leftBackMotor = 80;
@@ -320,7 +320,7 @@ void seventhGoal()
 {
 	pidBackward(M_PI / 2, { {83, 61}, {79, 61} }, 100, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.toggleIntakes(127);
-	pidTurn(M_PI-.08, 100, 0.025, 120.0, 0.0, 0.0);
+	pidTurn(M_PI - .08, 100, 0.025, 120.0, 0.0, 0.0);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void*)true, "Poop Controller");
 	// indexerFunctions.poopOneBall(NULL);
 	// indexerFunctions.poopOneBall(NULL);
@@ -347,7 +347,7 @@ void eighthGoal()
 {
 	pidBackward(M_PI / 2 + M_PI / 4, { {96, 13}, {82, 27} }, 100, 0.5, 50, 10, 20, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.toggleIntakes(127);
-	pidTurn(M_PI /2, 100, 0.025, 120.0, 0.0, 0.0);
+	pidTurn(M_PI / 2, 100, 0.025, 120.0, 0.0, 0.0);
 	pidForward(M_PI / 2, { {82, 29}, {92, 29} }, 100, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
 	// leftFrontMotor = -63;
 	// leftBackMotor = -63;
@@ -413,7 +413,7 @@ void ninthGoal()
 	// upperStack = 100;
 	// lowerStack = 127;
 	indexerFunctions.toggleIntakes(127);
-	pidForward(2 * M_PI, { {37, 20}, {37, 40}}, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
+	pidForward(2 * M_PI, { {37, 20}, {37, 40} }, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
 	indexerFunctions.shootPowerful(NULL);
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);

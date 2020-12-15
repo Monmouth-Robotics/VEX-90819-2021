@@ -16,13 +16,13 @@ void MacroFunctions::shootPowerful(void* ignore)
 	// lowerStack = -127;
 
 	pros::delay(250);
-	
+
 	indexer.toggleTop(false);
 	indexer.toggleBottom(false);
 
 	// upperStack = 127;
 	// lowerStack = 127;
-	
+
 	shootOneBall(NULL);
 }
 
@@ -35,13 +35,13 @@ void MacroFunctions::shootTwoBalls(void* ignore)
 	upperStack = 127;
 
 	//Waits for ball to be located in top indexing position
-	while (limitSwitchTop.get_value() == 0){
+	while (limitSwitchTop.get_value() == 0) {
 		pros::delay(10);
 	}
-	
+
 	//Shoots until ball leaves top indexing position
 	while (limitSwitchTop.get_value() == 1)
-	{	
+	{
 		pros::delay(10);
 	}
 
@@ -59,7 +59,7 @@ void MacroFunctions::shootTwoBalls(void* ignore)
 	lowerStack = 0;
 
 	//Shoots until ball leaves top indexing position
-	while (limitSwitchTop.get_value()==1)
+	while (limitSwitchTop.get_value() == 1)
 	{
 		pros::delay(10);
 	}
@@ -111,10 +111,10 @@ void MacroFunctions::poopOneBall(void* param)
 		indexer.toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-			while (indexer.getTopStatus() != "") {
-				upperStack = -127;
-				lowerStack = -127;
-			}
+		while (indexer.getTopStatus() != "") {
+			upperStack = -127;
+			lowerStack = -127;
+		}
 
 
 		//Waits until ball is ejected
@@ -180,10 +180,10 @@ void MacroFunctions::poopTwoBalls(void* param)
 		indexer.toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-			while (indexer.getTopStatus() != "") {
-				upperStack = -127;
-				lowerStack = -127;
-			}
+		while (indexer.getTopStatus() != "") {
+			upperStack = -127;
+			lowerStack = -127;
+		}
 
 		//Waits until ball is ejected
 		while (limitSwitch.get_value() != 1)
@@ -277,10 +277,10 @@ void MacroFunctions::toggleIntakes(int speed)
 {
 	intakeMotorLeft = speed;
 	intakeMotorRight = speed;
-	
+
 }
 
-void MacroFunctions::deploy(void* ignore){
+void MacroFunctions::deploy(void* ignore) {
 	indexer.toggleTop(true);
 	indexer.toggleBottom(true);
 	lowerStack = -63;
@@ -293,6 +293,6 @@ void MacroFunctions::deploy(void* ignore){
 	indexer.toggleBottom(false);
 	toggleIntakes(127);
 	pros::delay(500);
-	
+
 
 }

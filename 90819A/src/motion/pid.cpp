@@ -2,7 +2,7 @@
 
 /**
  * Turns using PID control
- * 
+ *
  * Parameters:
  * target: target heading
  * maxVel: max voltage supplied to motors
@@ -44,10 +44,10 @@ void pidTurn(double target, double maxVel, double thresholdError, double kP, dou
 		//Calculates derivative error
 		derivative = error - lastError;
 		lastError = error;
-		
+
 		//Calculates motor voltage using PID constants
 		power = kP * error + kI * integral + kD * derivative;
-		
+
 		//Limits calculated voltage under maximum
 		if (power > maxVel)
 			power = maxVel;
@@ -71,7 +71,7 @@ void pidTurn(double target, double maxVel, double thresholdError, double kP, dou
 
 /**
  * Moves forward using PID control
- * 
+ *
  * Parameters:
  * targetTheta: target heading for motion
  * distanceLine: list of points to generate ideal path
@@ -151,7 +151,7 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 		double adjThetaRobot = currTheta + beta - origTheta;
 		double rotatedCurrX = currX * cos(beta - origTheta) - currY * sin(beta - origTheta);
 		double rotatedCurrY = currX * sin(beta - origTheta) + currY * cos(beta - origTheta);
-		
+
 		//Calculates angle error
 		angleError = calcAngleDiff(targetTheta, currTheta);
 
@@ -240,7 +240,7 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 		double rightBackSpeed = powerDistance - powerAngle + powerDiff;
 
 		//Limits voltage of each motor under threshold and scales accordingly
-		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));	
+		double maxCurrSpeed = max(max(abs(leftFrontSpeed), abs(leftBackSpeed)), max(abs(rightFrontSpeed), abs(rightBackSpeed)));
 		if (maxCurrSpeed > maxVel)
 		{
 			leftFrontSpeed = leftFrontSpeed * (maxVel / maxCurrSpeed);
@@ -270,7 +270,7 @@ void pidForward(double targetTheta, vector<vector<double>> distanceLine, double 
 
 /**
  * Moves backward using PID control
- * 
+ *
  * Parameters:
  * targetTheta: target heading for motion
  * distanceLine: list of points to generate ideal path
@@ -340,7 +340,7 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	while (abs(distanceError) > thresholdDistanceError)
-	{	
+	{
 		//Gets robot's current coordinates and heading
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
@@ -353,8 +353,8 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 
 		//Calculates angle error
 		angleError = calcAngleDiff(targetTheta, currTheta);
-				
-				
+
+
 		//Calculates distance error from closest point on target line to endpoint
 		distanceError = abs(rotatedEndY - rotatedCurrY);
 
@@ -432,7 +432,7 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 
 		//Calculates voltage for strafing using PID constants
 		powerDiff = kPDiff * diffError + kIDiff * integralDiff + kDDiff * derivativeDiff;
-		
+
 		//Calculates target voltage for each wheel using angle, distance, and strafe voltages
 		double leftFrontSpeed = -powerDistance + powerAngle + powerDiff;
 		double leftBackSpeed = -powerDistance + powerAngle - powerDiff;
@@ -470,7 +470,7 @@ void pidBackward(double targetTheta, vector<vector<double>> distanceLine, double
 
 /**
  * Strafes right using PID control
- * 
+ *
  * Parameters:
  * targetTheta: target heading for motion
  * distanceLine: list of points to generate ideal path
@@ -541,7 +541,7 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 
 
 	while (abs(distanceError) > thresholdDistanceError)
-	{	
+	{
 		//Gets robot's current coordinates and heading
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
@@ -670,7 +670,7 @@ void pidRight(double targetTheta, vector<vector<double>> distanceLine, double ma
 
 /**
  * Strafes left using PID control
- * 
+ *
  * Parameters:
  * targetTheta: target heading for motion
  * distanceLine: list of points to generate ideal path
@@ -740,12 +740,12 @@ void pidLeft(double targetTheta, vector<vector<double>> distanceLine, double max
 	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
 	while (abs(distanceError) > thresholdDistanceError)
-	{	
+	{
 		//Gets robot's current coordinates and heading
 		double currX = position.getPosition()[0];
 		double currY = position.getPosition()[1];
 		double currTheta = position.getTheta();
-		
+
 		//Calculates rotated coordinates and headings
 		double adjThetaRobot = currTheta + beta - origTheta;
 		double rotatedCurrX = currX * cos(beta - origTheta) - currY * sin(beta - origTheta);

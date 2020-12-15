@@ -12,7 +12,7 @@ using namespace std;
 class Indexing
 {
 public:
-	static void indexingTask(void *ignore);
+	static void indexingTask(void* ignore);
 	static char* getTopStatus();
 	static char* getBottomStatus();
 	static char* getBackStatus();

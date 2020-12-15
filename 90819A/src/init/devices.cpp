@@ -28,13 +28,13 @@ pros::Imu imuRight(6);
 pros::Imu imuCenter(13);
 
 //Ultrasonic range finders
-pros::ADIUltrasonic ultrasonicTopUpper({{2, 'A', 'B'}});
-pros::ADIUltrasonic ultrasonicTopLower({{2, 'C', 'D'}});
-pros::ADIUltrasonic ultrasonicBottomUpper({{2, 'E', 'F'}});
-pros::ADIUltrasonic ultrasonicBottomLower({{2, 'G', 'H'}});
+pros::ADIUltrasonic ultrasonicTopUpper({ {2, 'A', 'B'} });
+pros::ADIUltrasonic ultrasonicTopLower({ {2, 'C', 'D'} });
+pros::ADIUltrasonic ultrasonicBottomUpper({ {2, 'E', 'F'} });
+pros::ADIUltrasonic ultrasonicBottomLower({ {2, 'G', 'H'} });
 
 //Optical sensors
-pros::Optical opticalSensor (9);
+pros::Optical opticalSensor(9);
 
 //Limit switches
 pros::ADIDigitalIn limitSwitch('D');

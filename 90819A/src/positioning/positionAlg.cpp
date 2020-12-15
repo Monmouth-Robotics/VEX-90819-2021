@@ -30,8 +30,8 @@ double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
 
-vector<double> positionVector = {0, 0};
-vector<double> newVector = {0, 0};
+vector<double> positionVector = { 0, 0 };
+vector<double> newVector = { 0, 0 };
 
 vector<double> testVector(1000, -1);
 vector<double> leftVector(1000, 999999);
@@ -70,7 +70,7 @@ vector<double> PositionAlg::getPosition()
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionAlg::calcPosition(void *ignore)
+void PositionAlg::calcPosition(void* ignore)
 {
 
 	while (true)
