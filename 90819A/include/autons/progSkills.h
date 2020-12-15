@@ -5,13 +5,13 @@
 #define PROS_USE_LITERALS
 #include "api.h"
 #include "init/devices.h"
+#include "init/taskManagement.h"
 #include "motion/pid.h"
-#include "motion/purePursuit/purePursuitOld.h"
 #include "macros/macroFunctions.h"
 #include "macros/macroInstances.h"
 
 static void stopIntakesAsync(void* ignore);
-static void stopIntakesAsyncOne(void *ignore);
+static void stopIntakesAsyncOne(void* ignore);
 
 void runProgSkills();
 void firstGoal();

@@ -4,10 +4,9 @@
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
 #include "api.h"
-#include "positioning/positionAlg.h"
-#include "motion/purePursuit/purePursuitOld.h"
 #include "init/devices.h"
 #include "init/utility.h"
+#include "init/taskManagement.h"
 #include <vector>
 
 void pidTurn(double target, double maxVel, double thresholdError, double kP, double kD, double kI);

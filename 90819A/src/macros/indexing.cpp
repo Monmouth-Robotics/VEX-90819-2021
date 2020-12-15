@@ -1,9 +1,9 @@
 #include "macros/indexing.h"
 
-char *topBallDetected = "";
-char *bottomBallDetected = "";
-char *backBallDetected = "";
-char *intakeBallColor = "";
+char* topBallDetected = "";
+char* bottomBallDetected = "";
+char* backBallDetected = "";
+char* intakeBallColor = "";
 
 bool topDisabled = false;
 bool topPositionDisabled = false;
@@ -12,7 +12,7 @@ bool bottomDisabled = false;
 /**
  * Returns status of top indexing position
 */
-char *Indexing::getTopStatus()
+char* Indexing::getTopStatus()
 {
 	return topBallDetected;
 }
@@ -20,7 +20,7 @@ char *Indexing::getTopStatus()
 /**
  * Returns status of bottom indexing position
 */
-char *Indexing::getBottomStatus()
+char* Indexing::getBottomStatus()
 {
 	return bottomBallDetected;
 }
@@ -28,7 +28,7 @@ char *Indexing::getBottomStatus()
 /**
  * Returns status of ball in intakes
 */
-char *Indexing::getIntakeColor()
+char* Indexing::getIntakeColor()
 {
 	return intakeBallColor;
 }
@@ -60,7 +60,7 @@ void Indexing::toggleBottom(bool disabled)
 /**
  * Automates indexing of balls in robot
 */
-void Indexing::indexingTask(void *ignore)
+void Indexing::indexingTask(void* ignore)
 {
 	//Turn on LED for optical sensor
 	opticalSensor.set_led_pwm(100);

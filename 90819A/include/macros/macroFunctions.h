@@ -4,17 +4,16 @@
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
 #include "api.h"
-
-#include "motion/purePursuit/purePursuitOld.h"
-
 #include "init/devices.h"
+#include "init/taskManagement.h"
+
 
 using namespace std;
 
 class MacroFunctions
 {
 public:
-	static void shootPowerful(void *ignore);
+	static void shootPowerful(void* ignore);
 	static void shootOneBall(void* ignore);
 	static void shootTwoBalls(void* ignore);
 	static void poopOneBall(void* param);
