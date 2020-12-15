@@ -8,4 +8,6 @@
 
 using namespace std;
 
+vector<double> getErrors(vector<double> currentPosition, vector<double>lookAheadPosition);
+
 #endif
