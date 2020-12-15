@@ -1,4 +1,4 @@
-#include "autons/progSkills.h"
+	#include "autons/progSkills.h"
 
 bool intakeStatus = false;
 
@@ -444,15 +444,20 @@ void ninthGoal()
  * Runs full programming skills route
 */
 void runProgSkills()
-{
-	firstGoal();
-	secondGoal();
-	thirdGoal();
-	fourthGoal();
-	fifthGoal();
-	descoreMiddle();
-	sixthGoal();
-	seventhGoal();
-	eighthGoal();
-	ninthGoal();
+{	
+	// printf("here\n");
+	printf("banana\n");
+
+	generatePath({{0, 0, 0}, {0, 10, 0}, {5, 15, M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0);
+
+	// firstGoal();
+	// secondGoal();
+	// thirdGoal();
+	// fourthGoal();
+	// fifthGoal();
+	// descoreMiddle();
+	// sixthGoal();
+	// seventhGoal();
+	// eighthGoal();
+	// ninthGoal();
 }
