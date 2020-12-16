@@ -1,7 +1,22 @@
 #include "init/display.h"
 
+//Creates the text object to display auton mode
 lv_obj_t* text = lv_label_create(lv_scr_act(), NULL);
+
+//Sets default auton mode
 int autonCode = 5;
+
+//Creates the text object to display x-coordinate
+lv_obj_t* xText = lv_label_create(lv_scr_act(), NULL);
+
+//Creates the text object to display y-coordinate
+lv_obj_t* yText = lv_label_create(lv_scr_act(), NULL);
+
+//Creates the text object to display theta
+lv_obj_t* thetaText = lv_label_create(lv_scr_act(), NULL);
+
+//Stores whether or not position display has been setup
+bool positionDisplaySetup = false;
 
 /**
  * Returns auton code
@@ -205,4 +220,31 @@ void displayInit(int startCode)
 
 	//Sets the global variable and changes text
 	setAutonCode(startCode);
+}
+
+void displayPosition(double x, double y, double theta) {
+
+	if (!positionDisplaySetup) {
+		//Sets the x-coordinate text to the top left
+		lv_obj_set_pos(xText, 0, 0);
+
+		//Sets the y-coordinate text under previous text
+		lv_obj_set_pos(yText, 0, 10);
+
+		//Sets the theta text under previous text
+		lv_obj_set_pos(thetaText, 0, 20);
+		positionDisplaySetup = true;
+	}
+
+	//Displays the value of x
+	string xString = ((string)("X:     ") + (string)(to_string(x)));
+	lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
+
+	//Displays the value of y
+	string yString = ((string)("Y:     ") + (string)(to_string(y)));
+	lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
+
+	//Displays the value of theta
+	string thetaString = ((string)("Theta: ") + (string)(to_string(theta)));
+	lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 }

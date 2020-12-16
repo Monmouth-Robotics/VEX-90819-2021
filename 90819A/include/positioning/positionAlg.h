@@ -6,6 +6,7 @@
 
 #include "api.h"
 #include "init/devices.h"
+#include "init/display.h"
 #include "init/utility.h"
 
 #include <vector>

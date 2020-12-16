@@ -146,6 +146,8 @@ void PositionAlg::calcPosition(void* ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
+		displayPosition(positionVector[0], positionVector[1], theta);
+
 		// printf("IMUs: %.3f, %.3f, %.3f\n", inertLeft * 180 / M_PI, inertRight * 180 / M_PI, inertCenter * 180 / M_PI);
 		// printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
