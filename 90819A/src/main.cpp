@@ -53,7 +53,7 @@ void disabled()
 void competition_initialize()
 {
 	//Show auton selection screen with default set as programming skills
-	displayInit(5);
+	//displayInit(5);
 }
 
 /**
