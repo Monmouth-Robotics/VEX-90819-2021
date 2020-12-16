@@ -169,3 +169,17 @@ double convertToMeters(int value, double wheelDiameter)
 
 	return value * (2 * M_PI * wheelDiameter * 2.54) / (100 * 2 * 60.0);
 }
+
+/**
+ * Returns sign of integer value
+ */
+int signum(int value) {
+	return (value > 0) - (value < 0);
+}
+
+/**
+ * Returns sign of double value
+ */
+int signum(double value) {
+	return (value > 0) - (value < 0);
+}

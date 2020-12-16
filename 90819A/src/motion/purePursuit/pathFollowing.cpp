@@ -41,21 +41,6 @@ double findPercentage(double xError, double yError)
 	}
 }
 
-double signum(double number)
-{
-	if (number > 0)
-	{
-		return 1.0;
-	}
-	else if (number < 0)
-	{
-		return -1.0;
-	}
-	else
-	{
-		return 0.0;
-	}
-}
 void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle)
 {
 	double maxPower = kPDistance * distanceError; //127

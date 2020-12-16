@@ -17,5 +17,7 @@ double convertToRPM(double value, double wheelDiameter);
 double convertToRPM(int value, double wheelDiameter);
 double convertToMeters(double value, double wheelDiameter);
 double convertToMeters(int value, double wheelDiameter);
+int signum(int value);
+int signum(double value);
 
 #endif
