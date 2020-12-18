@@ -232,43 +232,44 @@ lv_res_t Display::resetButton_action(lv_obj_t* btn)
 }
 
 void Display::displayPosition(void* ignore) {
+	while (true) {
+		if (!positionDisplaySetup) {
+			//Sets the x-coordinate text to the top left
+			lv_obj_set_pos(xText, 0, 0);
 
-	if (!positionDisplaySetup) {
-		//Sets the x-coordinate text to the top left
-		lv_obj_set_pos(xText, 0, 0);
+			//Sets the y-coordinate text under previous text
+			lv_obj_set_pos(yText, 0, 10);
 
-		//Sets the y-coordinate text under previous text
-		lv_obj_set_pos(yText, 0, 10);
+			//Sets the theta text under previous text
+			lv_obj_set_pos(thetaText, 0, 20);
 
-		//Sets the theta text under previous text
-		lv_obj_set_pos(thetaText, 0, 20);
-		
-		//Creates reset button
-		lv_obj_t* resetButton = lv_btn_create(lv_scr_act(), NULL);
-		//Places reset button on screen at (100, 100)
-		lv_obj_set_pos(resetButton, 100, 100);
-		//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
-		lv_obj_set_size(resetButton, 100, 50);
-		//Sets the action to run resetPosition() when button is pressed
-		lv_btn_set_action(resetButton, LV_BTN_ACTION_CLICK, resetButton_action);
+			//Creates reset button
+			lv_obj_t* resetButton = lv_btn_create(lv_scr_act(), NULL);
+			//Places reset button on screen at (100, 100)
+			lv_obj_set_pos(resetButton, 100, 100);
+			//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
+			lv_obj_set_size(resetButton, 100, 50);
+			//Sets the action to run resetPosition() when button is pressed
+			lv_btn_set_action(resetButton, LV_BTN_ACTION_CLICK, resetButton_action);
 
-		//Creates the text for reset button
-		lv_obj_t* resetLabel = lv_label_create(resetButton, NULL);
-		//Sets the text for the reset button
-		lv_label_set_text(resetLabel, "RESET");
-		
-		positionDisplaySetup = true;
+			//Creates the text for reset button
+			lv_obj_t* resetLabel = lv_label_create(resetButton, NULL);
+			//Sets the text for the reset button
+			lv_label_set_text(resetLabel, "RESET");
+
+			positionDisplaySetup = true;
+		}
+
+		//Displays the value of x
+		string xString = ((string)("X:     ") + (string)(to_string(position.getPosition()[0])));
+		lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
+
+		//Displays the value of y
+		string yString = ((string)("Y:     ") + (string)(to_string(position.getPosition()[1])));
+		lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
+
+		//Displays the value of theta
+		string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta())));
+		lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 	}
-
-	//Displays the value of x
-	string xString = ((string)("X:     ") + (string)(to_string(position.getPosition()[0])));
-	lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
-
-	//Displays the value of y
-	string yString = ((string)("Y:     ") + (string)(to_string(position.getPosition()[1])));
-	lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
-
-	//Displays the value of theta
-	string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta())));
-	lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 }
