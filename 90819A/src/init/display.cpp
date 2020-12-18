@@ -224,8 +224,8 @@ void displayInit(int startCode)
 
 void displayPosition(double x, double y, double theta) {
 
-	printf("here\n");
 	if (!positionDisplaySetup) {
+		// printf("here1\n");
 		//Sets the x-coordinate text to the top left
 		lv_obj_set_pos(xText, 0, 0);
 
@@ -239,6 +239,7 @@ void displayPosition(double x, double y, double theta) {
 
 	//Displays the value of x
 	string xString = ((string)("X:     ") + (string)(to_string(x)));
+	printf("%s\n", strcpy(new char[xString.length() + 1], xString.c_str()));
 	lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
 
 	//Displays the value of y
