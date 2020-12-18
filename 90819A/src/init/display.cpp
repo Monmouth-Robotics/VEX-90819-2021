@@ -21,7 +21,7 @@ bool positionDisplaySetup = false;
 /**
  * Returns auton code
 */
-int Display::getAutonCode()
+int getAutonCode()
 {
 	return autonCode;
 }
@@ -29,7 +29,7 @@ int Display::getAutonCode()
 /**
  * Sets auton mode when button press is detected
 */
-void Display::setAutonCode(int autonNum)
+void setAutonCode(int autonNum)
 {
 	if (autonNum == 1)
 	{
@@ -73,7 +73,7 @@ void Display::setAutonCode(int autonNum)
 /**
  * Sets auton code to 1 when button 1 is pressed
 */
-lv_res_t Display::btn1_action(lv_obj_t* btn)
+lv_res_t btn1_action(lv_obj_t* btn)
 {
 	setAutonCode(1);
 	return LV_RES_OK;
@@ -82,7 +82,7 @@ lv_res_t Display::btn1_action(lv_obj_t* btn)
 /**
  * Sets auton code to 2 when button 2 is pressed
 */
-lv_res_t Display::btn2_action(lv_obj_t* btn)
+lv_res_t btn2_action(lv_obj_t* btn)
 {
 	setAutonCode(2);
 	return LV_RES_OK;
@@ -91,7 +91,7 @@ lv_res_t Display::btn2_action(lv_obj_t* btn)
 /**
  * Sets auton code to 3 when button 3 is pressed
 */
-lv_res_t Display::btn3_action(lv_obj_t* btn)
+lv_res_t btn3_action(lv_obj_t* btn)
 {
 	setAutonCode(3);
 	return LV_RES_OK;
@@ -100,7 +100,7 @@ lv_res_t Display::btn3_action(lv_obj_t* btn)
 /**
  * Sets auton code to 4 when button 4 is pressed
 */
-lv_res_t Display::btn4_action(lv_obj_t* btn)
+lv_res_t btn4_action(lv_obj_t* btn)
 {
 	setAutonCode(4);
 	return LV_RES_OK;
@@ -109,7 +109,7 @@ lv_res_t Display::btn4_action(lv_obj_t* btn)
 /**
  * Sets auton code to 51 when button 5 is pressed
 */
-lv_res_t Display::btn5_action(lv_obj_t* btn)
+lv_res_t btn5_action(lv_obj_t* btn)
 {
 	setAutonCode(5);
 	return LV_RES_OK;
@@ -118,16 +118,16 @@ lv_res_t Display::btn5_action(lv_obj_t* btn)
 /**
  * Sets auton code to 6 when button 6 is pressed
 */
-lv_res_t Display::btn6_action(lv_obj_t* btn)
+lv_res_t btn6_action(lv_obj_t* btn)
 {
 	setAutonCode(6);
 	return LV_RES_OK;
 }
 
 /**
- * Displays buttons on screen
+ * Displays buttons on screem
 */
-void Display::displayInit(int startCode)
+void displayInit(int startCode)
 {
 	pros::delay(200);
 
@@ -147,7 +147,7 @@ void Display::displayInit(int startCode)
 
 	//Creates button 2
 	lv_obj_t* btn2 = lv_btn_create(lv_scr_act(), NULL);
-	//Places button 2 on screen at (100, 100)
+	//Places button 1 on screen at (100, 100)
 	lv_obj_set_pos(btn2, 100, 100);
 	//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 	lv_obj_set_size(btn2, 100, 50);
@@ -161,7 +161,7 @@ void Display::displayInit(int startCode)
 
 	//Creates button 3
 	lv_obj_t* btn3 = lv_btn_create(lv_scr_act(), NULL);
-	//Places button 3 on screen at (300, 20)
+	//Places button 1 on screen at (300, 20)
 	lv_obj_set_pos(btn3, 300, 20);
 	//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 	lv_obj_set_size(btn3, 100, 50);
@@ -175,7 +175,7 @@ void Display::displayInit(int startCode)
 
 	//Creates button 4
 	lv_obj_t* btn4 = lv_btn_create(lv_scr_act(), NULL);
-	//Places button 4 on screen at (300, 100)
+	//Places button 1 on screen at (300, 100)
 	lv_obj_set_pos(btn4, 300, 100);
 	//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 	lv_obj_set_size(btn4, 100, 50);
@@ -189,7 +189,7 @@ void Display::displayInit(int startCode)
 
 	//Creates button 5
 	lv_obj_t* btn5 = lv_btn_create(lv_scr_act(), NULL);
-	//Places button 5 on screen at (50, 200)
+	//Places button 1 on screen at (50, 200)
 	lv_obj_set_pos(btn5, 50, 200);
 	//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 	lv_obj_set_size(btn5, 180, 50);
@@ -203,7 +203,7 @@ void Display::displayInit(int startCode)
 
 	//Creates button 6
 	lv_obj_t* btn6 = lv_btn_create(lv_scr_act(), NULL);
-	//Places button 6 on screen at (275, 200)
+	//Places button 1 on screen at (275, 200)
 	lv_obj_set_pos(btn6, 275, 200);
 	//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 	lv_obj_set_size(btn6, 150, 50);
@@ -222,54 +222,30 @@ void Display::displayInit(int startCode)
 	setAutonCode(startCode);
 }
 
-/**
- * Resets coordinates of positioning to (0,0)
-*/
-lv_res_t Display::resetButton_action(lv_obj_t* btn)
-{
-	position.resetGlobal();
-	return LV_RES_OK;
-}
+void displayPosition(double x, double y, double theta) {
 
-void Display::displayPosition(void* ignore) {
-	while (true) {
-		if (!positionDisplaySetup) {
-			//Sets the x-coordinate text to the top left
-			lv_obj_set_pos(xText, 0, 0);
+	printf("here\n");
+	if (!positionDisplaySetup) {
+		//Sets the x-coordinate text to the top left
+		lv_obj_set_pos(xText, 0, 0);
 
-			//Sets the y-coordinate text under previous text
-			lv_obj_set_pos(yText, 0, 10);
+		//Sets the y-coordinate text under previous text
+		lv_obj_set_pos(yText, 0, 10);
 
-			//Sets the theta text under previous text
-			lv_obj_set_pos(thetaText, 0, 20);
-
-			//Creates reset button
-			lv_obj_t* resetButton = lv_btn_create(lv_scr_act(), NULL);
-			//Places reset button on screen at (100, 100)
-			lv_obj_set_pos(resetButton, 100, 100);
-			//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
-			lv_obj_set_size(resetButton, 100, 50);
-			//Sets the action to run resetPosition() when button is pressed
-			lv_btn_set_action(resetButton, LV_BTN_ACTION_CLICK, resetButton_action);
-
-			//Creates the text for reset button
-			lv_obj_t* resetLabel = lv_label_create(resetButton, NULL);
-			//Sets the text for the reset button
-			lv_label_set_text(resetLabel, "RESET");
-
-			positionDisplaySetup = true;
-		}
-
-		//Displays the value of x
-		string xString = ((string)("X:     ") + (string)(to_string(position.getPosition()[0])));
-		lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
-
-		//Displays the value of y
-		string yString = ((string)("Y:     ") + (string)(to_string(position.getPosition()[1])));
-		lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
-
-		//Displays the value of theta
-		string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta())));
-		lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
+		//Sets the theta text under previous text
+		lv_obj_set_pos(thetaText, 0, 20);
+		positionDisplaySetup = true;
 	}
+
+	//Displays the value of x
+	string xString = ((string)("X:     ") + (string)(to_string(x)));
+	lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
+
+	//Displays the value of y
+	string yString = ((string)("Y:     ") + (string)(to_string(y)));
+	lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
+
+	//Displays the value of theta
+	string thetaString = ((string)("Theta: ") + (string)(to_string(theta)));
+	lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 }

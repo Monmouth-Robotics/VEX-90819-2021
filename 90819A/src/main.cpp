@@ -18,7 +18,6 @@ void initialize()
 	//Calibrate inertial sensor
 	imuLeft.reset();
 	imuRight.reset();
-	imuCenter.reset();
 	int time = pros::millis();
 	int iter = 0;
 	while (imuLeft.is_calibrating() || imuRight.is_calibrating())
@@ -90,7 +89,7 @@ void autonomous()
 	backEncoder.reset();
 
 	//Run auton according to selection screen
-	switch (display.getAutonCode())
+	switch (getAutonCode())
 	{
 	case 1:
 		break;
