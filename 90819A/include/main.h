@@ -39,7 +39,7 @@
 	*/
 #include "api.h"
 #include "init/devices.h"
-#include "init/display.h"
+#include "init/displayInstances.h"
 #include "autons/progSkills.h"
 #include "driveControl.h"
 	//#include "okapi/api.hpp"
