@@ -121,7 +121,7 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 	// printf("Motor speeds: %.3f, %.3f, %.3f, %.3f\n", leftFrontPower, rightBackPower, rightFrontPower, leftBackPower);
 }
 
-vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double spacing)
+vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance)
 {
 	//Starting point of the line segment
 	vector<double> E = {0.0, 0.0};
@@ -144,7 +144,7 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 	f = {E[0] - C[0], E[1] - C[1]};
 
 	//Represents the lookahead distance
-	double r = spacing * lookAheadPointsNum;
+	double r = lookAheadDistance;
 
 	//Determines number of intersections between circle around robot and path
 	double a = dot(d, d);
@@ -167,7 +167,7 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 		if (closestPoint != pointsList.size() - lookAheadPointsNum - 1)
 		{
 			//Recursive function with a greater number of lookahead points
-			return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1, spacing);
+			return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1, lookAheadDistance);
 		}
 		else
 		{
@@ -196,7 +196,7 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 			if (closestPoint != pointsList.size() - lookAheadPointsNum - 1)
 			{
 				//Recursive function with a greater number of lookahead points
-				return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1, spacing);
+				return findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum + 1, lookAheadDistance);
 			}
 			else
 			{
@@ -256,7 +256,7 @@ void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1
 		//Calculate lookahead point if the last point is not within the default search radius
 		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum)
 		{
-			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing);
+			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing * lookAheadPointsNum);
 		}
 
 		//Use last point as lookahead point if the last point is within the default search radius
