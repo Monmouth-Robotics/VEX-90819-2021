@@ -96,6 +96,8 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 
 	double anglePower = angleError * kPAngle;
 
+	//printf("kPAngle: %.3f\n", kPAngle);
+
 	leftFrontPower += anglePower;
 	leftBackPower += anglePower;
 	rightFrontPower -= anglePower;
@@ -122,23 +124,23 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double spacing)
 {
 	//Starting point of the line segment
-	vector<double> E = {0.0};
+	vector<double> E = {0.0, 0.0};
 	E = {pointsList[closestPoint][0], pointsList[closestPoint][1]};
 
 	//End point of the line segment
-	vector<double> L = {0.0};
+	vector<double> L = {0.0, 0.0};
 	L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
 
 	//Center of the drawn circle, representing the robot position
-	vector<double> C = {0.0};
+	vector<double> C = {0.0, 0.0};
 	C = {x, y};
 
 	//Direction vector from starting point to ending point
-	vector<double> d{0.0};
+	vector<double> d = {0.0, 0.0};
 	d = {L[0] - E[0], L[1] - E[1]};
 
 	//Vector drawn from center of robot to starting point
-	vector<double> f = {0.0};
+	vector<double> f = {0.0, 0.0};
 	f = {E[0] - C[0], E[1] - C[1]};
 
 	//Represents the lookahead distance
@@ -149,6 +151,14 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 	double b = 2 * dot(f, d);
 	double c = dot(f, f) - r * r;
 	double discriminant = b * b - 4 * a * c;
+
+	if (closestPoint + lookAheadPointsNum < pointsList.size())
+	{
+		return pointsList[closestPoint + lookAheadPointsNum];
+	}
+	else{
+		return pointsList[pointsList.size()-1];
+	}
 
 	//Represents no intersection
 	if (discriminant < 0)
@@ -197,28 +207,27 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 	}
 }
 
-void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError)
-{	
+void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError, double kPDistance, double kPAngle, double angleThreshold)
+{
 	double distanceError = 999999;
+	double angleError = 999999;
 	vector<vector<double>> pointsList = {{0.0}};
 	pointsList = {};
 
 	pointsList = generatePath(initPoints, spacing, smoothVal1, smoothVal2, smoothTolerance, maxVel, maxAccel, turnConstant);
 	vector<double> errors = {0, 0, 0};
-		// errors = {};
+	// errors = {};
 	// printf("here");
 	int closestPoint = 1;
-	
-	
+
 	// printf("here\n");
-	while (distanceError > thresholdError)
-	{	
+	while (distanceError > thresholdError || angleError > angleThreshold)
+	{
 		double x = position.getPosition()[0];
 		double y = position.getPosition()[1];
 
-		distanceError = distanceFormula({x, y}, pointsList[pointsList.size()-1]);
+		distanceError = distanceFormula({x, y}, pointsList[pointsList.size() - 1]);
 		// //Pulls the current robot coordinates
-		
 
 		//Initialize lookahead point as empty vector
 		vector<double> lookAheadPoint = {0, 0, 0};
@@ -259,14 +268,21 @@ void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1
 		// errorArg1 = position.getPosition();
 
 		errors = getErrors({x, y, position.getTheta()}, lookAheadPoint);
-
-		printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
-		moveRobot(errors, distanceError, 5, 100);
+		angleError = errors[2];
+		// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
+		moveRobot(errors, distanceError, kPDistance, kPAngle);
 		// errors = {5, 0};
-		printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
-		printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);
+		// printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
+		// printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);
+		// printf("Closest point: %.3f, %.3f\n", pointsList[closestPoint][0], pointsList[closestPoint][1]);
+
 		pros::delay(10);
 	}
+
+	leftFrontMotor = 0;
+	leftBackMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 
 	//Exits loop if lookahead point and closest point align with the last point of the path
 	// if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1] && (closestPoint == pointsList.size() - 1))
