@@ -20,4 +20,5 @@ double convertToMeters(int value, double wheelDiameter);
 int signum(int value);
 int signum(double value);
 double distanceFormula(vector<double> currentPosition, vector<double> lookAheadPosition);
+double restrictAngle(double theta);
 #endif

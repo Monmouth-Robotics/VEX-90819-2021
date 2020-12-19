@@ -196,9 +196,6 @@ int signum(double value) {
 	return (value > 0) - (value < 0);
 }
 
-/**
- * Takes angle and converts it to be between 0 and 2pi
- */
 double restrictAngle(double theta){
 	while (theta > M_PI * 2)
 	{
