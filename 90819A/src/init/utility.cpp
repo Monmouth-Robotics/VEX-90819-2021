@@ -24,10 +24,15 @@ double calcAngleDiff(double angle1, double angle2)
 }
 
 /**
- * Calculates distance error
+ * Uses distance formula to calculate distance error between two positions
  */
-double distanceError(vector<double> x, vector<double> y){
-	
+double distanceFormula(vector<double> currentPosition, vector<double> lookAheadPosition){
+	double xError = lookAheadPosition[0] - currentPosition[0];
+	double yError = lookAheadPosition[1] - currentPosition[1];
+
+	double distanceError = sqrt(pow(xError, 2) + pow(yError, 2));
+
+	return distanceError;
 }
 
 /**

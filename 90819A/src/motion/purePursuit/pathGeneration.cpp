@@ -26,7 +26,7 @@ vector<vector<double>> generateLinearPath(double initX, double initY, double ini
     }
 
     //Add the ending point to the list
-    vector<double> finalVector{finalX, finalY};
+    vector<double> finalVector{finalX, finalY, finalTheta};
     pointsList.push_back(finalVector);
 
     // for (int i = 0; i<pointsList.size(); i++){
@@ -194,7 +194,7 @@ vector<double> calculateVelocity(vector<vector<double>> pointsList, vector<doubl
 vector<vector<double>> generatePath(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant)
 {
     //Initialize points list as an empty vector
-    printf("here\n");
+    // printf("here\n");
     vector<vector<double>> pointsList = {{0.0}};
     pointsList = {};
 
@@ -240,10 +240,10 @@ vector<vector<double>> generatePath(vector<vector<double>> initPoints, double sp
         }
     }
     //Calculate curvature along every point on the path
-    vector<double> curveList = calculateCurve(pointsList);
+    // vector<double> curveList = calculateCurve(pointsList);
 
-    //Calculate velocity along every point on the path
-    vector<double> velList = calculateVelocity(pointsList, curveList, maxVel, maxAccel, turnConstant);
+    // //Calculate velocity along every point on the path
+    // vector<double> velList = calculateVelocity(pointsList, curveList, maxVel, maxAccel, turnConstant);
 
     // //Velocity is third value stored for each point
     // for (int i = 0; i < velList.size(); i++) {

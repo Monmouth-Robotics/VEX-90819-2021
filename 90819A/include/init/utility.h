@@ -19,5 +19,5 @@ double convertToMeters(double value, double wheelDiameter);
 double convertToMeters(int value, double wheelDiameter);
 int signum(int value);
 int signum(double value);
-
+double distanceFormula(vector<double> currentPosition, vector<double> lookAheadPosition);
 #endif

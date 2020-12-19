@@ -123,11 +123,11 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 {
 	//Starting point of the line segment
 	vector<double> E = {0.0};
-	E = pointsList[closestPoint];
+	E = {pointsList[closestPoint][0], pointsList[closestPoint][1]};
 
 	//End point of the line segment
 	vector<double> L = {0.0};
-	L = pointsList[closestPoint + lookAheadPointsNum];
+	L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
 
 	//Center of the drawn circle, representing the robot position
 	vector<double> C = {0.0};
@@ -197,26 +197,31 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 	}
 }
 
-void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum)
-{
-	// vector<vector<double>> pointsList = {{0.0}};
-	//pointsList = {};
+void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError)
+{	
+	double distanceError = 999999;
+	vector<vector<double>> pointsList = {{0.0}};
+	pointsList = {};
 
-	vector<vector<double>> pointsList = generatePath(initPoints, spacing, smoothVal1, smoothVal2, smoothTolerance, maxVel, maxAccel, turnConstant);
-	vector<double> errors = {0.0};
+	pointsList = generatePath(initPoints, spacing, smoothVal1, smoothVal2, smoothTolerance, maxVel, maxAccel, turnConstant);
+	vector<double> errors = {0, 0, 0};
 		// errors = {};
 	// printf("here");
 	int closestPoint = 1;
-
+	
+	
 	// printf("here\n");
-	while (true)
-	{
-		//Pulls the current robot coordinates
+	while (distanceError > thresholdError)
+	{	
 		double x = position.getPosition()[0];
 		double y = position.getPosition()[1];
 
+		distanceError = distanceFormula({x, y}, pointsList[pointsList.size()-1]);
+		// //Pulls the current robot coordinates
+		
+
 		//Initialize lookahead point as empty vector
-		vector<double> lookAheadPoint = {0.0};
+		vector<double> lookAheadPoint = {0, 0, 0};
 		lookAheadPoint = {};
 
 		//Calculate distance between closest point and current robot position
@@ -256,7 +261,7 @@ void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1
 		errors = getErrors({x, y, position.getTheta()}, lookAheadPoint);
 
 		printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
-		moveRobot(errors, 10, 5, 100);
+		moveRobot(errors, distanceError, 5, 100);
 		// errors = {5, 0};
 		printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
 		printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);
