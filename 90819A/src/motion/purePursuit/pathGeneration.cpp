@@ -250,10 +250,10 @@ vector<vector<double>> generatePath(vector<vector<double>> initPoints, double sp
     // 	pointsList[i][2] = velList[i];
     // }
 
-    for (int i = 0; i < pointsList.size(); i++)
-    {
-        printf("(%.3f, %.3f, %.3f)\n", pointsList[i][0], pointsList[i][1], pointsList[i][2]);
-    }
+    // for (int i = 0; i < pointsList.size(); i++)
+    // {
+    //     printf("(%.3f, %.3f, %.3f)\n", pointsList[i][0], pointsList[i][1], pointsList[i][2]);
+    // }
 
     return pointsList;
 }

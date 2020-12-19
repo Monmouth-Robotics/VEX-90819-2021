@@ -24,6 +24,13 @@ double calcAngleDiff(double angle1, double angle2)
 }
 
 /**
+ * Calculates distance error
+ */
+double distanceError(vector<double> x, vector<double> y){
+	
+}
+
+/**
  * Calculates the average heading for two inertial sensors
  */
 double averageHeadings(double angle1, double angle2)
