@@ -195,3 +195,15 @@ int signum(int value) {
 int signum(double value) {
 	return (value > 0) - (value < 0);
 }
+
+double restrictAngle(double theta){
+	while (theta > M_PI * 2)
+	{
+		theta -= M_PI * 2;
+	}
+	while (theta < 0)
+	{
+		theta += M_PI * 2;
+	}
+	return theta;
+}
