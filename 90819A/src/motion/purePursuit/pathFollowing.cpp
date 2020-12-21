@@ -98,15 +98,15 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 			rightBackPower = signum(yError) * maxPower * findPercentage(xError, yError);
 		}
 	}
-	double distancePower = kDDistance * (distanceError - lastDistanceError) + kIAngle * integralDistanceError;
+	// double distancePower = kDDistance * (distanceError - lastDistanceError) + kIAngle * integralDistanceError;
 	double anglePower = angleError * kPAngle + kDAngle * (angleError - lastAngleError) + kIAngle * integralAngleError;
 
 	//printf("kPAngle: %.3f\n", kPAngle);
 
-	leftFrontPower += distancePower;
-	leftBackPower += distancePower;
-	rightFrontPower += distancePower;
-	rightBackPower += distancePower;
+	// leftFrontPower += distancePower;
+	// leftBackPower += distancePower;
+	// rightFrontPower += distancePower;
+	// rightBackPower += distancePower;
 
 	leftFrontPower += anglePower;
 	leftBackPower += anglePower;
