@@ -99,7 +99,8 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 		}
 	}
 	// double distancePower = kDDistance * (distanceError - lastDistanceError) + kIAngle * integralDistanceError;
-	double anglePower = angleError * kPAngle + kDAngle * (angleError - lastAngleError) + kIAngle * integralAngleError;
+	double anglePower = angleError * kPAngle;
+	// + kDAngle * (angleError - lastAngleError) + kIAngle * integralAngleError;
 
 	//printf("kPAngle: %.3f\n", kPAngle);
 
