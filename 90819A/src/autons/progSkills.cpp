@@ -71,8 +71,8 @@ void firstGoal()
 	// }
 
 	indexerFunctions.toggleIntakes(127);
-	//ppMove({{0, 0, 0}, {15, 0, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.25, 25, 300, 0.08);
-	//ppMove({{15, 0, 0}, {15, 15, 0}, {9, 39.5, -M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{0, 0, 0}, {15, 0, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.25, 25, 300, 0.08);
+	ppMove({{15, 0, 0}, {15, 15, 0}, {9, 39.5, -M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 
 	indexerFunctions.shootTwoBalls(NULL);
@@ -99,14 +99,14 @@ void firstGoal()
 */
 void secondGoal()
 {
-	//ppMove({{9, 39.5, -M_PI / 4}, {25, 25, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{9, 39.5, -M_PI / 4}, {25, 25, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	//ppMove({{25, 25, 0}, {26, 38, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{25, 25, 0}, {26, 38, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(0);
-	//ppMove({{26, 39, 0}, {38, 33, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{26, 39, 0}, {38, 33, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	//ppMove({{38, 33, M_PI / 2}, {60.5, 33, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 100, 0.08);
+	ppMove({{38, 33, M_PI / 2}, {60.5, 33, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 100, 0.08);
 
 	// pidBackward(3.92, { {-20, 0}, {0, 24} }, 100, 0.5, 50, 80, -20, 0, 0, 0, 0, 0, 0, true);
 	// indexerFunctions.toggleIntakes(127);
@@ -161,9 +161,9 @@ void thirdGoal()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	//ppMove({{60.5, 33, 0}, {80, 22, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{60.5, 33, 0}, {80, 22, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	//ppMove({{80, 22, M_PI / 2}, {106, 22, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 100, 0.08);
+	ppMove({{80, 22, M_PI / 2}, {106, 22, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 100, 0.08);
 
 	// pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
 
@@ -171,9 +171,9 @@ void thirdGoal()
 
 	indexerFunctions.poopOneBall((void *)true);
 
-	//ppMove({{106, 20, M_PI / 2}, {100, 37.5, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
+	ppMove({{106, 20, M_PI / 2}, {100, 37.5, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	//ppMove({{100, 38, 0}, {112, 32, M_PI / 4}, {118, 38, M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{100, 38, 0}, {112, 32, M_PI / 4}, {118, 38, M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
 
 	// leftBackMotor = -63;
 	// leftFrontMotor = -63;
@@ -222,11 +222,11 @@ void fourthGoal()
 	// indexerFunctions.toggleIntakes(127);
 	// pros::delay(250);
 	// pidTurn(M_PI / 2 - 0.008, 100, 0.025, 120.0, 0.0, 0.0);
-	//ppMove({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	//ppMove({{89, 9, M_PI}, {89, -15, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 100, 0.08);
-	//ppMove({{86, -15, M_PI}, {113, -15, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{89, 9, M_PI}, {89, -15, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 100, 0.08);
+	ppMove({{86, -15, M_PI}, {113, -15, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
 
 	// indexerFunctions.poopOneBall(NULL);
 	// pros::delay(500);
@@ -261,9 +261,9 @@ void fifthGoal()
 	indexer.toggleTopPosition(true);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	//ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {112, -40, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	//ppMove({{101, -40, M_PI}, {101, -68, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	//ppMove({{101, -68, M_PI}, {113, -62, M_PI / 2 + M_PI / 4}, {119, -69, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {112, -40, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{101, -40, M_PI}, {101, -68, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{101, -68, M_PI}, {113, -62, M_PI / 2 + M_PI / 4}, {119, -69, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 
 	// pidRight(M_PI / 2, {{75, 112}, {75, 98}}, 100, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 
@@ -361,10 +361,10 @@ void sixthGoal()
 	// pidForward(M_PI / 2, {{60, 66}, {85, 66}}, 100, 0.5, 100, 15, 30, 0, 0, 0, 0, 0, 0, true);
 
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	//ppMove({{119, -69, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{119, -69, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	//ppMove({{87, -40, 3*M_PI /2}, {65, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
-	//ppMove({{65, -40, 3*M_PI/2}, {65, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{87, -40, 3*M_PI /2}, {65, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
+	ppMove({{65, -40, 3*M_PI/2}, {65, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 
 
 
@@ -516,8 +516,6 @@ void runProgSkills()
 
 	// ppMove({{0, 0, 2*M_PI}, {0, 20, 2*M_PI}, {20, 40, M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 6, 0.25, 30, 100);
 
-	ppMove({{0, 0, 0}, {0, 40, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 6, 0.25, 0.008, 10, 100, 30, 20, 0, 0);
-
 	// ppMove({{0, 0, 0}, {0, -40, M_PI/2+M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 6, 0.25, 30, 300, 0.008);
 
 	// moveRobot({4	, 1, 0.01}, 100, 100, 200);
@@ -529,17 +527,17 @@ void runProgSkills()
 	// moveRobot({-1, -4, 50}, 100, 100, 100);
 	// moveRobot({-4, -1, 50}, 100, 100, 100);
 
-	//firstGoal();
-	//secondGoal();
-	//thirdGoal();
-	//fourthGoal();
-	//fifthGoal();
-	//sixthGoal();
+	firstGoal();
+	secondGoal();
+	thirdGoal();
+	fourthGoal();
+	fifthGoal();
+	sixthGoal();
 
-	//leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	//leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	//rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
-	//rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+	rightBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 
 	// descoreMiddle();
 	// seventhGoal();

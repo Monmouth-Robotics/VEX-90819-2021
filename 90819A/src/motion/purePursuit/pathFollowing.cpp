@@ -41,7 +41,7 @@ double findPercentage(double xError, double yError)
 	}
 }
 
-void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle, double kDDistance, double kDAngle, double kIDistance, double kIAngle, double lastDistanceError, double lastAngleError, double integralDistanceError, double integralAngleError)
+void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle)
 {
 	double maxPower = kPDistance * distanceError; //127
 
@@ -56,11 +56,6 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 	double xError = errors[0];
 	double yError = errors[1];
 	double angleError = errors[2];
-	string distanceString = ((string)("Distance Error: ") + (string)(to_string(distanceError)));
-	string thetaString = ((string)("Theta Error: ") + (string)(to_string(angleError)));
-
-	pros::lcd::set_text(5, strcpy(new char[distanceString.length() + 1], distanceString.c_str()));
-	pros::lcd::set_text(6, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 
 	double leftFrontPower;
 	double leftBackPower;
@@ -98,16 +93,10 @@ void moveRobot(vector<double> errors, double distanceError, double kPDistance, d
 			rightBackPower = signum(yError) * maxPower * findPercentage(xError, yError);
 		}
 	}
-	// double distancePower = kDDistance * (distanceError - lastDistanceError) + kIAngle * integralDistanceError;
+
 	double anglePower = angleError * kPAngle;
-	// + kDAngle * (angleError - lastAngleError) + kIAngle * integralAngleError;
 
 	//printf("kPAngle: %.3f\n", kPAngle);
-
-	// leftFrontPower += distancePower;
-	// leftBackPower += distancePower;
-	// rightFrontPower += distancePower;
-	// rightBackPower += distancePower;
 
 	leftFrontPower += anglePower;
 	leftBackPower += anglePower;
@@ -218,15 +207,10 @@ vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> poi
 	}
 }
 
-void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError, double angleThreshold, double kPDistance, double kPAngle, double kDDistance, double kDAngle, double kIDistance, double kIAngle)
+void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError, double kPDistance, double kPAngle, double angleThreshold)
 {
 	double distanceError = 999999;
 	double angleError = 999999;
-	double lastDistanceError = 0.0;
-	double lastAngleError = 0.0;
-	double integralDistanceError = 0.0;
-	double integralAngleError = 0.0;
-
 	vector<vector<double>> pointsList = {{0.0}};
 	pointsList = {};
 
@@ -286,11 +270,7 @@ void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1
 		errors = getErrors({x, y, position.getTheta()}, lookAheadPoint);
 		angleError = errors[2];
 		// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
-		integralAngleError += angleError;
-		integralDistanceError += distanceError;
-		moveRobot(errors, distanceError, kPDistance, kPAngle, kDDistance, kDAngle, kIDistance, kIAngle, lastDistanceError, lastAngleError, integralDistanceError, integralAngleError);
-		lastDistanceError = distanceError;
-		lastAngleError = angleError;
+		moveRobot(errors, distanceError, kPDistance, kPAngle);
 		// errors = {5, 0};
 		// printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
 		// printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);

@@ -9,8 +9,8 @@
 using namespace std;
 
 vector<double> getErrors(vector<double> currentPosition, vector<double>lookAheadPosition);
-void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle, double kDDistance, double kDAngle, double kIDistance, double kIAngle, double lastDistanceError, double lastAngleError, double integralDistanceError, double integralAngleError);
-void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError, double angleThreshold, double kPDistance, double kPAngle, double kDDistance, double kDAngle, double kIDistance, double kIAngle);
+void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle);
+void ppMove(vector<vector<double>> initPoints, double spacing, double smoothVal1, double smoothVal2, double smoothTolerance, double maxVel, double maxAccel, double turnConstant, int lookAheadPointsNum, double thresholdError, double kPDistance, double kPAngle, double angleThreshold);
 vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance);
 
 #endif
