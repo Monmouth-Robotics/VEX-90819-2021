@@ -21,6 +21,7 @@ public:
 	static void resetGlobal(void);
 	static double getTheta(void);
 	static void setTheta(double newTheta);
+	static void setPosition(double x, double y);
 };
 
 #endif
