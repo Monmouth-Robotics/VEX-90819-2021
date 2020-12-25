@@ -29,8 +29,8 @@ double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
 
-vector<double> positionVector = {0, 0};
-vector<double> newVector = {0, 0};
+vector<double> positionVector = { 0, 0 };
+vector<double> newVector = { 0, 0 };
 
 vector<double> testVector(1000, -1);
 vector<double> leftVector(1000, 999999);
@@ -70,7 +70,7 @@ vector<double> PositionAlg::getPosition()
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionAlg::calcPosition(void *ignore)
+void PositionAlg::calcPosition(void* ignore)
 {
 
 	while (true)
@@ -150,7 +150,7 @@ void PositionAlg::calcPosition(void *ignore)
 
 		string xString = ((string)("X: ") + (string)(to_string(positionVector[0])));
 		string yString = ((string)("Y: ") + (string)(to_string(positionVector[1])));
-		string thetaString = ((string)("Theta: ") + (string)(to_string(theta*180/M_PI)));
+		string thetaString = ((string)("Theta: ") + (string)(to_string(theta * 180 / M_PI)));
 
 		pros::lcd::set_text(2, strcpy(new char[xString.length() + 1], xString.c_str()));
 		pros::lcd::set_text(3, strcpy(new char[yString.length() + 1], yString.c_str()));
@@ -217,7 +217,7 @@ void PositionAlg::resetGlobal()
 }
 
 /**
- * Resets all positioning variables back to 0
+ * Sets theta to a given value by offsetting each inertial sensor
  */
 void PositionAlg::setTheta(double newTheta)
 {
@@ -233,4 +233,12 @@ void PositionAlg::setTheta(double newTheta)
 	while (inertCenterOffset < 0) {
 		inertCenterOffset += 2 * M_PI;
 	}
+}
+
+/**
+ * Sets the position to a given value
+ */
+void PositionAlg::setPosition(double x, double y)
+{
+	positionVector = { x,y };
 }
