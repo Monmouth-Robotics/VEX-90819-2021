@@ -43,11 +43,12 @@ double newX;
 double newY;
 double thetaM;
 
-double inertLast = 0;
 double inertLeft = 0;
+double inertLeftOffset = 0;
 double inertRight = 0;
-double inertTheta = 0;
+double inertRightOffset = 0;
 double inertCenter = 0;
+double inertCenterOffset = 0;
 int count2 = 0;
 
 /**
@@ -97,9 +98,9 @@ void PositionAlg::calcPosition(void *ignore)
 		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 
 		//Gets heading values from inertial
-		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
-		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
-		inertCenter = abs(imuCenter.get_heading()) * M_PI / 180;
+		inertLeft = fmod((abs(imuLeft.get_heading()) * M_PI / 180 + inertLeftOffset), (2 * M_PI));
+		inertRight = fmod((abs(imuRight.get_heading()) * M_PI / 180 + inertRightOffset), (2 * M_PI));
+		inertCenter = fmod((abs(imuCenter.get_heading()) * M_PI / 180 + inertCenterOffset), (2 * M_PI));
 		//Checks if calibration in complete
 		if (inertLeft != INFINITY && inertRight != INFINITY && inertCenter != INFINITY)
 		{
@@ -213,4 +214,23 @@ void PositionAlg::resetGlobal()
 	thetaM = 0;
 	newX = 0;
 	newY = 0;
+}
+
+/**
+ * Resets all positioning variables back to 0
+ */
+void PositionAlg::setTheta(double newTheta)
+{
+	inertLeftOffset = newTheta - inertLeft;
+	inertRightOffset = newTheta - inertRight;
+	inertCenterOffset = newTheta - inertCenter;
+	while (inertLeftOffset < 0) {
+		inertLeftOffset += 2 * M_PI;
+	}
+	while (inertRightOffset < 0) {
+		inertRightOffset += 2 * M_PI;
+	}
+	while (inertCenterOffset < 0) {
+		inertCenterOffset += 2 * M_PI;
+	}
 }
