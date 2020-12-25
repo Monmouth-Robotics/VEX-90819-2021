@@ -29,6 +29,8 @@ double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
 
+double robotSpeed = 0;
+
 vector<double> positionVector = { 0, 0 };
 vector<double> newVector = { 0, 0 };
 
@@ -65,6 +67,14 @@ double PositionAlg::getTheta()
 vector<double> PositionAlg::getPosition()
 {
 	return positionVector;
+}
+
+/**
+ * Returns robot speed
+ */
+double PositionAlg::getSpeed()
+{
+	return robotSpeed;
 }
 
 /**
@@ -141,6 +151,9 @@ void PositionAlg::calcPosition(void* ignore)
 		//Rotates relative changes in x and y onto global coordinate grid
 		newX = x * cos(-thetaM) - y * sin(-thetaM);
 		newY = y * cos(-thetaM) + x * sin(-thetaM);
+
+		//Calculates the robot's velocity
+		robotSpeed = sqrt(pow(newX, 2) + pow(newY, 2)) * 2.54;
 
 		//Finds new coordinates by adjusting previous coordinates by change values
 		positionVector[0] = positionVector[0] + newX;

@@ -20,6 +20,7 @@ public:
 	static vector<double> getPosition(void);
 	static void resetGlobal(void);
 	static double getTheta(void);
+	static double getSpeed(void);
 	static void setTheta(double newTheta);
 	static void setPosition(double x, double y);
 };
