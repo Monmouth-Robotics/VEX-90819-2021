@@ -159,29 +159,6 @@ void PositionAlg::calcPosition(void* ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		// displayPosition(positionVector[0], positionVector[1], theta);
-
-		//string xString = ((string)("X: ") + (string)(to_string(positionVector[0])));
-		//string yString = ((string)("Y: ") + (string)(to_string(positionVector[1])));
-		//string thetaString = ((string)("Theta: ") + (string)(to_string(theta * 180 / M_PI)));
-
-		//pros::lcd::set_text(2, strcpy(new char[xString.length() + 1], xString.c_str()));
-		//pros::lcd::set_text(3, strcpy(new char[yString.length() + 1], yString.c_str()));
-		//pros::lcd::set_text(4, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
-
-		// lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
-
-		// //Displays the value of y
-		// string yString = ((string)("Y:     ") + (string)(to_string(y)));
-		// lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
-
-		// //Displays the value of theta
-		// string thetaString = ((string)("Theta: ") + (string)(to_string(theta)));
-		// lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
-		// pros::lcd::set_text(2, positionVector[0]);
-		// pros::lcd::set_text(4, postitionVector[1]);
-		// pros::lcd::set_text(6, "Theta: %.3f", theta * 180 / M_PI)
-		//printf("IMUs: %.3f, %.3f, %.3f\n", inertLeft * 180 / M_PI, inertRight * 180 / M_PI, inertCenter * 180 / M_PI);
 		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
 	}
