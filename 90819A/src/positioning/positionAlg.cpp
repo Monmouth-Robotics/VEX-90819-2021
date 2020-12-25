@@ -161,13 +161,13 @@ void PositionAlg::calcPosition(void* ignore)
 
 		// displayPosition(positionVector[0], positionVector[1], theta);
 
-		string xString = ((string)("X: ") + (string)(to_string(positionVector[0])));
-		string yString = ((string)("Y: ") + (string)(to_string(positionVector[1])));
-		string thetaString = ((string)("Theta: ") + (string)(to_string(theta * 180 / M_PI)));
+		//string xString = ((string)("X: ") + (string)(to_string(positionVector[0])));
+		//string yString = ((string)("Y: ") + (string)(to_string(positionVector[1])));
+		//string thetaString = ((string)("Theta: ") + (string)(to_string(theta * 180 / M_PI)));
 
-		pros::lcd::set_text(2, strcpy(new char[xString.length() + 1], xString.c_str()));
-		pros::lcd::set_text(3, strcpy(new char[yString.length() + 1], yString.c_str()));
-		pros::lcd::set_text(4, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
+		//pros::lcd::set_text(2, strcpy(new char[xString.length() + 1], xString.c_str()));
+		//pros::lcd::set_text(3, strcpy(new char[yString.length() + 1], yString.c_str()));
+		//pros::lcd::set_text(4, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 
 		// lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
 

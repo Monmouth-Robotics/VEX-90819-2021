@@ -26,7 +26,6 @@ void initialize()
 	}
 	//Should print about 2000 ms
 	printf("IMU is done calibrating (took %d ms)\n", iter - time);
-	displayInit(5);
 }
 
 /**
@@ -88,7 +87,7 @@ void autonomous()
 	backEncoder.reset();
 
 	//Run auton according to selection screen
-	switch (getAutonCode())
+	switch (display.getAutonCode())
 	{
 	case 1:
 		break;
