@@ -28,6 +28,7 @@ double backEncoderDistance = 0;
 double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
+double thetaOffset = 0;
 
 vector<double> positionVector = {0, 0};
 vector<double> newVector = {0, 0};
@@ -55,7 +56,7 @@ int count2 = 0;
  */
 double PositionAlg::getTheta()
 {
-	return theta;
+	return theta + thetaOffset;
 }
 
 /**
@@ -104,7 +105,7 @@ void PositionAlg::calcPosition(void *ignore)
 		if (inertLeft != INFINITY && inertRight != INFINITY && inertCenter != INFINITY)
 		{
 			//Calculates average of inertial readings
-			theta = headingAverageBeta(inertLeft, inertRight, inertCenter);
+			theta = headingAverageBeta(inertLeft, inertRight, inertCenter) + thetaOffset;
 			// theta = averageHeadings(inertLeft, inertRight, inertCenter);
 			// theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
 
@@ -213,4 +214,12 @@ void PositionAlg::resetGlobal()
 	thetaM = 0;
 	newX = 0;
 	newY = 0;
+}
+
+/**
+ * Resets all positioning variables back to 0
+ */
+void PositionAlg::setTheta(double newTheta)
+{
+	thetaOffset = newTheta - theta;
 }
