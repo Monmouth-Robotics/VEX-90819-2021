@@ -28,7 +28,6 @@ double backEncoderDistance = 0;
 double deltaTheta = 0;
 double polarTheta = 0;
 double theta = 0;
-double thetaOffset = 0;
 
 vector<double> positionVector = {0, 0};
 vector<double> newVector = {0, 0};
@@ -44,11 +43,12 @@ double newX;
 double newY;
 double thetaM;
 
-double inertLast = 0;
 double inertLeft = 0;
+double inertLeftOffset = 0;
 double inertRight = 0;
-double inertTheta = 0;
+double inertRightOffset = 0;
 double inertCenter = 0;
+double inertCenterOffset = 0;
 int count2 = 0;
 
 /**
@@ -56,7 +56,7 @@ int count2 = 0;
  */
 double PositionAlg::getTheta()
 {
-	return theta + thetaOffset;
+	return theta;
 }
 
 /**
@@ -98,14 +98,14 @@ void PositionAlg::calcPosition(void *ignore)
 		backEncoderDistance = backEncoderDegreesDifference * M_PI / 180.0 * WHEEL_DIAMETER / 2.0;
 
 		//Gets heading values from inertial
-		inertLeft = abs(imuLeft.get_heading()) * M_PI / 180;
-		inertRight = abs(imuRight.get_heading()) * M_PI / 180;
-		inertCenter = abs(imuCenter.get_heading()) * M_PI / 180;
+		inertLeft = fmod((abs(imuLeft.get_heading()) * M_PI / 180 + inertLeftOffset), (2 * M_PI));
+		inertRight = fmod((abs(imuRight.get_heading()) * M_PI / 180 + inertRightOffset), (2 * M_PI));
+		inertCenter = fmod((abs(imuCenter.get_heading()) * M_PI / 180 + inertCenterOffset), (2 * M_PI));
 		//Checks if calibration in complete
 		if (inertLeft != INFINITY && inertRight != INFINITY && inertCenter != INFINITY)
 		{
 			//Calculates average of inertial readings
-			theta = headingAverageBeta(inertLeft, inertRight, inertCenter) + thetaOffset;
+			theta = headingAverageBeta(inertLeft, inertRight, inertCenter);
 			// theta = averageHeadings(inertLeft, inertRight, inertCenter);
 			// theta = inertRight + calcAngleDiff(inertLeft, inertRight) / 2;
 
@@ -221,5 +221,16 @@ void PositionAlg::resetGlobal()
  */
 void PositionAlg::setTheta(double newTheta)
 {
-	thetaOffset = newTheta - theta;
+	inertLeftOffset = newTheta - inertLeft;
+	inertRightOffset = newTheta - inertRight;
+	inertCenterOffset = newTheta - inertCenter;
+	while (inertLeftOffset < 0) {
+		inertLeftOffset += 2 * M_PI;
+	}
+	while (inertRightOffset < 0) {
+		inertRightOffset += 2 * M_PI;
+	}
+	while (inertCenterOffset < 0) {
+		inertCenterOffset += 2 * M_PI;
+	}
 }
