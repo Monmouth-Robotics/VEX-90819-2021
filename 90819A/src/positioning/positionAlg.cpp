@@ -51,7 +51,6 @@ double inertRight = 0;
 double inertRightOffset = 0;
 double inertCenter = 0;
 double inertCenterOffset = 0;
-int count2 = 0;
 
 /**
  * Returns robot heading
@@ -159,7 +158,7 @@ void PositionAlg::calcPosition(void* ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
+		//printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
 	}
 }
@@ -169,6 +168,11 @@ void PositionAlg::calcPosition(void* ignore)
  */
 void PositionAlg::resetGlobal()
 {
+	//Reset encoder values
+	leftEncoder.reset();
+	rightEncoder.reset();
+	backEncoder.reset();
+
 	previousLeftEncoderDegrees = 0;
 	previousRightEncoderDegrees = 0;
 	previousBackEncoderDegrees = 0;
@@ -189,19 +193,12 @@ void PositionAlg::resetGlobal()
 	rightEncoderDistance = 0;
 	backEncoderDistance = 0;
 
-	deltaTheta = 0;
-	polarTheta = 0;
-
-	positionVector[0] = 0;
-	positionVector[1] = 0;
-	newVector[0] = 0;
-	newVector[1] = 0;
+	positionVector = { 0, 0 };
+	newVector = { 0, 0 };
 
 	x = 0;
 	y = 0;
 	r = 0;
-	theta = 0;
-	thetaM = 0;
 	newX = 0;
 	newY = 0;
 }
