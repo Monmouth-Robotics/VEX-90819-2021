@@ -211,9 +211,9 @@ void PositionAlg::resetGlobal()
  */
 void PositionAlg::setTheta(double newTheta)
 {
-	inertLeftOffset = newTheta - inertLeft;
-	inertRightOffset = newTheta - inertRight;
-	inertCenterOffset = newTheta - inertCenter;
+	inertLeftOffset = newTheta - inertLeft + inertLeftOffset;
+	inertRightOffset = newTheta - inertRight + inertRightOffset;
+	inertCenterOffset = newTheta - inertCenter + inertCenterOffset;
 	while (inertLeftOffset < 0) {
 		inertLeftOffset += 2 * M_PI;
 	}
