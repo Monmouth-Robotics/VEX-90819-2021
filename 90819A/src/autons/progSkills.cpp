@@ -263,7 +263,7 @@ void fifthGoal()
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
 	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {112, -40, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 	ppMove({{101, -40, M_PI}, {101, -68, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	ppMove({{101, -68, M_PI}, {113, -62, M_PI / 2 + M_PI / 4}, {119, -69, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{101, -68, M_PI}, {113, -62, M_PI / 2 + M_PI / 4}, {117.8, -69.6, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 
 	// pidRight(M_PI / 2, {{75, 112}, {75, 98}}, 100, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 
@@ -361,7 +361,7 @@ void sixthGoal()
 	// pidForward(M_PI / 2, {{60, 66}, {85, 66}}, 100, 0.5, 100, 15, 30, 0, 0, 0, 0, 0, 0, true);
 
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	ppMove({{119, -69, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
 	ppMove({{87, -40, 3*M_PI /2}, {65, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
 	ppMove({{65, -40, 3*M_PI/2}, {65, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
@@ -401,10 +401,10 @@ void seventhGoal()
 	pros::delay(250);
 	indexerFunctions.shootOneBall(NULL);
 	indexer.toggleTopPosition(true);
-	while (!intakeStatus)
-	{
-		pros::delay(10);
-	}
+	//while (!intakeStatus)
+	//{
+	//	pros::delay(10);
+	//}
 }
 
 /**
