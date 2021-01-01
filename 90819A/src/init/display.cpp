@@ -290,7 +290,7 @@ void Display::displayPosition(void* ignore) {
 		lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
 
 		//Displays the value of theta
-		string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta())));
+		string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta() * 180 / M_PI)));
 		lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 
 		pros::delay(10);
