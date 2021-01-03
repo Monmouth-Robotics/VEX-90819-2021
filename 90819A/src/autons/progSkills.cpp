@@ -261,9 +261,9 @@ void fifthGoal()
 	indexer.toggleTopPosition(true);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {112, -40, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	ppMove({{101, -40, M_PI}, {101, -68, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	ppMove({{101, -68, M_PI}, {113, -62, M_PI / 2 + M_PI / 4}, {117.8, -69.6, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {114, -45, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{114, -45, M_PI}, {102, -69, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{102, -69, M_PI}, {114, -62, M_PI / 2 + M_PI / 4}, {117.8, -69.6, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 
 	// pidRight(M_PI / 2, {{75, 112}, {75, 98}}, 100, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 
@@ -363,12 +363,12 @@ void sixthGoal()
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
 	ppMove({{117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	ppMove({{87, -40, 3*M_PI /2}, {65, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
-	ppMove({{65, -40, 3*M_PI/2}, {65, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{87, -40, 3*M_PI /2}, {64, -37, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
+	ppMove({{64, -37, 3*M_PI/2}, {64, -37, M_PI}, {64, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
 
 
 
-	// pros::Task intakeController2(stopIntakesAsyncOne, NULL, "Intake Controller");
+	//pros::Task intakeController2(stopIntakesAsyncOne, NULL, "Intake Controller");
 
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	indexerFunctions.shootTwoBalls(NULL);
