@@ -173,7 +173,7 @@ void thirdGoal()
 
 	ppMove({{106, 20, M_PI / 2}, {100, 37.5, 0}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	ppMove({{100, 38, 0}, {112, 32, M_PI / 4}, {118, 38, M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{100, 38, 0}, {112, 32, M_PI / 4}, {118, 38, M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 
 	// leftBackMotor = -63;
 	// leftFrontMotor = -63;
@@ -222,11 +222,11 @@ void fourthGoal()
 	// indexerFunctions.toggleIntakes(127);
 	// pros::delay(250);
 	// pidTurn(M_PI / 2 - 0.008, 100, 0.025, 120.0, 0.0, 0.0);
-	ppMove({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	ppMove({{89, 9, M_PI}, {89, -15, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 100, 0.08);
-	ppMove({{86, -15, M_PI}, {113, -15, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 25, 300, 0.08);
+	ppMove({{89, 9, M_PI}, {89, -15, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 100, 0.08);
+	ppMove({{86, -15, M_PI}, {113, -15, M_PI / 2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 25, 300, 0.08);
 
 	// indexerFunctions.poopOneBall(NULL);
 	// pros::delay(500);
@@ -261,9 +261,9 @@ void fifthGoal()
 	indexer.toggleTopPosition(true);
 	indexerFunctions.toggleIntakes(127);
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {114, -45, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{112, -15, M_PI / 2}, {112, -30, M_PI}, {114, -45, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
 	ppMove({{114, -45, M_PI}, {102, -69, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
-	ppMove({{102, -69, M_PI}, {114, -62, M_PI / 2 + M_PI / 4}, {117.8, -69.6, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{102, -69, M_PI}, {114, -62, M_PI / 2 + M_PI / 4}, {117.8, -69.6, M_PI / 2 + M_PI / 4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
 
 	// pidRight(M_PI / 2, {{75, 112}, {75, 98}}, 100, 0.5, 100, 20, 20, 0, 0, 0, 0, 0, 0, true);
 
@@ -361,10 +361,10 @@ void sixthGoal()
 	// pidForward(M_PI / 2, {{60, 66}, {85, 66}}, 100, 0.5, 100, 15, 30, 0, 0, 0, 0, 0, 0, true);
 
 	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
-	ppMove({{117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
 	indexerFunctions.toggleIntakes(127);
-	ppMove({{87, -40, 3*M_PI /2}, {64, -37, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 100, 0.08);
-	ppMove({{64, -37, 3*M_PI/2}, {64, -37, M_PI}, {64, -66, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 1.0, 28, 300, 0.08);
+	ppMove({{87, -40, 3*M_PI /2}, {64, -37, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 100, 0.08);
+	ppMove({{64, -37, M_PI}, {64, -64, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
 
 
 
@@ -384,22 +384,37 @@ void sixthGoal()
  * Route to score seventh goal
 */
 void seventhGoal()
-{
-	pidBackward(M_PI / 2, {{83, 61}, {79, 61}}, 100, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
-	indexerFunctions.toggleIntakes(127);
-	pidTurn(M_PI - .08, 100, 0.025, 120.0, 0.0, 0.0);
+{	
+	leftBackMotor = -63;
+	leftFrontMotor = -63;
+	rightFrontMotor = -63;
+	rightBackMotor = -63;
+	pros::delay(300);
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
+	indexerFunctions.toggleIntakes(127);
+	ppMove({{64, -66, M_PI}, {17, -53, 3*M_PI/2}, {23, -53, 3*M_PI/2}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
+	ppMove({{23, -53, M_PI}, {27, -72, M_PI}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
+	ppMove({{27, -72, M_PI}, {12, -67, M_PI+M_PI/4}, {7, -71.5, M_PI+M_PI/4}}, 1, 0.00, 0.00, 0.001, 5.0, 10.0, 3.0, 10, 0.5, 28, 300, 0.08);
+
+	// pidBackward(M_PI / 2, {{83, 61}, {79, 61}}, 100, 0.5, 50, 20, 20, 0, 0, 0, 0, 0, 0, true);
+	// indexerFunctions.toggleIntakes(127);
+	// pidTurn(M_PI - .08, 100, 0.025, 120.0, 0.0, 0.0);
+	// pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
 	// indexerFunctions.poopOneBall(NULL);
 	// indexerFunctions.poopOneBall(NULL);
 	// indexer.toggleTopPosition(false);
 
-	pidForward(M_PI, {{78, 61}, {78, 24}}, 100, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
-	// pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
-	pidTurn(M_PI / 2 + M_PI / 4, 100, 0.025, 120.0, 0.0, 0.0);
-	pidForward(M_PI / 2 + M_PI / 4, {{96, 14}, {97, 13}}, 100, 0.5, 50, 40, 30, 0, 0, 0, 0, 0, 0, true);
+	// pidForward(M_PI, {{78, 61}, {78, 24}}, 100, 0.5, 50, 20, -20, 0, 0, 0, 0, 0, 0, true);
+	// // pidBackward(M_PI, {{76, 18}, {76, 27}}, 80, 0.5, 50, 10, -20, 0, 0, 0, 0, 0, 0, true);
+	// pidTurn(M_PI / 2 + M_PI / 4, 100, 0.025, 120.0, 0.0, 0.0);
+	// pidForward(M_PI / 2 + M_PI / 4, {{96, 14}, {97, 13}}, 100, 0.5, 50, 40, 30, 0, 0, 0, 0, 0, 0, true);
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
-	pros::delay(250);
-	indexerFunctions.shootOneBall(NULL);
+	// pros::delay(250);
+	indexerFunctions.shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 	//while (!intakeStatus)
 	//{
@@ -533,7 +548,7 @@ void runProgSkills()
 	fourthGoal();
 	fifthGoal();
 	sixthGoal();
-
+	seventhGoal();
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
