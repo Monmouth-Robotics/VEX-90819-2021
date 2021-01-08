@@ -73,12 +73,7 @@ void firstGoal()
 	indexerFunctions.toggleIntakes(127);
 	PathFollowing()
 		.withPath({ {0, 0, 0}, {15, 0, 0} }, 1)
-		.withSmoothing(0.00, 0.00, 0.001)
-		.withLimits(5.0, 10.0)
-		.withLookAheadPointsNum(10)
-		.withThresholdErrors(0.25, 0.08)
-		.withGains(25, 300)
-		.withTurnConstant(3.0);
+		.ppMove();
 	PathFollowing()
 		.withPath({ {15, 0, 0}, {15, 15, 0}, {9, 39.5, -M_PI / 4} }, 1)
 		.withSmoothing(0.00, 0.00, 0.001)
@@ -86,7 +81,8 @@ void firstGoal()
 		.withLookAheadPointsNum(10)
 		.withThresholdErrors(0.5, 0.08)
 		.withGains(25, 300)
-		.withTurnConstant(3.0);
+		.withTurnConstant(3.0)
+		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 
 	indexerFunctions.shootTwoBalls(NULL);
@@ -557,12 +553,12 @@ void runProgSkills()
 	// moveRobot({-4, -1, 50}, 100, 100, 100);
 
 	firstGoal();
-	secondGoal();
-	thirdGoal();
-	fourthGoal();
-	fifthGoal();
-	sixthGoal();
-	seventhGoal();
+	// secondGoal();
+	// thirdGoal();
+	// fourthGoal();
+	// fifthGoal();
+	// sixthGoal();
+	// seventhGoal();
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);

@@ -3,18 +3,18 @@
 namespace zoo {
 
 	vector<vector<double>> PathFollowing::initPoints = {};
-	double PathFollowing::spacing = 0;
+	double PathFollowing::spacing = 1;
 	double PathFollowing::smoothVal1 = 0;
 	double PathFollowing::smoothVal2 = 0;
-	double PathFollowing::smoothTolerance = 0;
-	double PathFollowing::maxVel = 0;
-	double PathFollowing::maxAccel = 0;
-	double PathFollowing::turnConstant = 0;
-	int PathFollowing::lookAheadPointsNum = 0;
-	double PathFollowing::thresholdError = 0;
-	double PathFollowing::kPDistance = 0;
-	double PathFollowing::kPAngle = 0;
-	double PathFollowing::angleThreshold = 0;
+	double PathFollowing::smoothTolerance = 0.001;
+	double PathFollowing::maxVel = 5;
+	double PathFollowing::maxAccel = 10;
+	double PathFollowing::turnConstant = 3;
+	int PathFollowing::lookAheadPointsNum = 10;
+	double PathFollowing::thresholdError = 0.5;
+	double PathFollowing::angleThreshold = 0.008;
+	double PathFollowing::kPDistance = 25;
+	double PathFollowing::kPAngle = 300;
 
 	PathFollowing::PathFollowing(void) {
 
