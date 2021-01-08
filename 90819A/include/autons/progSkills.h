@@ -12,6 +12,9 @@
 #include "macros/macroFunctions.h"
 #include "macros/macroInstances.h"
 
+using namespace std;
+using namespace zoo;
+
 static void stopIntakesAsync(void* ignore);
 static void stopIntakesAsyncOne(void* ignore);
 
