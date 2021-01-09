@@ -26,6 +26,14 @@ char* Indexing::getBottomStatus()
 }
 
 /**
+ * Returns status of back indexing position
+*/
+char* Indexing::getBackStatus()
+{
+	return backBallDetected;
+}
+
+/**
  * Returns status of ball in intakes
 */
 char* Indexing::getIntakeColor()
