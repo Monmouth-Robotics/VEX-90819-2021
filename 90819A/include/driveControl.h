@@ -12,7 +12,6 @@
 #include "macros/intakeController.h"
 
 using namespace std;
-using namespace zoo;
 
 void driveControl();
 

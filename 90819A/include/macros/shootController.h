@@ -9,15 +9,13 @@
 
 using namespace std;
 
-namespace zoo {
-	class ShootController
-	{
-	public:
-		ShootController();
-		static void shootPowerful(void* ignore);
-		static void shootTwoBalls(void* ignore);
-		static void shootOneBall(void* ignore);
-	};
-}
+class ShootController
+{
+public:
+	ShootController();
+	static void shootPowerful(void* ignore);
+	static void shootTwoBalls(void* ignore);
+	static void shootOneBall(void* ignore);
+};
 
 #endif
