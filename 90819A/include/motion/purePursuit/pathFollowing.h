@@ -21,6 +21,10 @@ namespace zoo {
 		PathFollowing& withThresholdErrors(double thresholdError, double angleThreshold);
 		PathFollowing& withGains(double kPDistance, double kPAngle);
 		PathFollowing& withTurnConstant(double turnConstant);
+		PathFollowing& withMinPower(double minPower);
+		PathFollowing& withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double SpeedCheckTime);
+		PathFollowing& withCoordinateReset(double resetX, double resetY);
+		PathFollowing& withAngleReset(double resetTheta);
 	private:
 		static vector<vector<double>> initPoints;
 		static double spacing;
@@ -35,9 +39,16 @@ namespace zoo {
 		static double kPDistance;
 		static double kPAngle;
 		static double angleThreshold;
+		static double speedCheckDistance;
+		static double speedCheckSpeed;
+		static double speedCheckTime;
+		static double minPower;
+		static double resetX;
+		static double resetY;
+		static double resetTheta;
 		static vector<double> getErrors(vector<double> currentPosition, vector<double> lookAheadPosition);
 		static double findPercentage(double xError, double yError);
-		static void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle);
+		static void moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle, double minPower);
 		static vector<double> findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance);
 	};
 }
