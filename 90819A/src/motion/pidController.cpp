@@ -1,7 +1,7 @@
 #include "motion/pidController.h"
 
 namespace zoo {
-	
+
 	/**
 	 * Parameters:
 	 * targetTheta: target heading for motion
@@ -42,7 +42,7 @@ namespace zoo {
 	double PIDController::stopMotors = false;
 
 	PIDController::PIDController() {
-		
+
 	}
 
 

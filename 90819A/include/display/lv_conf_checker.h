@@ -10,8 +10,8 @@
    Dynamic memory
  *===================*/
 
-/* Memory size which will be used by the library
- * to store the graphical objects and other data */
+ /* Memory size which will be used by the library
+  * to store the graphical objects and other data */
 #ifndef LV_MEM_CUSTOM
 #define LV_MEM_CUSTOM      0                /*1: use custom malloc/free, 0: use the built-in lv_mem_alloc/lv_mem_free*/
 #endif
@@ -40,8 +40,8 @@
 #endif
 #endif     /*LV_MEM_CUSTOM*/
 
-/* Garbage Collector settings
- * Used if lvgl is binded to higher language and the memory is managed by that language */
+  /* Garbage Collector settings
+   * Used if lvgl is binded to higher language and the memory is managed by that language */
 #ifndef LV_ENABLE_GC
 #define LV_ENABLE_GC 0
 #endif
@@ -57,11 +57,11 @@
 #endif
 #endif /* LV_ENABLE_GC */
 
-/*===================
-   Graphical settings
- *===================*/
+   /*===================
+	  Graphical settings
+	*===================*/
 
-/* Horizontal and vertical resolution of the library.*/
+	/* Horizontal and vertical resolution of the library.*/
 #ifndef LV_HOR_RES
 #define LV_HOR_RES          (480)
 #endif
@@ -75,7 +75,7 @@
 #define LV_DPI              100
 #endif
 
-/* Enable anti-aliasing (lines, and radiuses will be smoothed) */
+ /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
 #ifndef LV_ANTIALIAS
 #define LV_ANTIALIAS        1       /*1: Enable anti-aliasing*/
 #endif
@@ -89,62 +89,62 @@
  *  VDB settings
  *----------------*/
 
-/* VDB (Virtual Display Buffer) is an internal graphics buffer.
- * The GUI will be drawn into this buffer first and then
- * the buffer will be passed to your `disp_drv.disp_flush` function to
- * copy it to your frame buffer.
- * VDB is required for: buffered drawing, opacity, anti-aliasing and shadows
- * Learn more: https://docs.littlevgl.com/#Drawing*/
+ /* VDB (Virtual Display Buffer) is an internal graphics buffer.
+  * The GUI will be drawn into this buffer first and then
+  * the buffer will be passed to your `disp_drv.disp_flush` function to
+  * copy it to your frame buffer.
+  * VDB is required for: buffered drawing, opacity, anti-aliasing and shadows
+  * Learn more: https://docs.littlevgl.com/#Drawing*/
 
-/* Size of the VDB in pixels. Typical size: ~1/10 screen. Must be >= LV_HOR_RES
- * Setting it to 0 will disable VDB and `disp_drv.disp_fill` and `disp_drv.disp_map` functions
- * will be called to draw to the frame buffer directly*/
+  /* Size of the VDB in pixels. Typical size: ~1/10 screen. Must be >= LV_HOR_RES
+   * Setting it to 0 will disable VDB and `disp_drv.disp_fill` and `disp_drv.disp_map` functions
+   * will be called to draw to the frame buffer directly*/
 #ifndef LV_VDB_SIZE
 #define LV_VDB_SIZE         ((LV_VER_RES * LV_HOR_RES) / 10)
 #endif
 
- /* Bit-per-pixel of VDB. Useful for monochrome or non-standard color format displays.
-  * Special formats are handled with `disp_drv.vdb_wr`)*/
+   /* Bit-per-pixel of VDB. Useful for monochrome or non-standard color format displays.
+	* Special formats are handled with `disp_drv.vdb_wr`)*/
 #ifndef LV_VDB_PX_BPP
 #define LV_VDB_PX_BPP       LV_COLOR_SIZE       /*LV_COLOR_SIZE comes from LV_COLOR_DEPTH below to set 8, 16 or 32 bit pixel size automatically */
 #endif
 
- /* Place VDB to a specific address (e.g. in external RAM)
-  * 0: allocate automatically into RAM
-  * LV_VDB_ADR_INV: to replace it later with `lv_vdb_set_adr()`*/
+	/* Place VDB to a specific address (e.g. in external RAM)
+	 * 0: allocate automatically into RAM
+	 * LV_VDB_ADR_INV: to replace it later with `lv_vdb_set_adr()`*/
 #ifndef LV_VDB_ADR
 #define LV_VDB_ADR          0
 #endif
 
-/* Use two Virtual Display buffers (VDB) to parallelize rendering and flushing
- * The flushing should use DMA to write the frame buffer in the background */
+	 /* Use two Virtual Display buffers (VDB) to parallelize rendering and flushing
+	  * The flushing should use DMA to write the frame buffer in the background */
 #ifndef LV_VDB_DOUBLE
 #define LV_VDB_DOUBLE       0
 #endif
 
-/* Place VDB2 to a specific address (e.g. in external RAM)
- * 0: allocate automatically into RAM
- * LV_VDB_ADR_INV: to replace it later with `lv_vdb_set_adr()`*/
+	  /* Place VDB2 to a specific address (e.g. in external RAM)
+	   * 0: allocate automatically into RAM
+	   * LV_VDB_ADR_INV: to replace it later with `lv_vdb_set_adr()`*/
 #ifndef LV_VDB2_ADR
 #define LV_VDB2_ADR         0
 #endif
 
-/* Using true double buffering in `disp_drv.disp_flush` you will always get the image of the whole screen.
- * Your only task is to set the rendered image (`color_p` parameter) as frame buffer address or send it to your display.
- * The best if you do in the blank period of you display to avoid tearing effect.
- * Requires:
- * - LV_VDB_SIZE = LV_HOR_RES * LV_VER_RES
- * - LV_VDB_DOUBLE = 1
- */
+	   /* Using true double buffering in `disp_drv.disp_flush` you will always get the image of the whole screen.
+		* Your only task is to set the rendered image (`color_p` parameter) as frame buffer address or send it to your display.
+		* The best if you do in the blank period of you display to avoid tearing effect.
+		* Requires:
+		* - LV_VDB_SIZE = LV_HOR_RES * LV_VER_RES
+		* - LV_VDB_DOUBLE = 1
+		*/
 #ifndef LV_VDB_TRUE_DOUBLE_BUFFERED
 #define LV_VDB_TRUE_DOUBLE_BUFFERED 0
 #endif
 
-/*=================
-   Misc. setting
- *=================*/
+		/*=================
+		   Misc. setting
+		 *=================*/
 
-/*Input device settings*/
+		 /*Input device settings*/
 #ifndef LV_INDEV_READ_PERIOD
 #define LV_INDEV_READ_PERIOD            50                     /*Input device read period in milliseconds*/
 #endif
@@ -263,7 +263,7 @@
 #ifndef LV_LOG_LEVEL
 #  define LV_LOG_LEVEL    LV_LOG_LEVEL_WARN
 #endif
-/* 1: Print the log with 'printf'; 0: user need to register a callback*/
+ /* 1: Print the log with 'printf'; 0: user need to register a callback*/
 
 #ifndef LV_LOG_PRINTF
 #  define LV_LOG_PRINTF   0
@@ -302,13 +302,13 @@
 #define USE_LV_THEME_NEMO       1       /*Water-like theme based on the movie "Finding Nemo"*/
 #endif
 
-/*==================
- *    FONT USAGE
- *===================*/
+ /*==================
+  *    FONT USAGE
+  *===================*/
 
-/* More info about fonts: https://docs.littlevgl.com/#Fonts
- * To enable a built-in font use 1,2,4 or 8 values
- * which will determine the bit-per-pixel. Higher value means smoother fonts */
+  /* More info about fonts: https://docs.littlevgl.com/#Fonts
+   * To enable a built-in font use 1,2,4 or 8 values
+   * which will determine the bit-per-pixel. Higher value means smoother fonts */
 #ifndef USE_LV_FONT_DEJAVU_10
 #define USE_LV_FONT_DEJAVU_10              4
 #endif
@@ -365,12 +365,12 @@
 #define USE_LV_FONT_MONOSPACE_8            1
 #endif
 
-/* Optionally declare your custom fonts here.
- * You can use these fonts as default font too
- * and they will be available globally. E.g.
- * #define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(my_font_1) \
- *                                LV_FONT_DECLARE(my_font_2) \
- */
+   /* Optionally declare your custom fonts here.
+	* You can use these fonts as default font too
+	* and they will be available globally. E.g.
+	* #define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(my_font_1) \
+	*                                LV_FONT_DECLARE(my_font_2) \
+	*/
 #ifndef LV_FONT_CUSTOM_DECLARE
 #define LV_FONT_CUSTOM_DECLARE
 #endif
@@ -380,9 +380,9 @@
 #define LV_FONT_DEFAULT        &lv_font_dejavu_20     /*Always set a default font from the built-in fonts*/
 #endif
 
-/*===================
- *  LV_OBJ SETTINGS
- *==================*/
+	/*===================
+	 *  LV_OBJ SETTINGS
+	 *==================*/
 #ifndef LV_OBJ_FREE_NUM_TYPE
 #define LV_OBJ_FREE_NUM_TYPE    uint32_t    /*Type of free number attribute (comment out disable free number)*/
 #endif
@@ -393,18 +393,18 @@
 #define LV_OBJ_REALIGN          1           /*Enable `lv_obj_realaign()` based on `lv_obj_align()` parameters*/
 #endif
 
-/*==================
- *  LV OBJ X USAGE
- *================*/
-/*
- * Documentation of the object types: https://docs.littlevgl.com/#Object-types
- */
+	 /*==================
+	  *  LV OBJ X USAGE
+	  *================*/
+	  /*
+	   * Documentation of the object types: https://docs.littlevgl.com/#Object-types
+	   */
 
-/*****************
- * Simple object
- *****************/
+	   /*****************
+		* Simple object
+		*****************/
 
-/*Label (dependencies: -*/
+		/*Label (dependencies: -*/
 #ifndef USE_LV_LABEL
 #define USE_LV_LABEL    1
 #endif
@@ -441,7 +441,7 @@
  * Container objects
  *******************/
 
-/*Container (dependencies: -*/
+ /*Container (dependencies: -*/
 #ifndef USE_LV_CONT
 #define USE_LV_CONT     1
 #endif
@@ -480,7 +480,7 @@
  * Data visualizer objects
  *************************/
 
-/*Bar (dependencies: -)*/
+ /*Bar (dependencies: -)*/
 #ifndef USE_LV_BAR
 #define USE_LV_BAR      1
 #endif
@@ -567,7 +567,7 @@
  * User input objects
  *************************/
 
-/*Button (dependencies: lv_cont*/
+ /*Button (dependencies: lv_cont*/
 #ifndef USE_LV_BTN
 #define USE_LV_BTN      1
 #endif

@@ -5,7 +5,7 @@ bool intakeStatus = false;
 /**
  * Stops intakes when two blue balls need to be descored
 */
-void stopIntakesAsync(void *ignore)
+void stopIntakesAsync(void* ignore)
 {
 	intakeStatus = false;
 
@@ -38,7 +38,7 @@ void stopIntakesAsync(void *ignore)
 /**
  * Stops intakes when one blue ball needs to be descored
 */
-void stopIntakesAsyncOne(void *ignore)
+void stopIntakesAsyncOne(void* ignore)
 {
 	intakeStatus = false;
 
@@ -72,10 +72,10 @@ void firstGoal()
 
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{0, 0, 0}, {15, 0, 0}}, 1)
+		.withPath({ {0, 0, 0}, {15, 0, 0} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({{15, 0, 0}, {15, 15, 0}, {9, 39, -M_PI / 4}}, 1)
+		.withPath({ {15, 0, 0}, {15, 15, 0}, {9, 39, -M_PI / 4} }, 1)
 		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 
@@ -93,22 +93,22 @@ void firstGoal()
 void secondGoal()
 {
 	PathFollowing()
-		.withPath({{9, 39.5, -M_PI / 4}, {25, 25, 0}}, 1)
+		.withPath({ {9, 39.5, -M_PI / 4}, {25, 25, 0} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{25, 25, 0}, {26, 39, 0}}, 1)
+		.withPath({ {25, 25, 0}, {26, 39, 0} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(0);
 	PathFollowing()
-		.withPath({{26, 38, 0}, {38, 33, M_PI / 2}}, 1)
+		.withPath({ {26, 38, 0}, {38, 33, M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	pros::Task ejectController(EjectController()
 		.setTopRoller(true)
 		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
-		.withPath({{38, 33, M_PI / 2}, {60.5, 33, M_PI / 2}}, 1)
+		.withPath({ {38, 33, M_PI / 2}, {60.5, 33, M_PI / 2} }, 1)
 		.ppMove();
 
 	leftFrontMotor = 63;
@@ -159,11 +159,11 @@ void thirdGoal()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 	PathFollowing()
-		.withPath({{60.5, 33, 0}, {80, 22, M_PI / 2}}, 1)
+		.withPath({ {60.5, 33, 0}, {80, 22, M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{80, 22, M_PI / 2}, {106, 22, M_PI / 2}}, 1)
+		.withPath({ {80, 22, M_PI / 2}, {106, 22, M_PI / 2} }, 1)
 		// .withSpeedCheck(5, 0.01, 250)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
@@ -171,15 +171,15 @@ void thirdGoal()
 		.setTopRoller(true)
 		.ejectOneBall(NULL);
 	PathFollowing()
-		.withPath({{106, 20, M_PI / 2}, {100, 37.5, 0}}, 1)
+		.withPath({ {106, 20, M_PI / 2}, {100, 37.5, 0} }, 1)
 		//.withSpeedCheck(2, .0001, 250)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{100, 37.5, 0}, {112, 32, M_PI / 4}, {119, 39, M_PI/4}}, 1)
+		.withPath({ {100, 37.5, 0}, {112, 32, M_PI / 4}, {119, 39, M_PI / 4} }, 1)
 		//.withSpeedCheck(2, .0001, 250)
 		.ppMove();
-		
+
 
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller 2");
 
@@ -201,17 +201,17 @@ void fourthGoal()
 	// pros::delay(250);
 	// pidTurn(M_PI / 2 - 0.008, 100, 0.025, 120.0, 0.0, 0.0);
 	PathFollowing()
-		.withPath({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1)
+		.withPath({ {118, 39, M_PI / 45}, {89, 8, M_PI} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	pros::Task ejectController(EjectController()
 		.setTopRoller(true)
 		.ejectTwoBalls, NULL, "Eject Controller");
 	PathFollowing()
-		.withPath({{89, 9, M_PI}, {89, -15, M_PI}}, 1)
+		.withPath({ {89, 9, M_PI}, {89, -15, M_PI} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({{86, -15, M_PI}, {113.5, -15, M_PI / 2}}, 1)
+		.withPath({ {86, -15, M_PI}, {113.5, -15, M_PI / 2} }, 1)
 		.ppMove();
 
 	// indexerFunctions.poopOneBall(NULL);
@@ -250,15 +250,15 @@ void fifthGoal()
 		.setTopRoller(true)
 		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
-		.withPath({{112, -15, M_PI/2}, {112, -30, M_PI}, {114, -45, M_PI}}, 1)
+		.withPath({ {112, -15, M_PI / 2}, {112, -30, M_PI}, {114, -45, M_PI} }, 1)
 		.withGains(25, 100)
 		.ppMove();
 	PathFollowing()
-		.withPath({{114, -45, M_PI}, {102, -69, M_PI}}, 1)
+		.withPath({ {114, -45, M_PI}, {102, -69, M_PI} }, 1)
 		// .withSpeedCheck(5, .01, 250)
 		.ppMove();
 	PathFollowing()
-		.withPath({{102, -69, M_PI}, {114, -62, M_PI/2 + M_PI/4}, {119, -69, M_PI/2 + M_PI/4}}, 1)
+		.withPath({ {102, -69, M_PI}, {114, -62, M_PI / 2 + M_PI / 4}, {119, -69, M_PI / 2 + M_PI / 4} }, 1)
 		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller");
 	ShootController().shootTwoBalls(NULL);
@@ -279,14 +279,14 @@ void sixthGoal()
 		.setTopRoller(true)
 		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
-		.withPath({{117.8, -69.6, M_PI/2 + M_PI/4}, {87, -40, 3*M_PI/2}}, 1)
+		.withPath({ {117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{87, -40, 3*M_PI/2}, {64, -37, 3*M_PI/2}}, 1)
+		.withPath({ {87, -40, 3 * M_PI / 2}, {64, -37, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({{64, -37, M_PI}, {64, -64, M_PI}}, 1)
+		.withPath({ {64, -37, M_PI}, {64, -64, M_PI} }, 1)
 		.ppMove();
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
 	ShootController().shootTwoBalls(NULL);
@@ -317,17 +317,17 @@ void seventhGoal()
 		.ejectOneBall, NULL, "Eject Controller");
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{64, -66, M_PI}, {17, -53, 3*M_PI/2}, {23, -53, 3*M_PI/2}}, 1)
+		.withPath({ {64, -66, M_PI}, {17, -53, 3 * M_PI / 2}, {23, -53, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({{23, -53, M_PI}, {20, -68, M_PI}}, 1)
+		.withPath({ {23, -53, M_PI}, {20, -68, M_PI} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({{20, -68, M_PI}, {26, -68, M_PI}}, 1)
+		.withPath({ {20, -68, M_PI}, {26, -68, M_PI} }, 1)
 		// .withSpeedCheck(5, 0.01, 250)
 		.ppMove();
 	PathFollowing()
-		.withPath({{26, -68, M_PI}, {12, -67, M_PI+M_PI/4}, {7, -71.5, M_PI+M_PI/4}}, 1)
+		.withPath({ {26, -68, M_PI}, {12, -67, M_PI + M_PI / 4}, {7, -71.5, M_PI + M_PI / 4} }, 1)
 		// .withThresholdErrors(0.5, 0.04)
 		.ppMove();
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");

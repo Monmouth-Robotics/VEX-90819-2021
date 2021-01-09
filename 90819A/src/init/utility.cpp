@@ -26,7 +26,7 @@ double calcAngleDiff(double angle1, double angle2)
 /**
  * Uses distance formula to calculate distance error between two positions
  */
-double distanceFormula(vector<double> currentPosition, vector<double> lookAheadPosition){
+double distanceFormula(vector<double> currentPosition, vector<double> lookAheadPosition) {
 	double xError = lookAheadPosition[0] - currentPosition[0];
 	double yError = lookAheadPosition[1] - currentPosition[1];
 
@@ -196,7 +196,7 @@ int signum(double value) {
 	return (value > 0) - (value < 0);
 }
 
-double restrictAngle(double theta){
+double restrictAngle(double theta) {
 	while (theta > M_PI * 2)
 	{
 		theta -= M_PI * 2;

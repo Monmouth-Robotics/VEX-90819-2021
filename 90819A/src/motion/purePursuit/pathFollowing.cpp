@@ -305,7 +305,7 @@ namespace zoo
 			}
 		}
 	}
-	
+
 	void PathFollowing::ppMove()
 	{
 		double speedCheckCount = 0;
