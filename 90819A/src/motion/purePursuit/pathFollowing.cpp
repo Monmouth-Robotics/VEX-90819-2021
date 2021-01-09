@@ -20,6 +20,45 @@ namespace zoo {
 
 	}
 
+	PathFollowing& PathFollowing::withPath(vector<vector<double>> initPoints, double spacing) {
+		this->initPoints = initPoints;
+		this->spacing = spacing;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance) {
+		this->smoothVal1 = smoothVal1;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withLimits(double maxVel, double maxAccel) {
+		this->maxVel = maxVel;
+		this->maxAccel = maxAccel;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum) {
+		this->lookAheadPointsNum = lookAheadPointsNum;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold) {
+		this->thresholdError = thresholdError;
+		this->angleThreshold = angleThreshold;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withGains(double kPDistance, double kPAngle) {
+		this->kPDistance = kPDistance;
+		this->kPAngle = kPAngle;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withTurnConstant(double turnConstant) {
+		this->turnConstant = turnConstant;
+		return *this;
+	}
+
 	/*
 	Creates function that takes in current x, y, and theta and lookahead point x, y, theta, and returns proper error.
 	Function rotates the lookahead position about the robot origin.
@@ -225,45 +264,6 @@ namespace zoo {
 				}
 			}
 		}
-	}
-
-	PathFollowing& PathFollowing::withPath(vector<vector<double>> initPoints, double spacing) {
-		this->initPoints = initPoints;
-		this->spacing = spacing;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance) {
-		this->smoothVal1 = smoothVal1;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withLimits(double maxVel, double maxAccel) {
-		this->maxVel = maxVel;
-		this->maxAccel = maxAccel;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum) {
-		this->lookAheadPointsNum = lookAheadPointsNum;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold) {
-		this->thresholdError = thresholdError;
-		this->angleThreshold = angleThreshold;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withGains(double kPDistance, double kPAngle) {
-		this->kPDistance = kPDistance;
-		this->kPAngle = kPAngle;
-		return *this;
-	}
-
-	PathFollowing& PathFollowing::withTurnConstant(double turnConstant) {
-		this->turnConstant = turnConstant;
-		return *this;
 	}
 
 	void PathFollowing::ppMove(){

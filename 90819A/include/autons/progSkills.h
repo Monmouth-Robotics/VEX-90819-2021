@@ -6,8 +6,6 @@
 #include "api.h"
 #include "init/devices.h"
 #include "init/taskManagement.h"
-#include "motion/pid.h"
-#include "motion/purePursuit/pathGeneration.h"
 #include "motion/purePursuit/pathFollowing.h"
 #include "macros/ejectController.h"
 #include "macros/shootController.h"
