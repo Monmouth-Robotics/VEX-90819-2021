@@ -7,6 +7,7 @@
 #include "init/devices.h"
 #include "init/taskManagement.h"
 #include "motion/purePursuit/pathFollowing.h"
+#include "motion/pidController.h"
 #include "macros/ejectController.h"
 #include "macros/shootController.h"
 #include "macros/intakeController.h"

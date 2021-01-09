@@ -86,7 +86,7 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
  */
 void shootOneBallFunction()
 {
-	pros::Task indexShootingController(ShootController().shootOneBall, NULL, "Ball Shooter");
+	pros::Task shootOneBallController(ShootController().shootOneBall, NULL, "Ball Shooter");
 }
 
 /**
@@ -94,7 +94,7 @@ void shootOneBallFunction()
  */
 void shootTwoBallsFunction()
 {
-	pros::Task indexShootingController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
+	pros::Task shootTwoBallsController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
 }
 
 /**
@@ -102,7 +102,7 @@ void shootTwoBallsFunction()
  */
 void shootPowerfulFunction()
 {
-	pros::Task indexShootingController(ShootController().shootPowerful, NULL, "Shoot Powerful");
+	pros::Task shootPowerfulController(ShootController().shootPowerful, NULL, "Shoot Powerful");
 }
 
 /**
@@ -110,7 +110,7 @@ void shootPowerfulFunction()
  */
 void ejectOneBallFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(EjectController()
+	pros::Task ejectOneBallController(EjectController()
 		.setTopRoller(useTopRoller)
 		.ejectOneBall, NULL, "Ball Ejecter");
 }
@@ -120,7 +120,7 @@ void ejectOneBallFunction(bool useTopRoller)
  */
 void ejectTwoBallsFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(EjectController()
+	pros::Task ejectTwoBallsController(EjectController()
 		.setTopRoller(useTopRoller)
 		.ejectOneBall, NULL, "Ball Ejecter 2");
 }

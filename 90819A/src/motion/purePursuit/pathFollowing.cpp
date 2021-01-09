@@ -1,6 +1,7 @@
 #include "motion/purePursuit/pathFollowing.h"
 
-namespace zoo {
+namespace zoo
+{
 
 	vector<vector<double>> PathFollowing::initPoints = {};
 	double PathFollowing::spacing = 1;
@@ -12,9 +13,16 @@ namespace zoo {
 	double PathFollowing::turnConstant = 3;
 	int PathFollowing::lookAheadPointsNum = 10;
 	double PathFollowing::thresholdError = 0.5;
-	double PathFollowing::angleThreshold = 0.008;
+	double PathFollowing::angleThreshold = 0.024;
 	double PathFollowing::kPDistance = 25;
 	double PathFollowing::kPAngle = 300;
+	double PathFollowing::minPower = 50;
+	double PathFollowing::speedCheckDistance = 5;
+	double PathFollowing::speedCheckSpeed = 0.001;
+	double PathFollowing::speedCheckTime = 250;
+	double PathFollowing::resetX;
+	double PathFollowing::resetY;
+	double PathFollowing::resetTheta;
 
 	PathFollowing::PathFollowing() {
 
@@ -59,6 +67,31 @@ namespace zoo {
 		return *this;
 	}
 
+	PathFollowing& PathFollowing::withMinPower(double minPower)
+	{
+		this->minPower = minPower;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double speedCheckTime)
+	{
+		this->speedCheckDistance = speedCheckDistance;
+		this->speedCheckSpeed = speedCheckSpeed;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withCoordinateReset(double resetX, double resetY)
+	{
+		this->resetX = resetX;
+		this->resetY = resetY;
+		return *this;
+	}
+	PathFollowing& PathFollowing::withAngleReset(double resetTheta)
+	{
+		this->resetTheta = resetTheta;
+		return *this;
+	}
+
 	/*
 	Creates function that takes in current x, y, and theta and lookahead point x, y, theta, and returns proper error.
 	Function rotates the lookahead position about the robot origin.
@@ -100,7 +133,7 @@ namespace zoo {
 		}
 	}
 
-	void PathFollowing::moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle)
+	void PathFollowing::moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle, double minPower)
 	{
 		double maxPower = kPDistance * distanceError; //127
 
@@ -171,6 +204,12 @@ namespace zoo {
 			rightFrontPower = rightFrontPower * (maxPower / maxCurrSpeed);
 			rightBackPower = rightBackPower * (maxPower / maxCurrSpeed);
 		}
+		if (abs(leftFrontPower) < minPower && abs(leftBackPower) < minPower && abs(rightFrontPower) < minPower && abs(rightBackPower) < minPower) {
+			leftFrontPower = leftFrontPower * (minPower / maxCurrSpeed);
+			leftBackPower = leftBackPower * (minPower / maxCurrSpeed);
+			rightFrontPower = rightFrontPower * (minPower / maxCurrSpeed);
+			rightBackPower = rightBackPower * (minPower / maxCurrSpeed);
+		}
 
 		leftFrontMotor = leftFrontPower;
 		leftBackMotor = leftBackPower;
@@ -215,7 +254,8 @@ namespace zoo {
 		{
 			return pointsList[closestPoint + lookAheadPointsNum];
 		}
-		else {
+		else
+		{
 			return pointsList[pointsList.size() - 1];
 		}
 
@@ -265,8 +305,10 @@ namespace zoo {
 			}
 		}
 	}
-
-	void PathFollowing::ppMove(){
+	
+	void PathFollowing::ppMove()
+	{
+		double speedCheckCount = 0;
 		double distanceError = 999999;
 		double angleError = 999999;
 		vector<vector<double>> pointsList = { {0.0} };
@@ -325,10 +367,23 @@ namespace zoo {
 			// vector<double> errorArg1 = {0.0};
 			// errorArg1 = position.getPosition();
 
+			if (distanceError < speedCheckDistance && position.getSpeed() < speedCheckSpeed) {
+				speedCheckCount += 1;
+			}
+			// else{
+			// 	speedCheckCount = 0;
+			// }
+
+			if (speedCheckCount >= speedCheckTime / 10) {
+				break;
+			}
+
+
+
 			errors = getErrors({ x, y, position.getTheta() }, lookAheadPoint);
 			angleError = errors[2];
 			// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
-			moveRobot(errors, distanceError, kPDistance, kPAngle);
+			moveRobot(errors, distanceError, kPDistance, kPAngle, minPower);
 			// errors = {5, 0};
 			// printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
 			// printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);
