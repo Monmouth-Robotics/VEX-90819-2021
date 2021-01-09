@@ -16,7 +16,7 @@ namespace zoo {
 	double PathFollowing::kPDistance = 25;
 	double PathFollowing::kPAngle = 300;
 
-	PathFollowing::PathFollowing(void) {
+	PathFollowing::PathFollowing() {
 
 	}
 

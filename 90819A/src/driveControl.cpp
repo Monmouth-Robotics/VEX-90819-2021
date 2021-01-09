@@ -86,7 +86,7 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
  */
 void shootOneBallFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootOneBall, NULL, "Ball Shooter");
+	pros::Task indexShootingController(ShootController().shootOneBall, NULL, "Ball Shooter");
 }
 
 /**
@@ -94,7 +94,7 @@ void shootOneBallFunction()
  */
 void shootTwoBallsFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootTwoBalls, NULL, "Ball Shooter 2");
+	pros::Task indexShootingController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
 }
 
 /**
@@ -102,23 +102,27 @@ void shootTwoBallsFunction()
  */
 void shootPowerfulFunction()
 {
-	pros::Task indexShootingController(indexerFunctions.shootPowerful, NULL, "Shoot Powerful");
+	pros::Task indexShootingController(ShootController().shootPowerful, NULL, "Shoot Powerful");
 }
 
 /**
  * Creates task to eject one ball
  */
-void poopOneBallFunction(bool useTopRoller)
+void ejectOneBallFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(indexerFunctions.poopOneBall, (void*)(useTopRoller), "Ball Pooper");
+	pros::Task indexShootingController(EjectController()
+		.setTopRoller(useTopRoller)
+		.ejectOneBall, NULL, "Ball Ejecter");
 }
 
 /**
  * Creates task to eject two balls
  */
-void poopTwoBallsFunction(bool useTopRoller)
+void ejectTwoBallsFunction(bool useTopRoller)
 {
-	pros::Task indexShootingController(indexerFunctions.poopTwoBalls, (void*)(useTopRoller), "Ball Pooper 2");
+	pros::Task indexShootingController(EjectController()
+		.setTopRoller(useTopRoller)
+		.ejectOneBall, NULL, "Ball Ejecter 2");
 }
 
 /**
@@ -138,7 +142,7 @@ void driveControl()
 	intakeMotorRight.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-	pros::Task deploy(indexerFunctions.deploy, NULL, "Robot Deploy");
+	pros::Task deploy(IntakeController().deploy, NULL, "Robot Deploy");
 
 	while (true)
 	{
@@ -211,7 +215,7 @@ void driveControl()
 			}
 		}
 		else if (l2Pressed) {
-			poopTwoBallsFunction(!(shiftKeyPressed));
+			ejectTwoBallsFunction(!(shiftKeyPressed));
 			l2Pressed = false;
 			shiftKeyPressed = false;
 		}
@@ -226,7 +230,7 @@ void driveControl()
 		}
 
 		else if (l1Pressed) {
-			poopOneBallFunction(!(shiftKeyPressed));
+			ejectOneBallFunction(!(shiftKeyPressed));
 			l1Pressed = false;
 			shiftKeyPressed = false;
 		}
