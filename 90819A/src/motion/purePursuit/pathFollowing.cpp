@@ -16,7 +16,6 @@ namespace zoo
 	double PathFollowing::angleThreshold = 0.024;
 	double PathFollowing::kPDistance = 25;
 	double PathFollowing::kPAngle = 300;
-<<<<<<< HEAD
 	double PathFollowing::minPower = 50;
 	double PathFollowing::speedCheckDistance = 5;
 	double PathFollowing::speedCheckSpeed = 0.001;
@@ -24,13 +23,9 @@ namespace zoo
 	double PathFollowing::resetX;
 	double PathFollowing::resetY;
 	double PathFollowing::resetTheta;
-	PathFollowing::PathFollowing(void)
-	{
-=======
 
 	PathFollowing::PathFollowing() {
 
->>>>>>> b31dfdd977515fbab892608ee95d26c63f19ff3a
 	}
 
 	PathFollowing& PathFollowing::withPath(vector<vector<double>> initPoints, double spacing) {
@@ -72,6 +67,31 @@ namespace zoo
 		return *this;
 	}
 
+	PathFollowing& PathFollowing::withMinPower(double minPower)
+	{
+		this->minPower = minPower;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double speedCheckTime)
+	{
+		this->speedCheckDistance = speedCheckDistance;
+		this->speedCheckSpeed = speedCheckSpeed;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withCoordinateReset(double resetX, double resetY)
+	{
+		this->resetX = resetX;
+		this->resetY = resetY;
+		return *this;
+	}
+	PathFollowing& PathFollowing::withAngleReset(double resetTheta)
+	{
+		this->resetTheta = resetTheta;
+		return *this;
+	}
+
 	/*
 	Creates function that takes in current x, y, and theta and lookahead point x, y, theta, and returns proper error.
 	Function rotates the lookahead position about the robot origin.
@@ -79,7 +99,7 @@ namespace zoo
 
 	vector<double> PathFollowing::getErrors(vector<double> currentPosition, vector<double> lookAheadPosition)
 	{
-		vector<double> adjustedError = {0, 0, 0};
+		vector<double> adjustedError = { 0, 0, 0 };
 
 		//calculates new x coordinate
 		double rotatedX = cos(currentPosition[2]) * (lookAheadPosition[0] - currentPosition[0]) - sin(currentPosition[2]) * (lookAheadPosition[1] - currentPosition[1]) + currentPosition[0];
@@ -116,7 +136,7 @@ namespace zoo
 	void PathFollowing::moveRobot(vector<double> errors, double distanceError, double kPDistance, double kPAngle, double minPower)
 	{
 		double maxPower = kPDistance * distanceError; //127
-		
+
 		if (maxPower > 127)
 		{
 			maxPower = 127;
@@ -184,13 +204,13 @@ namespace zoo
 			rightFrontPower = rightFrontPower * (maxPower / maxCurrSpeed);
 			rightBackPower = rightBackPower * (maxPower / maxCurrSpeed);
 		}
-		if (abs(leftFrontPower) < minPower && abs(leftBackPower) < minPower && abs(rightFrontPower) < minPower && abs(rightBackPower) < minPower){
+		if (abs(leftFrontPower) < minPower && abs(leftBackPower) < minPower && abs(rightFrontPower) < minPower && abs(rightBackPower) < minPower) {
 			leftFrontPower = leftFrontPower * (minPower / maxCurrSpeed);
 			leftBackPower = leftBackPower * (minPower / maxCurrSpeed);
 			rightFrontPower = rightFrontPower * (minPower / maxCurrSpeed);
 			rightBackPower = rightBackPower * (minPower / maxCurrSpeed);
 		}
-		
+
 		leftFrontMotor = leftFrontPower;
 		leftBackMotor = leftBackPower;
 		rightFrontMotor = rightFrontPower;
@@ -202,24 +222,24 @@ namespace zoo
 	vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance)
 	{
 		//Starting point of the line segment
-		vector<double> E = {0.0, 0.0};
-		E = {pointsList[closestPoint][0], pointsList[closestPoint][1]};
+		vector<double> E = { 0.0, 0.0 };
+		E = { pointsList[closestPoint][0], pointsList[closestPoint][1] };
 
 		//End point of the line segment
-		vector<double> L = {0.0, 0.0};
-		L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
+		vector<double> L = { 0.0, 0.0 };
+		L = { pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1] };
 
 		//Center of the drawn circle, representing the robot position
-		vector<double> C = {0.0, 0.0};
-		C = {x, y};
+		vector<double> C = { 0.0, 0.0 };
+		C = { x, y };
 
 		//Direction vector from starting point to ending point
-		vector<double> d = {0.0, 0.0};
-		d = {L[0] - E[0], L[1] - E[1]};
+		vector<double> d = { 0.0, 0.0 };
+		d = { L[0] - E[0], L[1] - E[1] };
 
 		//Vector drawn from center of robot to starting point
-		vector<double> f = {0.0, 0.0};
-		f = {E[0] - C[0], E[1] - C[1]};
+		vector<double> f = { 0.0, 0.0 };
+		f = { E[0] - C[0], E[1] - C[1] };
 
 		//Represents the lookahead distance
 		double r = lookAheadDistance;
@@ -263,11 +283,11 @@ namespace zoo
 			//Verifies that the lookahead point is ahead of the current point in the motion
 			if (t1 >= 0 && t1 <= 1)
 			{
-				return {E[0] + t1 * d[0], E[1] + t1 * d[1]};
+				return { E[0] + t1 * d[0], E[1] + t1 * d[1] };
 			}
 			else if (t2 >= 0 && t2 <= 1)
 			{
-				return {E[0] + t2 * d[0], E[1] + t2 * d[1]};
+				return { E[0] + t2 * d[0], E[1] + t2 * d[1] };
 			}
 			//Expands search radius if both points found are behind the current point in the motion
 			else
@@ -285,91 +305,17 @@ namespace zoo
 			}
 		}
 	}
-
-<<<<<<< HEAD
-	PathFollowing &PathFollowing::withPath(vector<vector<double>> initPoints, double spacing)
-	{
-		this->initPoints = initPoints;
-		this->spacing = spacing;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance)
-	{
-		this->smoothVal1 = smoothVal1;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withLimits(double maxVel, double maxAccel)
-	{
-		this->maxVel = maxVel;
-		this->maxAccel = maxAccel;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum)
-	{
-		this->lookAheadPointsNum = lookAheadPointsNum;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold)
-	{
-		this->thresholdError = thresholdError;
-		this->angleThreshold = angleThreshold;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withGains(double kPDistance, double kPAngle)
-	{
-		this->kPDistance = kPDistance;
-		this->kPAngle = kPAngle;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withTurnConstant(double turnConstant)
-	{
-		this->turnConstant = turnConstant;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withMinPower(double minPower)
-	{
-		this->minPower = minPower;
-		return *this;
-	}
-
-	PathFollowing &PathFollowing::withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double speedCheckTime)
-	{
-		this->speedCheckDistance = speedCheckDistance;
-		this->speedCheckSpeed = speedCheckSpeed;
-		return *this;
-	}
 	
-	PathFollowing &PathFollowing::withCoordinateReset(double resetX, double resetY)
-	{
-		this->resetX = resetX;
-		this->resetY = resetY;
-		return *this;
-	}
-	PathFollowing &PathFollowing::withAngleReset(double resetTheta)
-	{
-		this->resetTheta = resetTheta;
-		return *this;
-	}
 	void PathFollowing::ppMove()
 	{
 		double speedCheckCount = 0;
-=======
-	void PathFollowing::ppMove(){
->>>>>>> b31dfdd977515fbab892608ee95d26c63f19ff3a
 		double distanceError = 999999;
 		double angleError = 999999;
-		vector<vector<double>> pointsList = {{0.0}};
+		vector<vector<double>> pointsList = { {0.0} };
 		pointsList = {};
 
 		pointsList = generatePath(initPoints, spacing, smoothVal1, smoothVal2, smoothTolerance, maxVel, maxAccel, turnConstant);
-		vector<double> errors = {0, 0, 0};
+		vector<double> errors = { 0, 0, 0 };
 		// errors = {};
 		// printf("here");
 		int closestPoint = 1;
@@ -380,11 +326,11 @@ namespace zoo
 			double x = position.getPosition()[0];
 			double y = position.getPosition()[1];
 
-			distanceError = distanceFormula({x, y}, pointsList[pointsList.size() - 1]);
+			distanceError = distanceFormula({ x, y }, pointsList[pointsList.size() - 1]);
 			// //Pulls the current robot coordinates
 
 			//Initialize lookahead point as empty vector
-			vector<double> lookAheadPoint = {0, 0, 0};
+			vector<double> lookAheadPoint = { 0, 0, 0 };
 			lookAheadPoint = {};
 
 			//Calculate distance between closest point and current robot position
@@ -420,21 +366,21 @@ namespace zoo
 			}
 			// vector<double> errorArg1 = {0.0};
 			// errorArg1 = position.getPosition();
-			
-			if (distanceError < speedCheckDistance && position.getSpeed() < speedCheckSpeed){
-				speedCheckCount +=1;
+
+			if (distanceError < speedCheckDistance && position.getSpeed() < speedCheckSpeed) {
+				speedCheckCount += 1;
 			}
 			// else{
 			// 	speedCheckCount = 0;
 			// }
 
-			if (speedCheckCount >= speedCheckTime/10){
+			if (speedCheckCount >= speedCheckTime / 10) {
 				break;
 			}
 
 
 
-			errors = getErrors({x, y, position.getTheta()}, lookAheadPoint);
+			errors = getErrors({ x, y, position.getTheta() }, lookAheadPoint);
 			angleError = errors[2];
 			// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
 			moveRobot(errors, distanceError, kPDistance, kPAngle, minPower);

@@ -78,12 +78,8 @@ void firstGoal()
 		.withPath({{15, 0, 0}, {15, 15, 0}, {9, 39, -M_PI / 4}}, 1)
 		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
-<<<<<<< HEAD
-	indexerFunctions.shootTwoBalls(NULL);
-=======
 
 	ShootController().shootTwoBalls(NULL);
->>>>>>> b31dfdd977515fbab892608ee95d26c63f19ff3a
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus)
 	{
@@ -99,16 +95,18 @@ void secondGoal()
 	PathFollowing()
 		.withPath({{9, 39.5, -M_PI / 4}, {25, 25, 0}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({{25, 25, 0}, {26, 39, 0}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(0);
+	IntakeController().toggleIntakes(0);
 	PathFollowing()
 		.withPath({{26, 38, 0}, {38, 33, M_PI / 2}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
-	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
+	IntakeController().toggleIntakes(127);
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
 		.withPath({{38, 33, M_PI / 2}, {60.5, 33, M_PI / 2}}, 1)
 		.ppMove();
@@ -122,7 +120,12 @@ void secondGoal()
 	leftBackMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pidTurn(0, 100, 0.025, 120.0, 0.0, 0.0);
+	PIDController()
+		.withTargetTheta(0)
+		.withLimit(100)
+		.withMaxAngleError(0.025)
+		.withTurnGains(120.0, 0.0, 0.0)
+		.pidTurn();
 	leftBackMotor = 63;
 	leftFrontMotor = 63;
 	rightFrontMotor = 63;
@@ -133,7 +136,7 @@ void secondGoal()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller");
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus)
 	{
@@ -158,18 +161,20 @@ void thirdGoal()
 	PathFollowing()
 		.withPath({{60.5, 33, 0}, {80, 22, M_PI / 2}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({{80, 22, M_PI / 2}, {106, 22, M_PI / 2}}, 1)
 		// .withSpeedCheck(5, 0.01, 250)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
-	indexerFunctions.poopOneBall((void *)true);
+	IntakeController().toggleIntakes(127);
+	EjectController()
+		.setTopRoller(true)
+		.ejectOneBall(NULL);
 	PathFollowing()
 		.withPath({{106, 20, M_PI / 2}, {100, 37.5, 0}}, 1)
 		//.withSpeedCheck(2, .0001, 250)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({{100, 37.5, 0}, {112, 32, M_PI / 4}, {119, 39, M_PI/4}}, 1)
 		//.withSpeedCheck(2, .0001, 250)
@@ -178,7 +183,7 @@ void thirdGoal()
 
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller 2");
 
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus)
 	{
@@ -198,8 +203,10 @@ void fourthGoal()
 	PathFollowing()
 		.withPath({{118, 39, M_PI / 45}, {89, 8, M_PI}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
-	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
+	IntakeController().toggleIntakes(127);
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectTwoBalls, NULL, "Eject Controller");
 	PathFollowing()
 		.withPath({{89, 9, M_PI}, {89, -15, M_PI}}, 1)
 		.ppMove();
@@ -215,7 +222,7 @@ void fourthGoal()
 	// pidForward(0, {{40, 84}, {40, 107}}, 100, 0.5, 100, 20, 10, 0, 0, 0, 0, 0, 0, true);
 	// pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller");
 	// pros::delay(250);
-	indexerFunctions.shootOneBall(NULL);
+	ShootController().shootOneBall(NULL);
 	indexer.toggleTopPosition(true);
 	// while (!intakeStatus)
 	// {
@@ -238,8 +245,10 @@ void fifthGoal()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 	indexer.toggleTopPosition(true);
-	indexerFunctions.toggleIntakes(127);
-	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
+	IntakeController().toggleIntakes(127);
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
 		.withPath({{112, -15, M_PI/2}, {112, -30, M_PI}, {114, -45, M_PI}}, 1)
 		.withGains(25, 100)
@@ -252,7 +261,7 @@ void fifthGoal()
 		.withPath({{102, -69, M_PI}, {114, -62, M_PI/2 + M_PI/4}, {119, -69, M_PI/2 + M_PI/4}}, 1)
 		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller");
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus)
 	{
@@ -266,11 +275,13 @@ void fifthGoal()
 */
 void sixthGoal()
 {
-	pros::Task poopController(indexerFunctions.poopTwoBalls, (void *)true, "Poop Controller");
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectOneBall, NULL, "Eject Controller");
 	PathFollowing()
 		.withPath({{117.8, -69.6, M_PI/2 + M_PI/4}, {87, -40, 3*M_PI/2}}, 1)
 		.ppMove();
-	indexerFunctions.toggleIntakes(127);
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({{87, -40, 3*M_PI/2}, {64, -37, 3*M_PI/2}}, 1)
 		.ppMove();
@@ -278,7 +289,7 @@ void sixthGoal()
 		.withPath({{64, -37, M_PI}, {64, -64, M_PI}}, 1)
 		.ppMove();
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 
 	while (!intakeStatus)
@@ -301,8 +312,10 @@ void seventhGoal()
 	leftFrontMotor = 0;
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
-	pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	indexerFunctions.toggleIntakes(127);
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectOneBall, NULL, "Eject Controller");
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({{64, -66, M_PI}, {17, -53, 3*M_PI/2}, {23, -53, 3*M_PI/2}}, 1)
 		.ppMove();
@@ -318,7 +331,7 @@ void seventhGoal()
 		// .withThresholdErrors(0.5, 0.04)
 		.ppMove();
 	pros::Task intakeController(stopIntakesAsync, NULL, "Intake Controller");
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 }
 
