@@ -15,19 +15,15 @@
 using namespace std;
 using namespace zoo;
 
-static void stopIntakesAsync(void* ignore);
-static void stopIntakesAsyncOne(void* ignore);
-
 void runProgSkills();
-void firstGoal();
-void secondGoal();
-void thirdGoal();
-void fourthGoal();
-void fifthGoal();
-void sixthGoal();
-void seventhGoal();
-void eighthGoal();
-void ninthGoal();
-void descoreMiddle();
+void firstGoal(IntakeController intakeController);
+void secondGoal(IntakeController intakeController);
+void thirdGoal(IntakeController intakeController);
+void fourthGoal(IntakeController intakeController);
+void fifthGoal(IntakeController intakeController);
+void sixthGoal(IntakeController intakeController);
+void seventhGoal(IntakeController intakeController);
+void eighthGoal(IntakeController intakeController);
+void ninthGoal(IntakeController intakeController);
 
 #endif
