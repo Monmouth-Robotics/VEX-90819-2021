@@ -9,18 +9,16 @@
 
 using namespace std;
 
-namespace zoo {
-	class EjectController
-	{
-	public:
-		EjectController();
-		EjectController& setTopRoller(bool useTopRoller);
-		static void ejectOneBall(void* ignore);
-		static void ejectTwoBalls(void* ignore);
-	private:
-		static bool ejectingStatus;
-		static bool useTopRoller;
-	};
-}
+class EjectController
+{
+public:
+	EjectController();
+	EjectController& setTopRoller(bool useTopRoller);
+	static void ejectOneBall(void* ignore);
+	static void ejectTwoBalls(void* ignore);
+private:
+	static bool ejectingStatus;
+	static bool useTopRoller;
+};
 
 #endif

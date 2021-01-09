@@ -13,7 +13,6 @@
 #include "macros/intakeController.h"
 
 using namespace std;
-using namespace zoo;
 
 void runProgSkills();
 void firstGoal(IntakeController intakeController);
