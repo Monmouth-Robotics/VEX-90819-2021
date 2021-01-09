@@ -7,8 +7,12 @@
 #include "init/devices.h"
 #include "init/display.h"
 #include "init/taskManagement.h"
-#include "macros/macroFunctions.h"
-#include "macros/macroInstances.h"
+#include "macros/ejectController.h"
+#include "macros/shootController.h"
+#include "macros/intakeController.h"
+
+using namespace std;
+using namespace zoo;
 
 void driveControl();
 

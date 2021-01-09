@@ -1,6 +1,8 @@
 #ifndef _PATH_FOLLOWING
 #define _PATH_FOLLOWING
 
+#define PROS_USE_SIMPLE_NAMES
+#define PROS_USE_LITERALS
 #include "api.h"
 #include "init/utility.h"
 #include "motion/purePursuit/pathGeneration.h"

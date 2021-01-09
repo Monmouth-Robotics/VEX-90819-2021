@@ -1,10 +1,5 @@
 #include "main.h"
 
-using namespace std;
-
-#define _USE_MATH_DEFINES
-
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *

@@ -16,6 +16,7 @@ namespace zoo
 	double PathFollowing::angleThreshold = 0.024;
 	double PathFollowing::kPDistance = 25;
 	double PathFollowing::kPAngle = 300;
+<<<<<<< HEAD
 	double PathFollowing::minPower = 50;
 	double PathFollowing::speedCheckDistance = 5;
 	double PathFollowing::speedCheckSpeed = 0.001;
@@ -25,6 +26,50 @@ namespace zoo
 	double PathFollowing::resetTheta;
 	PathFollowing::PathFollowing(void)
 	{
+=======
+
+	PathFollowing::PathFollowing() {
+
+>>>>>>> b31dfdd977515fbab892608ee95d26c63f19ff3a
+	}
+
+	PathFollowing& PathFollowing::withPath(vector<vector<double>> initPoints, double spacing) {
+		this->initPoints = initPoints;
+		this->spacing = spacing;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance) {
+		this->smoothVal1 = smoothVal1;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withLimits(double maxVel, double maxAccel) {
+		this->maxVel = maxVel;
+		this->maxAccel = maxAccel;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum) {
+		this->lookAheadPointsNum = lookAheadPointsNum;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold) {
+		this->thresholdError = thresholdError;
+		this->angleThreshold = angleThreshold;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withGains(double kPDistance, double kPAngle) {
+		this->kPDistance = kPDistance;
+		this->kPAngle = kPAngle;
+		return *this;
+	}
+
+	PathFollowing& PathFollowing::withTurnConstant(double turnConstant) {
+		this->turnConstant = turnConstant;
+		return *this;
 	}
 
 	/*
@@ -241,6 +286,7 @@ namespace zoo
 		}
 	}
 
+<<<<<<< HEAD
 	PathFollowing &PathFollowing::withPath(vector<vector<double>> initPoints, double spacing)
 	{
 		this->initPoints = initPoints;
@@ -314,6 +360,9 @@ namespace zoo
 	void PathFollowing::ppMove()
 	{
 		double speedCheckCount = 0;
+=======
+	void PathFollowing::ppMove(){
+>>>>>>> b31dfdd977515fbab892608ee95d26c63f19ff3a
 		double distanceError = 999999;
 		double angleError = 999999;
 		vector<vector<double>> pointsList = {{0.0}};
