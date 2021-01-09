@@ -25,14 +25,14 @@ void stopIntakesAsync(void* ignore)
 	//Outtakes until intakes no longer contain red ball
 	while (indexer.getIntakeColor() == "red")
 	{
-		indexerFunctions.toggleIntakes(-127);
+		IntakeController().toggleIntakes(-127);
 	}
 
 	// indexerFunctions.toggleIntakes(0);
 
 	// pros::delay(500);
 
-	indexerFunctions.toggleIntakes(0);
+	IntakeController().toggleIntakes(0);
 }
 
 /**
@@ -47,7 +47,7 @@ void stopIntakesAsyncOne(void* ignore)
 	{
 		pros::delay(10);
 	}
-	indexerFunctions.toggleIntakes(0);
+	IntakeController().toggleIntakes(0);
 	intakeStatus = true;
 }
 
@@ -70,7 +70,7 @@ void firstGoal()
 	// 	pros::delay(10);
 	// }
 
-	indexerFunctions.toggleIntakes(127);
+	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({ {0, 0, 0}, {15, 0, 0} }, 1)
 		.ppMove();
@@ -85,7 +85,7 @@ void firstGoal()
 		.ppMove();
 	pros::Task intakeController2(stopIntakesAsync, NULL, "Intake Controller2");
 
-	indexerFunctions.shootTwoBalls(NULL);
+	ShootController().shootTwoBalls(NULL);
 	indexer.toggleTopPosition(true);
 	while (!intakeStatus)
 	{

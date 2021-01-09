@@ -1,5 +1,8 @@
 #ifndef _PATH_GENERATION
 #define _PATH_GENERATION
+
+#define PROS_USE_SIMPLE_NAMES
+#define PROS_USE_LITERALS
 #include "api.h"
 #include "init/utility.h"
 #include "init/taskManagement.h"
