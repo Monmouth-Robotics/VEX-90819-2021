@@ -273,18 +273,18 @@ void seventhGoal()
 		.ejectOneBall, NULL, "Eject Controller");
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({{64, -62, M_PI}, {40, -51, 3*M_PI/2}}, 1)
+		.withPath({ {64, -62, M_PI}, {40, -51, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
-	PathFollowing()	
-		.withPath({{40, -52, 3*M_PI/2}, {24, -52, 3*M_PI/2}}, 1)
-		.ppMove(); 
 	PathFollowing()
-		.withPath({{24, -50, M_PI}, {28, -71, M_PI}}, 1)
+		.withPath({ {40, -52, 3 * M_PI / 2}, {24, -52, 3 * M_PI / 2} }, 1)
+		.ppMove();
+	PathFollowing()
+		.withPath({ {24, -50, M_PI}, {28, -71, M_PI} }, 1)
 		.withSpeedCheck(5, 0.5, 250)
 		.ppMove();
 	PathFollowing()
-		.withPath({{26, -71, M_PI}, {11, -66, M_PI+M_PI/4}, {7, -72, M_PI+M_PI/4}}, 1)
+		.withPath({ {26, -71, M_PI}, {11, -66, M_PI + M_PI / 4}, {7, -72, M_PI + M_PI / 4} }, 1)
 		.withSpeedCheck(5, 1, 250)
 		.ppMove();
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
@@ -302,21 +302,21 @@ void seventhGoal()
 void eighthGoal()
 {
 	PathFollowing()
-		.withPath({{9, -70, M_PI + M_PI/4}, {18, -61, M_PI+M_PI/4}, {37, -36, 0}}, 1)
+		.withPath({ {9, -70, M_PI + M_PI / 4}, {18, -61, M_PI + M_PI / 4}, {37, -36, 0} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	pros::Task ejectController(EjectController()
 		.setTopRoller(true)
 		.ejectTwoBalls, NULL, "Eject Controller");
 	PathFollowing()
-		.withPath({{37, -36, 0}, {37, -14, 0}}, 1)
+		.withPath({ {37, -36, 0}, {37, -14, 0} }, 1)
 		.withGains(25, 50)
 		.ppMove();
 	PathFollowing()
-		.withPath({{37, -14, 3*M_PI/2}, {12, -16, 3*M_PI/2}}, 1)
+		.withPath({ {37, -14, 3 * M_PI / 2}, {12, -16, 3 * M_PI / 2} }, 1)
 		.withSpeedCheck(5, 1, 250)
 		.ppMove();
-	
+
 	// pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
 	ShootController().shootOneBall(NULL);
 	indexer.toggleTopPosition(true);

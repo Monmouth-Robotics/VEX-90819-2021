@@ -13,7 +13,7 @@ double EjectController::angleThreshold = 0.0;
 EjectController::EjectController() {
 	useTopRoller = false;
 	hasCoordinates = false;
-	hasAngle = true;
+	hasAngle = false;
 }
 
 EjectController& EjectController::setTopRoller(bool useTopRoller) {
@@ -21,7 +21,7 @@ EjectController& EjectController::setTopRoller(bool useTopRoller) {
 	return *this;
 }
 
-EjectController& EjectController::withCoordinates(double targetX, double targetY, double distanceThreshold){
+EjectController& EjectController::withCoordinates(double targetX, double targetY, double distanceThreshold) {
 	this->targetX = targetX;
 	this->targetY = targetY;
 	this->distanceThreshold = distanceThreshold;
@@ -40,10 +40,13 @@ EjectController& EjectController::withAngle(double targetTheta, double angleThre
  * Ejects one ball
 */
 void EjectController::ejectOneBall(void* ignore)
-{	
+{
+
+
 	if (hasCoordinates) {
 		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 		while (distanceError > distanceThreshold) {
+			distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 			pros::delay(10);
 		}
 	}
@@ -51,6 +54,7 @@ void EjectController::ejectOneBall(void* ignore)
 	if (hasAngle) {
 		double angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
 		while (angleError > angleThreshold) {
+			angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
 			pros::delay(10);
 		}
 	}
@@ -126,6 +130,7 @@ void EjectController::ejectTwoBalls(void* ignore)
 	if (hasCoordinates) {
 		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 		while (distanceError > distanceThreshold) {
+			distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 			pros::delay(10);
 		}
 	}
@@ -133,6 +138,7 @@ void EjectController::ejectTwoBalls(void* ignore)
 	if (hasAngle) {
 		double angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
 		while (angleError > angleThreshold) {
+			angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
 			pros::delay(10);
 		}
 	}
