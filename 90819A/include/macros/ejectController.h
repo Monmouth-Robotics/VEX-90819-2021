@@ -21,9 +21,15 @@ public:
 private:
 	static bool ejectingStatus;
 	static bool useTopRoller;
-	double targetX;
-	double targetY;
-	double distance;
+	static double targetX;
+	static double targetY;
+	static bool hasCoordinates;
+	static bool hasAngle;
+	static double targetX;
+	static double targetY;
+	static double targetTheta;
+	static double distanceThreshold;
+	static double angleThreshold;
 };
 
 #endif

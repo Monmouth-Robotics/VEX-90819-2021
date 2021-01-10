@@ -2,9 +2,18 @@
 
 bool EjectController::ejectingStatus = false;
 bool EjectController::useTopRoller = false;
+bool EjectController::hasCoordinates = false;
+bool EjectController::hasAngle = false;
+double EjectController::targetX = 0.0;
+double EjectController::targetY = 0.0;
+double EjectController::targetTheta = 0.0;
+double EjectController::distanceThreshold = 0.0;
+double EjectController::angleThreshold = 0.0;
 
 EjectController::EjectController() {
 	useTopRoller = false;
+	hadCoordinates = false;
+	hasAngle = true;
 }
 
 EjectController& EjectController::setTopRoller(bool useTopRoller) {
@@ -12,10 +21,18 @@ EjectController& EjectController::setTopRoller(bool useTopRoller) {
 	return *this;
 }
 
-EjectController& EjectController::withCoordinates(double targetX, double targetY, double distance){
+EjectController& EjectController::withCoordinates(double targetX, double targetY, double distanceThreshold){
 	this->targetX = targetX;
 	this->targetY = targetY;
-	this->distance = distance;
+	this->distanceThreshold = distanceThreshold;
+	hasCoordinates = true;
+	return *this;
+}
+
+EjectController& EjectController::withAngle(double targetAngle, double angleThreshold) {
+	this->targetAngle = targetAngle;
+	this->angleThreshold = angleThreshold;
+	hasAngle = true;
 	return *this;
 }
 
@@ -24,7 +41,19 @@ EjectController& EjectController::withCoordinates(double targetX, double targetY
 */
 void EjectController::ejectOneBall(void* ignore)
 {	
-	// double distanceError = distanceFormula(PositionController().getPosition(), {targetX, targetY});
+	if (hasDistance) {
+		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
+		while (distanceError > distanceThreshold) {
+			pros::delay(10);
+		}
+	}
+
+	if (hasAngle) {
+		double angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
+		while (angleError > angleThreshold) {
+			pros::delay(10);
+		}
+	}
 
 	ejectingStatus = false;
 
@@ -94,6 +123,20 @@ void EjectController::ejectOneBall(void* ignore)
 */
 void EjectController::ejectTwoBalls(void* ignore)
 {
+	if (hasDistance) {
+		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
+		while (distanceError > distanceThreshold) {
+			pros::delay(10);
+		}
+	}
+
+	if (hasAngle) {
+		double angleError = abs(calcAngleDiff(PositionController().getTheta(), targetTheta));
+		while (angleError > angleThreshold) {
+			pros::delay(10);
+		}
+	}
+
 	ejectingStatus = false;
 
 	if (useTopRoller)
