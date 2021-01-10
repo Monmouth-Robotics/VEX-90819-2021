@@ -12,7 +12,7 @@ double EjectController::angleThreshold = 0.0;
 
 EjectController::EjectController() {
 	useTopRoller = false;
-	hadCoordinates = false;
+	hasCoordinates = false;
 	hasAngle = true;
 }
 
