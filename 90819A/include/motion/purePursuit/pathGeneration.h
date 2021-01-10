@@ -23,14 +23,14 @@ private:
 	vector<vector<double>> smooth(vector<vector<double>> pointsList, double a, double b, double tolerance);
 	vector<double> calculateCurve(vector<vector<double>> pointsList);
 	vector<double> calculateVelocity(vector<vector<double>> pointsList, vector<double> curveList, double maxVelocity, double maxAccel, double turnConstant);
-	static vector<vector<double>> initPoints;
-	static double spacing;
-	static double smoothVal1;
-	static double smoothVal2;
-	static double smoothTolerance;
-	static double maxVel;
-	static double maxAccel;
-	static double turnConstant;
+	vector<vector<double>> initPoints;
+	double spacing;
+	double smoothVal1;
+	double smoothVal2;
+	double smoothTolerance;
+	double maxVel;
+	double maxAccel;
+	double turnConstant;
 };
 
 #endif

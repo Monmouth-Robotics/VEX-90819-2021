@@ -122,7 +122,7 @@ void ejectTwoBallsFunction(bool useTopRoller)
 {
 	pros::Task ejectTwoBallsController(EjectController()
 		.setTopRoller(useTopRoller)
-		.ejectOneBall, NULL, "Ball Ejecter 2");
+		.ejectTwoBalls, NULL, "Ball Ejecter 2");
 }
 
 /**

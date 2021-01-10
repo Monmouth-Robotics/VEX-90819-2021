@@ -1,91 +1,98 @@
 #include "motion/purePursuit/pathFollowing.h"
 
-vector<vector<double>> PathFollowing::initPoints = {};
-double PathFollowing::spacing = 1;
-double PathFollowing::smoothVal1 = 0;
-double PathFollowing::smoothVal2 = 0;
-double PathFollowing::smoothTolerance = 0.001;
-double PathFollowing::maxVel = 5;
-double PathFollowing::maxAccel = 10;
-double PathFollowing::turnConstant = 3;
-int PathFollowing::lookAheadPointsNum = 10;
-double PathFollowing::thresholdError = 0.5;
-double PathFollowing::angleThreshold = 0.024;
-double PathFollowing::kPDistance = 25;
-double PathFollowing::kPAngle = 300;
-double PathFollowing::minPower = 50;
-double PathFollowing::speedCheckDistance = 5;
-double PathFollowing::speedCheckSpeed = 0.001;
-double PathFollowing::speedCheckTime = 250;
-double PathFollowing::resetX;
-double PathFollowing::resetY;
-double PathFollowing::resetTheta;
-
-PathFollowing::PathFollowing() {
-
+PathFollowing::PathFollowing()
+{
+	initPoints = {};
+	spacing = 1;
+	smoothVal1 = 0;
+	smoothVal2 = 0;
+	smoothTolerance = 0.001;
+	maxVel = 5;
+	maxAccel = 10;
+	turnConstant = 3;
+	lookAheadPointsNum = 10;
+	thresholdError = 0.5;
+	angleThreshold = 0.024;
+	kPDistance = 25;
+	kPAngle = 300;
+	minPower = 30;
+	speedCheckDistance = 2;
+	speedCheckSpeed = 1;
+	speedCheckTime = 250;
+	coordinateReset = false;
+	angleReset = false;
 }
 
-PathFollowing& PathFollowing::withPath(vector<vector<double>> initPoints, double spacing) {
+PathFollowing &PathFollowing::withPath(vector<vector<double>> initPoints, double spacing)
+{
 	this->initPoints = initPoints;
 	this->spacing = spacing;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance) {
+PathFollowing &PathFollowing::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance)
+{
 	this->smoothVal1 = smoothVal1;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withLimits(double maxVel, double maxAccel) {
+PathFollowing &PathFollowing::withLimits(double maxVel, double maxAccel)
+{
 	this->maxVel = maxVel;
 	this->maxAccel = maxAccel;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum) {
+PathFollowing &PathFollowing::withLookAheadPointsNum(double lookAheadPointsNum)
+{
 	this->lookAheadPointsNum = lookAheadPointsNum;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold) {
+PathFollowing &PathFollowing::withThresholdErrors(double thresholdError, double angleThreshold)
+{
 	this->thresholdError = thresholdError;
 	this->angleThreshold = angleThreshold;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withGains(double kPDistance, double kPAngle) {
+PathFollowing &PathFollowing::withGains(double kPDistance, double kPAngle)
+{
 	this->kPDistance = kPDistance;
 	this->kPAngle = kPAngle;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withTurnConstant(double turnConstant) {
+PathFollowing &PathFollowing::withTurnConstant(double turnConstant)
+{
 	this->turnConstant = turnConstant;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withMinPower(double minPower)
+PathFollowing &PathFollowing::withMinPower(double minPower)
 {
 	this->minPower = minPower;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double speedCheckTime)
+PathFollowing &PathFollowing::withSpeedCheck(double speedCheckDistance, double speedCheckSpeed, double speedCheckTime)
 {
 	this->speedCheckDistance = speedCheckDistance;
 	this->speedCheckSpeed = speedCheckSpeed;
 	return *this;
 }
 
-PathFollowing& PathFollowing::withCoordinateReset(double resetX, double resetY)
+PathFollowing &PathFollowing::withCoordinateReset(double resetX, double resetY)
 {
 	this->resetX = resetX;
 	this->resetY = resetY;
+	coordinateReset = true;
 	return *this;
 }
-PathFollowing& PathFollowing::withAngleReset(double resetTheta)
+PathFollowing &PathFollowing::withAngleReset(double resetTheta)
 {
 	this->resetTheta = resetTheta;
+	angleReset = true;
 	return *this;
 }
 
@@ -96,7 +103,7 @@ Function rotates the lookahead position about the robot origin.
 
 vector<double> PathFollowing::getErrors(vector<double> currentPosition, vector<double> lookAheadPosition)
 {
-	vector<double> adjustedError = { 0, 0, 0 };
+	vector<double> adjustedError = {0, 0, 0};
 
 	//calculates new x coordinate
 	double rotatedX = cos(currentPosition[2]) * (lookAheadPosition[0] - currentPosition[0]) - sin(currentPosition[2]) * (lookAheadPosition[1] - currentPosition[1]) + currentPosition[0];
@@ -201,7 +208,8 @@ void PathFollowing::moveRobot(vector<double> errors, double distanceError, doubl
 		rightFrontPower = rightFrontPower * (maxPower / maxCurrSpeed);
 		rightBackPower = rightBackPower * (maxPower / maxCurrSpeed);
 	}
-	if (abs(leftFrontPower) < minPower && abs(leftBackPower) < minPower && abs(rightFrontPower) < minPower && abs(rightBackPower) < minPower) {
+	if (abs(leftFrontPower) < minPower && abs(leftBackPower) < minPower && abs(rightFrontPower) < minPower && abs(rightBackPower) < minPower)
+	{
 		leftFrontPower = leftFrontPower * (minPower / maxCurrSpeed);
 		leftBackPower = leftBackPower * (minPower / maxCurrSpeed);
 		rightFrontPower = rightFrontPower * (minPower / maxCurrSpeed);
@@ -219,24 +227,24 @@ void PathFollowing::moveRobot(vector<double> errors, double distanceError, doubl
 vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance)
 {
 	//Starting point of the line segment
-	vector<double> E = { 0.0, 0.0 };
-	E = { pointsList[closestPoint][0], pointsList[closestPoint][1] };
+	vector<double> E = {0.0, 0.0};
+	E = {pointsList[closestPoint][0], pointsList[closestPoint][1]};
 
 	//End point of the line segment
-	vector<double> L = { 0.0, 0.0 };
-	L = { pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1] };
+	vector<double> L = {0.0, 0.0};
+	L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
 
 	//Center of the drawn circle, representing the robot position
-	vector<double> C = { 0.0, 0.0 };
-	C = { x, y };
+	vector<double> C = {0.0, 0.0};
+	C = {x, y};
 
 	//Direction vector from starting point to ending point
-	vector<double> d = { 0.0, 0.0 };
-	d = { L[0] - E[0], L[1] - E[1] };
+	vector<double> d = {0.0, 0.0};
+	d = {L[0] - E[0], L[1] - E[1]};
 
 	//Vector drawn from center of robot to starting point
-	vector<double> f = { 0.0, 0.0 };
-	f = { E[0] - C[0], E[1] - C[1] };
+	vector<double> f = {0.0, 0.0};
+	f = {E[0] - C[0], E[1] - C[1]};
 
 	//Represents the lookahead distance
 	double r = lookAheadDistance;
@@ -280,11 +288,11 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 		//Verifies that the lookahead point is ahead of the current point in the motion
 		if (t1 >= 0 && t1 <= 1)
 		{
-			return { E[0] + t1 * d[0], E[1] + t1 * d[1] };
+			return {E[0] + t1 * d[0], E[1] + t1 * d[1]};
 		}
 		else if (t2 >= 0 && t2 <= 1)
 		{
-			return { E[0] + t2 * d[0], E[1] + t2 * d[1] };
+			return {E[0] + t2 * d[0], E[1] + t2 * d[1]};
 		}
 		//Expands search radius if both points found are behind the current point in the motion
 		else
@@ -308,17 +316,17 @@ void PathFollowing::ppMove()
 	double speedCheckCount = 0;
 	double distanceError = 999999;
 	double angleError = 999999;
-	vector<vector<double>> pointsList = { {0.0} };
+	vector<vector<double>> pointsList = {{0.0}};
 	pointsList = {};
 
 	pointsList = PathGeneration()
-		.withPath(initPoints, spacing)
-		.withSmoothing(smoothVal1, smoothVal2, smoothTolerance)
-		.withLimits(maxVel, maxAccel)
-		.withTurnConstant(turnConstant)
-		.generatePath();
+					 .withPath(initPoints, spacing)
+					 .withSmoothing(smoothVal1, smoothVal2, smoothTolerance)
+					 .withLimits(maxVel, maxAccel)
+					 .withTurnConstant(turnConstant)
+					 .generatePath();
 
-	vector<double> errors = { 0, 0, 0 };
+	vector<double> errors = {0, 0, 0};
 	// errors = {};
 	// printf("here");
 	int closestPoint = 1;
@@ -326,14 +334,14 @@ void PathFollowing::ppMove()
 	// printf("here\n");
 	while (distanceError > thresholdError || angleError > angleThreshold)
 	{
-		double x = position.getPosition()[0];
-		double y = position.getPosition()[1];
+		double x = PositionController().getPosition()[0];
+		double y = PositionController().getPosition()[1];
 
-		distanceError = distanceFormula({ x, y }, pointsList[pointsList.size() - 1]);
+		distanceError = distanceFormula({x, y}, pointsList[pointsList.size() - 1]);
 		// //Pulls the current robot coordinates
 
 		//Initialize lookahead point as empty vector
-		vector<double> lookAheadPoint = { 0, 0, 0 };
+		vector<double> lookAheadPoint = {0, 0, 0};
 		lookAheadPoint = {};
 
 		//Calculate distance between closest point and current robot position
@@ -368,27 +376,29 @@ void PathFollowing::ppMove()
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
 		// vector<double> errorArg1 = {0.0};
-		// errorArg1 = position.getPosition();
+		// errorArg1 = PositionController().getPosition();
 
-		if (distanceError < speedCheckDistance && position.getSpeed() < speedCheckSpeed) {
+		if (distanceError < speedCheckDistance && PositionController().getSpeed() < speedCheckSpeed)
+		{
 			speedCheckCount += 1;
 		}
-		// else{
-		// 	speedCheckCount = 0;
-		// }
 
-		if (speedCheckCount >= speedCheckTime / 10) {
+		else
+		{
+			speedCheckCount = 0;
+		}
+
+		if (speedCheckCount >= speedCheckTime / 10)
+		{
 			break;
 		}
 
-
-
-		errors = getErrors({ x, y, position.getTheta() }, lookAheadPoint);
+		errors = getErrors({x, y, PositionController().getTheta()}, lookAheadPoint);
 		angleError = errors[2];
 		// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
 		moveRobot(errors, distanceError, kPDistance, kPAngle, minPower);
 		// errors = {5, 0};
-		// printf("Position: %.3f, %.3f, %.3f\n", x, y, position.getTheta());
+		// printf("Position: %.3f, %.3f, %.3f\n", x, y, PositionController().getTheta());
 		// printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);
 		// printf("Closest point: %.3f, %.3f\n", pointsList[closestPoint][0], pointsList[closestPoint][1]);
 
@@ -400,6 +410,15 @@ void PathFollowing::ppMove()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 
+	 if (coordinateReset)
+	 {
+	 	PositionController().setPosition(resetX, resetY);
+	 }
+
+	 if (angleReset)
+	 {
+	 	PositionController().setTheta(resetTheta);
+	 }
 	//Exits loop if lookahead point and closest point align with the last point of the path
 	// if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1] && (closestPoint == pointsList.size() - 1))
 	// {

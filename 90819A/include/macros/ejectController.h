@@ -14,11 +14,16 @@ class EjectController
 public:
 	EjectController();
 	EjectController& setTopRoller(bool useTopRoller);
+	EjectController& withCoordinates(double targetX, double targetY, double distance);
 	static void ejectOneBall(void* ignore);
 	static void ejectTwoBalls(void* ignore);
+	
 private:
 	static bool ejectingStatus;
 	static bool useTopRoller;
+	double targetX;
+	double targetY;
+	double distance;
 };
 
 #endif

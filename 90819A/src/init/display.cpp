@@ -232,8 +232,8 @@ void Display::displayInit(int startCode)
 */
 lv_res_t Display::resetButton_action(lv_obj_t* btn)
 {
-	position.resetGlobal();
-	position.setTheta(0);
+	PositionController().resetGlobal();
+	PositionController().setTheta(0);
 	return LV_RES_OK;
 }
 
@@ -282,15 +282,15 @@ void Display::displayPosition(void* ignore) {
 		}
 
 		//Displays the value of x
-		string xString = ((string)("X:      ") + (string)(to_string(position.getPosition()[0])));
+		string xString = ((string)("X:      ") + (string)(to_string(PositionController().getPosition()[0])));
 		lv_label_set_text(xText, strcpy(new char[xString.length() + 1], xString.c_str()));
 
 		//Displays the value of y
-		string yString = ((string)("Y:      ") + (string)(to_string(position.getPosition()[1])));
+		string yString = ((string)("Y:      ") + (string)(to_string(PositionController().getPosition()[1])));
 		lv_label_set_text(yText, strcpy(new char[yString.length() + 1], yString.c_str()));
 
 		//Displays the value of theta
-		string thetaString = ((string)("Theta: ") + (string)(to_string(position.getTheta() * 180 / M_PI)));
+		string thetaString = ((string)("Theta: ") + (string)(to_string(PositionController().getTheta() * 180 / M_PI)));
 		lv_label_set_text(thetaText, strcpy(new char[thetaString.length() + 1], thetaString.c_str()));
 
 		pros::delay(10);

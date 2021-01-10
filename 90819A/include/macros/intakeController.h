@@ -15,9 +15,10 @@ public:
 	IntakeController();
 	void toggleIntakes(int speed);
 	bool getIntakeStatus();
-	static void deploy(void* ignore);
-	static void stopIntakesAsync(void* ignore);
-	static void stopIntakesAsyncOne(void* ignore);
+	static void deploy(void *ignore);
+	static void stopIntakesAsync(void *ignore);
+	static void stopIntakesAsyncOne(void *ignore);
+
 private:
 	static bool intakeStatus;
 };

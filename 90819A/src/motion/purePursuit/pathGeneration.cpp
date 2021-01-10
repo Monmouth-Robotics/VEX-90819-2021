@@ -1,47 +1,50 @@
 #include "motion/purePursuit/pathGeneration.h"
 
-vector<vector<double>> PathGeneration::initPoints = {};
-double PathGeneration::spacing = 1;
-double PathGeneration::smoothVal1 = 0;
-double PathGeneration::smoothVal2 = 0;
-double PathGeneration::smoothTolerance = 0.001;
-double PathGeneration::maxVel = 5;
-double PathGeneration::maxAccel = 10;
-double PathGeneration::turnConstant = 3;
-
-PathGeneration::PathGeneration() {
-	
+PathGeneration::PathGeneration()
+{
+	initPoints = {};
+	spacing = 1;
+	smoothVal1 = 0;
+	smoothVal2 = 0;
+	smoothTolerance = 0.001;
+	maxVel = 5;
+	maxAccel = 10;
+	turnConstant = 3;
 }
 
-PathGeneration& PathGeneration::withPath(vector<vector<double>> initPoints, double spacing) {
+PathGeneration &PathGeneration::withPath(vector<vector<double>> initPoints, double spacing)
+{
 	this->initPoints = initPoints;
 	this->spacing = spacing;
 	return *this;
 }
 
-PathGeneration& PathGeneration::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance) {
+PathGeneration &PathGeneration::withSmoothing(double smoothVal1, double smoothVal2, double smoothTolerance)
+{
 	this->smoothVal1 = smoothVal1;
 	return *this;
 }
 
-PathGeneration& PathGeneration::withLimits(double maxVel, double maxAccel) {
+PathGeneration &PathGeneration::withLimits(double maxVel, double maxAccel)
+{
 	this->maxVel = maxVel;
 	this->maxAccel = maxAccel;
 	return *this;
 }
 
-PathGeneration& PathGeneration::withTurnConstant(double turnConstant) {
+PathGeneration &PathGeneration::withTurnConstant(double turnConstant)
+{
 	this->turnConstant = turnConstant;
 	return *this;
 }
 
 vector<vector<double>> PathGeneration::generateLinearPath(double initX, double initY, double initTheta, double finalX, double finalY, double finalTheta, double spacing)
 {
-	vector<vector<double>> pointsList = { {0.0} };
+	vector<vector<double>> pointsList = {{0.0}};
 	pointsList = {};
 
 	//Finds the vector drawn from the start point to the end point
-	vector<double> changeVector = { finalX - initX, finalY - initY };
+	vector<double> changeVector = {finalX - initX, finalY - initY};
 
 	//Uses Pythagorean theorem to calculate magnitude of changeVector
 	double magnitude = sqrt(pow(changeVector[0], 2) + pow(changeVector[1], 2));
@@ -56,12 +59,12 @@ vector<vector<double>> PathGeneration::generateLinearPath(double initX, double i
 	//Traverse through each point and save each point into vector
 	for (int i = 0; i < numPoints; i++)
 	{
-		vector<double> newVector = { initX + changeVector[0] * i, initY + changeVector[1] * i, 10 };
+		vector<double> newVector = {initX + changeVector[0] * i, initY + changeVector[1] * i, 10};
 		pointsList.push_back(newVector);
 	}
 
 	//Add the ending point to the list
-	vector<double> finalVector{ finalX, finalY, finalTheta };
+	vector<double> finalVector{finalX, finalY, finalTheta};
 	pointsList.push_back(finalVector);
 
 	// for (int i = 0; i<pointsList.size(); i++){
@@ -119,7 +122,7 @@ vector<vector<double>> PathGeneration::smooth(vector<vector<double>> pointsList,
 vector<double> PathGeneration::calculateCurve(vector<vector<double>> pointsList)
 {
 	//Initialize curve list as vector with the first value as 0.0
-	vector<double> curveList = { 0.0 };
+	vector<double> curveList = {0.0};
 	curveList = {};
 	curveList.push_back(0.0);
 
@@ -162,7 +165,7 @@ vector<double> PathGeneration::calculateCurve(vector<vector<double>> pointsList)
 vector<double> PathGeneration::calculateVelocity(vector<vector<double>> pointsList, vector<double> curveList, double maxVelocity, double maxAccel, double turnConstant)
 {
 	//Initialize max velocity list as empty vector
-	vector<double> maxVelList = { 0.0 };
+	vector<double> maxVelList = {0.0};
 	maxVelList = {};
 
 	//Calculate max velocity at each individual point
@@ -179,7 +182,7 @@ vector<double> PathGeneration::calculateVelocity(vector<vector<double>> pointsLi
 	}
 
 	//Initialize target velocity list as vector with first value as 0.0
-	vector<double> targetVelList = { 0 };
+	vector<double> targetVelList = {0};
 	targetVelList = {};
 	targetVelList.push_back(0.0);
 
@@ -230,10 +233,10 @@ vector<vector<double>> PathGeneration::generatePath()
 {
 	//Initialize points list as an empty vector
 	// printf("here\n");
-	vector<vector<double>> pointsList = { {0.0} };
+	vector<vector<double>> pointsList = {{0.0}};
 	pointsList = {};
 
-	vector<vector<double>> pointsList2 = { {0.0} };
+	vector<vector<double>> pointsList2 = {{0.0}};
 	pointsList2 = {};
 
 	//Invalid call if no points are defined
@@ -264,11 +267,11 @@ vector<vector<double>> PathGeneration::generatePath()
 
 				pointsList.pop_back();
 				//Inserts each subsequent list at the end of the original
-				for (int i = 0; i < pointsList2.size(); i++) {
-					pointsList.push_back({ pointsList2[i][0], pointsList2[i][1], pointsList2[i][2] });
+				for (int i = 0; i < pointsList2.size(); i++)
+				{
+					pointsList.push_back({pointsList2[i][0], pointsList2[i][1], pointsList2[i][2]});
 				}
 			}
-
 
 			//Smooths entire points list
 			pointsList = smooth(pointsList, smoothVal1, smoothVal2, smoothTolerance);

@@ -31,7 +31,7 @@ void initialize()
 void disabled()
 {
 	//Reset position to (0,0,0)
-	position.resetGlobal();
+	PositionController().resetGlobal();
 }
 
 /**
@@ -63,7 +63,7 @@ void competition_initialize()
 void autonomous()
 {
 	//Reset position to (0,0,0)
-	position.resetGlobal();
+	PositionController().resetGlobal();
 
 	// printf("here\n");
 	//Set brake modes for all motors

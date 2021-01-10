@@ -4,7 +4,7 @@ bool EjectController::ejectingStatus = false;
 bool EjectController::useTopRoller = false;
 
 EjectController::EjectController() {
-
+	useTopRoller = false;
 }
 
 EjectController& EjectController::setTopRoller(bool useTopRoller) {
@@ -12,11 +12,20 @@ EjectController& EjectController::setTopRoller(bool useTopRoller) {
 	return *this;
 }
 
+EjectController& EjectController::withCoordinates(double targetX, double targetY, double distance){
+	this->targetX = targetX;
+	this->targetY = targetY;
+	this->distance = distance;
+	return *this;
+}
+
 /**
  * Ejects one ball
 */
 void EjectController::ejectOneBall(void* ignore)
-{
+{	
+	// double distanceError = distanceFormula(PositionController().getPosition(), {targetX, targetY});
+
 	ejectingStatus = false;
 
 	if (useTopRoller)
@@ -170,6 +179,7 @@ void EjectController::ejectTwoBalls(void* ignore)
 			pros::delay(10);
 		}
 	}
+
 
 	//Enables use of top indexing position
 	indexer.toggleTopPosition(false);

@@ -1,6 +1,5 @@
 #include "motion/pidController.h"
 
-
 /**
  * Parameters:
  * targetTheta: target heading for motion
@@ -21,84 +20,93 @@
  * kDDiff: derivative constant for strafing
  * stopMotors: specifies whether to stop motors at end of motion
  */
-double PIDController::targetTheta = 0;
-vector<vector<double>> PIDController::distanceLine = {};
-double PIDController::maxVel = 0;
-double PIDController::kP = 0;
-double PIDController::kI = 0;
-double PIDController::kD = 0;
-double PIDController::kPDistance = 0;
-double PIDController::kIDistance = 0;
-double PIDController::kDDistance = 0;
-double PIDController::kPAngle = 0;
-double PIDController::kIAngle = 0;
-double PIDController::kDAngle = 0;
-double PIDController::kPDiff = 0;
-double PIDController::kIDiff = 0;
-double PIDController::kDDiff = 0;
-double PIDController::thresholdDistanceError = 0;
-double PIDController::thresholdAngleError = 0;
-double PIDController::stopMotors = false;
 
-PIDController::PIDController() {
-
+PIDController::PIDController()
+{
+	targetTheta = 0;
+	distanceLine = {};
+	maxVel = 0;
+	kP = 0;
+	kI = 0;
+	kD = 0;
+	kPDistance = 0;
+	kIDistance = 0;
+	kDDistance = 0;
+	kPAngle = 0;
+	kIAngle = 0;
+	kDAngle = 0;
+	kPDiff = 0;
+	kIDiff = 0;
+	kDDiff = 0;
+	thresholdDistanceError = 0;
+	thresholdAngleError = 0;
+	stopMotors = false;
 }
 
-
-PIDController& PIDController::withTargetTheta(double targetTheta) {
+PIDController &PIDController::withTargetTheta(double targetTheta)
+{
 	this->targetTheta = targetTheta;
 	return *this;
 }
 
-PIDController& PIDController::withDistanceLine(vector<vector<double>> distanceLine) {
+PIDController &PIDController::withDistanceLine(vector<vector<double>> distanceLine)
+{
 	this->distanceLine = distanceLine;
 	return *this;
 }
 
-PIDController& PIDController::withLimit(double maxVel) {
+PIDController &PIDController::withLimit(double maxVel)
+{
 	this->maxVel = maxVel;
 	return *this;
 }
 
-PIDController& PIDController::withTurnGains(double kP, double kI, double kD) {
+PIDController &PIDController::withTurnGains(double kP, double kI, double kD)
+{
 	this->kP = kP;
 	this->kI = kI;
 	this->kD = kD;
 	return *this;
 }
 
-PIDController& PIDController::withDistanceGains(double kPDistance, double kIDistance, double kDDistance) {
+PIDController &PIDController::withDistanceGains(double kPDistance, double kIDistance, double kDDistance)
+{
 	this->kPDistance = kPDistance;
 	this->kIDistance = kIDistance;
 	this->kDDistance = kDDistance;
 	return *this;
 }
 
-PIDController& PIDController::withAngleGains(double kPAngle, double kIAngle, double kDAngle) {
+PIDController &PIDController::withAngleGains(double kPAngle, double kIAngle, double kDAngle)
+{
 	this->kPAngle = kPAngle;
 	this->kIAngle = kIAngle;
 	this->kDAngle = kDAngle;
 	return *this;
 }
 
-PIDController& PIDController::withDiffGains(double kPDiff, double kIDiff, double kDDiff) {
+PIDController &PIDController::withDiffGains(double kPDiff, double kIDiff, double kDDiff)
+{
 	this->kPDiff = kPDiff;
 	this->kIDiff = kIDiff;
 	this->kDDiff = kDDiff;
 	return *this;
 }
 
-PIDController& PIDController::withMaxDistanceError(double thresholdDistanceError) {
+PIDController &PIDController::withMaxDistanceError(double thresholdDistanceError)
+{
 	this->thresholdDistanceError = thresholdDistanceError;
 	return *this;
 }
 
-PIDController& PIDController::withMaxAngleError(double thresholdAngleError) {
+PIDController &PIDController::withMaxAngleError(double thresholdAngleError)
+{
 	this->thresholdAngleError = thresholdAngleError;
 	return *this;
 }
 
-PIDController& PIDController::withMotorStopping(bool stopMotors) {
+PIDController &PIDController::withMotorStopping(bool stopMotors)
+{
 	this->stopMotors = stopMotors;
 	return *this;
 }
@@ -123,7 +131,7 @@ void PIDController::pidTurn()
 
 	while (abs(error) > thresholdAngleError)
 	{
-		error = calcAngleDiff(targetTheta, position.getTheta());
+		error = calcAngleDiff(targetTheta, PositionController().getTheta());
 
 		//Calculates integral error
 		if (kI != 0)
@@ -169,7 +177,6 @@ void PIDController::pidTurn()
 	rightBackMotor = 0;
 	rightFrontMotor = 0;
 }
-
 
 void PIDController::pidForward()
 {
@@ -226,9 +233,9 @@ void PIDController::pidForward()
 	while (abs(distanceError) > thresholdDistanceError)
 	{
 		//Gets robot's current coordinates and heading
-		double currX = position.getPosition()[0];
-		double currY = position.getPosition()[1];
-		double currTheta = position.getTheta();
+		double currX = PositionController().getPosition()[0];
+		double currY = PositionController().getPosition()[1];
+		double currTheta = PositionController().getTheta();
 
 		//Calculates rotated coordinates and headings
 		double adjThetaRobot = currTheta + beta - origTheta;
@@ -289,7 +296,7 @@ void PIDController::pidForward()
 		derivativeDistance = distanceError - lastDistanceError;
 		lastDistanceError = distanceError;
 
-		//Calculates distance voltage using PID constants 
+		//Calculates distance voltage using PID constants
 		powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
 
 		//Calculates integral error for strafing
@@ -425,9 +432,9 @@ void PIDController::pidBackward()
 	while (abs(distanceError) > thresholdDistanceError)
 	{
 		//Gets robot's current coordinates and heading
-		double currX = position.getPosition()[0];
-		double currY = position.getPosition()[1];
-		double currTheta = position.getTheta();
+		double currX = PositionController().getPosition()[0];
+		double currY = PositionController().getPosition()[1];
+		double currTheta = PositionController().getTheta();
 
 		//Calculates rotated coordinates and headings
 		double adjThetaRobot = currTheta + beta - origTheta;
@@ -436,7 +443,6 @@ void PIDController::pidBackward()
 
 		//Calculates angle error
 		angleError = calcAngleDiff(targetTheta, currTheta);
-
 
 		//Calculates distance error from closest point on target line to endpoint
 		distanceError = abs(rotatedEndY - rotatedCurrY);
@@ -489,7 +495,7 @@ void PIDController::pidBackward()
 		derivativeDistance = distanceError - lastDistanceError;
 		lastDistanceError = distanceError;
 
-		//Calculates distance voltage using PID constants 
+		//Calculates distance voltage using PID constants
 		powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
 
 		//Calculates integral error for strafing
@@ -622,13 +628,12 @@ void PIDController::pidRight()
 	double rotatedEndX = distanceLine[1][0] * cos(beta - origTheta) - distanceLine[1][1] * sin(beta - origTheta);
 	double rotatedEndY = distanceLine[1][0] * sin(beta - origTheta) + distanceLine[1][1] * cos(beta - origTheta);
 
-
 	while (abs(distanceError) > thresholdDistanceError)
 	{
 		//Gets robot's current coordinates and heading
-		double currX = position.getPosition()[0];
-		double currY = position.getPosition()[1];
-		double currTheta = position.getTheta();
+		double currX = PositionController().getPosition()[0];
+		double currY = PositionController().getPosition()[1];
+		double currTheta = PositionController().getTheta();
 
 		//Calculates rotated coordinates and headings
 		double adjThetaRobot = currTheta + beta - origTheta;
@@ -689,7 +694,7 @@ void PIDController::pidRight()
 		derivativeDistance = distanceError - lastDistanceError;
 		lastDistanceError = distanceError;
 
-		//Calculates distance voltage using PID constants 
+		//Calculates distance voltage using PID constants
 		powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
 
 		//Calculates integral error for forward/backward
@@ -825,9 +830,9 @@ void PIDController::pidLeft()
 	while (abs(distanceError) > thresholdDistanceError)
 	{
 		//Gets robot's current coordinates and heading
-		double currX = position.getPosition()[0];
-		double currY = position.getPosition()[1];
-		double currTheta = position.getTheta();
+		double currX = PositionController().getPosition()[0];
+		double currY = PositionController().getPosition()[1];
+		double currTheta = PositionController().getTheta();
 
 		//Calculates rotated coordinates and headings
 		double adjThetaRobot = currTheta + beta - origTheta;
@@ -888,7 +893,7 @@ void PIDController::pidLeft()
 		derivativeDistance = distanceError - lastDistanceError;
 		lastDistanceError = distanceError;
 
-		//Calculates distance voltage using PID constants 
+		//Calculates distance voltage using PID constants
 		powerDistance = kPDistance * distanceError + kIDistance * integralDistance + kDDistance * derivativeDistance;
 
 		//Calculates integral error for forward/backward

@@ -1,61 +1,65 @@
-#include "positioning/positionAlg.h"
+#include "positioning/positionController.h"
 
-double WHEEL_DIAMETER = 2.75;
-double DISTANCE_TO_LEFT_ENCODER = 5.375;
-double DISTANCE_TO_RIGHT_ENCODER = 5.375;
-double DISTANCE_TO_BACK_ENCODER = 6.0625;
+double PositionController::WHEEL_DIAMETER = 2.75;
+double PositionController::DISTANCE_TO_LEFT_ENCODER = 5.375;
+double PositionController::DISTANCE_TO_RIGHT_ENCODER = 5.375;
+double PositionController::DISTANCE_TO_BACK_ENCODER = 6.0625;
 
-double previousLeftEncoderDegrees = 0;
-double previousRightEncoderDegrees = 0;
-double previousBackEncoderDegrees = 0;
+double PositionController::previousLeftEncoderDegrees = 0;
+double PositionController::previousRightEncoderDegrees = 0;
+double PositionController::previousBackEncoderDegrees = 0;
 
-double leftEncoderDegrees = 0;
-double rightEncoderDegrees = 0;
-double backEncoderDegrees = 0;
+double PositionController::leftEncoderDegrees = 0;
+double PositionController::rightEncoderDegrees = 0;
+double PositionController::backEncoderDegrees = 0;
 
-double leftEncoderDegreesDifference = 0;
-double rightEncoderDegreesDifference = 0;
-double backEncoderDegreesDifference = 0;
+double PositionController::leftEncoderDegreesDifference = 0;
+double PositionController::rightEncoderDegreesDifference = 0;
+double PositionController::backEncoderDegreesDifference = 0;
 
-double leftEncoderRadians = 0;
-double rightEncoderRadians = 0;
-double backEncoderRadians = 0;
+double PositionController::leftEncoderRadians = 0;
+double PositionController::rightEncoderRadians = 0;
+double PositionController::backEncoderRadians = 0;
 
-double leftEncoderDistance = 0;
-double rightEncoderDistance = 0;
-double backEncoderDistance = 0;
+double PositionController::leftEncoderDistance = 0;
+double PositionController::rightEncoderDistance = 0;
+double PositionController::backEncoderDistance = 0;
 
-double deltaTheta = 0;
-double polarTheta = 0;
-double theta = 0;
+double PositionController::deltaTheta = 0;
+double PositionController::polarTheta = 0;
+double PositionController::theta = 0;
 
-double robotSpeed = 0;
+double PositionController::robotSpeed = 0;
 
-vector<double> positionVector = { 0, 0 };
-vector<double> newVector = { 0, 0 };
+vector<double> PositionController::positionVector = { 0, 0 };
+vector<double> PositionController::newVector = { 0, 0 };
 
-vector<double> testVector(1000, -1);
-vector<double> leftVector(1000, 999999);
-vector<double> rightVector(1000, 9999999);
+vector<double> PositionController::testVector(1000, -1);
+vector<double> PositionController::leftVector(1000, 999999);
+vector<double> PositionController::rightVector(1000, 9999999);
 
-double x;
-double y;
-double r;
-double newX;
-double newY;
-double thetaM;
+double PositionController::x;
+double PositionController::y;
+double PositionController::r;
+double PositionController::newX;
+double PositionController::newY;
+double PositionController::thetaM;
 
-double inertLeft = 0;
-double inertLeftOffset = 0;
-double inertRight = 0;
-double inertRightOffset = 0;
-double inertCenter = 0;
-double inertCenterOffset = 0;
+double PositionController::inertLeft = 0;
+double PositionController::inertLeftOffset = 0;
+double PositionController::inertRight = 0;
+double PositionController::inertRightOffset = 0;
+double PositionController::inertCenter = 0;
+double PositionController::inertCenterOffset = 0;
+
+PositionController::PositionController(){
+	
+}
 
 /**
  * Returns robot heading
  */
-double PositionAlg::getTheta()
+double PositionController::getTheta()
 {
 	return theta;
 }
@@ -63,7 +67,7 @@ double PositionAlg::getTheta()
 /**
  * Returns robot position
  */
-vector<double> PositionAlg::getPosition()
+vector<double> PositionController::getPosition()
 {
 	return positionVector;
 }
@@ -71,7 +75,7 @@ vector<double> PositionAlg::getPosition()
 /**
  * Returns robot speed
  */
-double PositionAlg::getSpeed()
+double PositionController::getSpeed()
 {
 	return robotSpeed;
 }
@@ -79,7 +83,7 @@ double PositionAlg::getSpeed()
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionAlg::calcPosition(void* ignore)
+void PositionController::calcPosition(void* ignore)
 {
 
 	while (true)
@@ -166,7 +170,7 @@ void PositionAlg::calcPosition(void* ignore)
 /**
  * Resets all positioning variables back to 0
  */
-void PositionAlg::resetGlobal()
+void PositionController::resetGlobal()
 {
 	//Reset encoder values
 	leftEncoder.reset();
@@ -206,7 +210,7 @@ void PositionAlg::resetGlobal()
 /**
  * Sets theta to a given value by offsetting each inertial sensor
  */
-void PositionAlg::setTheta(double newTheta)
+void PositionController::setTheta(double newTheta)
 {
 	inertLeftOffset = newTheta - inertLeft + inertLeftOffset;
 	inertRightOffset = newTheta - inertRight + inertRightOffset;
@@ -225,7 +229,7 @@ void PositionAlg::setTheta(double newTheta)
 /**
  * Sets the position to a given value
  */
-void PositionAlg::setPosition(double x, double y)
+void PositionController::setPosition(double x, double y)
 {
 	positionVector = { x,y };
 }

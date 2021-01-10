@@ -30,24 +30,24 @@ public:
 	PIDController& withMaxAngleError(double thresholdAngleError);
 	PIDController& withMotorStopping(bool stopMotors);
 private:
-	static double targetTheta;
-	static vector<vector<double>> distanceLine;
-	static double maxVel;
-	static double kP;
-	static double kI;
-	static double kD;
-	static double kPDistance;
-	static double kIDistance;
-	static double kDDistance;
-	static double kPAngle;
-	static double kIAngle;
-	static double kDAngle;
-	static double kPDiff;
-	static double kIDiff;
-	static double kDDiff;
-	static double thresholdDistanceError;
-	static double thresholdAngleError;
-	static double stopMotors;
+	double targetTheta;
+	vector<vector<double>> distanceLine;
+	double maxVel;
+	double kP;
+	double kI;
+	double kD;
+	double kPDistance;
+	double kIDistance;
+	double kDDistance;
+	double kPAngle;
+	double kIAngle;
+	double kDAngle;
+	double kPDiff;
+	double kIDiff;
+	double kDDiff;
+	double thresholdDistanceError;
+	double thresholdAngleError;
+	double stopMotors;
 };
 
 

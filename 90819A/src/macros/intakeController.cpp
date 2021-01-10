@@ -2,8 +2,8 @@
 
 bool IntakeController::intakeStatus = false;
 
-IntakeController::IntakeController() {
-
+	IntakeController::IntakeController()
+{
 }
 
 /**
@@ -14,7 +14,6 @@ void IntakeController::toggleIntakes(int speed)
 {
 	intakeMotorLeft = speed;
 	intakeMotorRight = speed;
-
 }
 
 void IntakeController::deploy(void* ignore) {

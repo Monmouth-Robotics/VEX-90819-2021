@@ -3,13 +3,12 @@
 
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
-#include "positioning/positionAlg.h"
+#include "positioning/positionController.h"
 #include "macros/indexing.h"
 #include "api.h"
 
 using namespace std;
 
-extern PositionAlg position;
 extern Indexing indexer;
 extern pros::Task indexController;
 
