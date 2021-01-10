@@ -21,8 +21,6 @@ public:
 private:
 	static bool ejectingStatus;
 	static bool useTopRoller;
-	static double targetX;
-	static double targetY;
 	static bool hasCoordinates;
 	static bool hasAngle;
 	static double targetX;
