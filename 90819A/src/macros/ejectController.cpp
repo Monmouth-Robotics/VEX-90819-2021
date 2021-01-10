@@ -29,8 +29,8 @@ EjectController& EjectController::withCoordinates(double targetX, double targetY
 	return *this;
 }
 
-EjectController& EjectController::withAngle(double targetAngle, double angleThreshold) {
-	this->targetAngle = targetAngle;
+EjectController& EjectController::withAngle(double targetTheta, double angleThreshold) {
+	this->targetTheta = targetTheta;
 	this->angleThreshold = angleThreshold;
 	hasAngle = true;
 	return *this;
@@ -41,7 +41,7 @@ EjectController& EjectController::withAngle(double targetAngle, double angleThre
 */
 void EjectController::ejectOneBall(void* ignore)
 {	
-	if (hasDistance) {
+	if (hasCoordinates) {
 		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 		while (distanceError > distanceThreshold) {
 			pros::delay(10);
@@ -123,7 +123,7 @@ void EjectController::ejectOneBall(void* ignore)
 */
 void EjectController::ejectTwoBalls(void* ignore)
 {
-	if (hasDistance) {
+	if (hasCoordinates) {
 		double distanceError = distanceFormula(PositionController().getPosition(), { targetX, targetY });
 		while (distanceError > distanceThreshold) {
 			pros::delay(10);

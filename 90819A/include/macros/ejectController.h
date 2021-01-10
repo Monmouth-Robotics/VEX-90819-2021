@@ -14,7 +14,8 @@ class EjectController
 public:
 	EjectController();
 	EjectController& setTopRoller(bool useTopRoller);
-	EjectController& withCoordinates(double targetX, double targetY, double distance);
+	EjectController& withCoordinates(double targetX, double targetY, double distanceThreshold);
+	EjectController& withAngle(double targetTheta, double angleThreshold);
 	static void ejectOneBall(void* ignore);
 	static void ejectTwoBalls(void* ignore);
 	
