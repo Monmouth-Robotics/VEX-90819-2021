@@ -10,7 +10,7 @@
 #include "macros/ejectController.h"
 #include "macros/shootController.h"
 #include "macros/intakeController.h"
-#include "macros/IndexController.h"
+#include "macros/indexController.h"
 #include "positioning/positionController.h"
 
 using namespace std;
