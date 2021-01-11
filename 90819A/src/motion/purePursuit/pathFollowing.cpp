@@ -225,14 +225,22 @@ void PathFollowing::moveRobot(vector<double> errors, double distanceError, doubl
 }
 
 vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance)
-{
+{	
 	//Starting point of the line segment
+
 	vector<double> E = {0.0, 0.0};
+
 	E = {pointsList[closestPoint][0], pointsList[closestPoint][1]};
 
 	//End point of the line segment
 	vector<double> L = {0.0, 0.0};
-	L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
+
+	if (closestPoint + lookAheadPointsNum < pointsList.size()){
+		L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
+	}
+	else{
+		L = {pointsList[pointsList.size()-1][0], pointsList[pointsList.size()-1][1]};
+	}
 
 	//Center of the drawn circle, representing the robot position
 	vector<double> C = {0.0, 0.0};
@@ -281,6 +289,7 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 	}
 	else
 	{
+		printf("two\n");
 		//Find points of intersection at t1 and t2
 		double t1 = (-b - sqrt(discriminant)) / (2 * a);
 		double t2 = (-b + sqrt(discriminant)) / (2 * a);
@@ -297,6 +306,7 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 		//Expands search radius if both points found are behind the current point in the motion
 		else
 		{
+			printf("seventeen\n");
 			if (closestPoint != pointsList.size() - lookAheadPointsNum - 1)
 			{
 				//Recursive function with a greater number of lookahead points
@@ -312,7 +322,7 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 }
 
 void PathFollowing::ppMove()
-{
+{	
 	double speedCheckCount = 0;
 	double distanceError = 999999;
 	double angleError = 999999;
@@ -364,19 +374,21 @@ void PathFollowing::ppMove()
 			}
 		}
 
+
 		//Calculate lookahead point if the last point is not within the default search radius
 		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum)
-		{
+		{	
 			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing * lookAheadPointsNum);
 		}
 
 		//Use last point as lookahead point if the last point is within the default search radius
 		else
-		{
+		{	
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
 		// vector<double> errorArg1 = {0.0};
 		// errorArg1 = PositionController().getPosition();
+
 
 		if (distanceError < speedCheckDistance && PositionController().getSpeed() < speedCheckSpeed)
 		{
@@ -397,6 +409,7 @@ void PathFollowing::ppMove()
 		angleError = errors[2];
 		// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
 		moveRobot(errors, distanceError, kPDistance, kPAngle, minPower);
+
 		// errors = {5, 0};
 		// printf("Position: %.3f, %.3f, %.3f\n", x, y, PositionController().getTheta());
 		// printf("Lookahead point: %.3f, %.3f\n", lookAheadPoint[0], lookAheadPoint[1]);

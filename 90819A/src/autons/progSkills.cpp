@@ -128,7 +128,7 @@ void thirdGoal()
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({ {100, 37.5, 0}, {112, 32, M_PI / 4}, {119, 39, M_PI / 4} }, 1)
-		.withSpeedCheck(2, 1, 250)
+		.withSpeedCheck(5, 1, 250)
 		.ppMove();
 
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller 2");
@@ -163,6 +163,7 @@ void fourthGoal()
 		.ppMove();
 	PathFollowing()
 		.withPath({ {86, -15, M_PI}, {113.5, -15, M_PI / 2} }, 1)
+		.withSpeedCheck(5, 1, 250)
 		.ppMove();
 
 	// indexerFunctions.poopOneBall(NULL);
@@ -230,7 +231,16 @@ void fifthGoal()
  * Route to score sixth goal
 */
 void sixthGoal()
-{
+{	
+	leftBackMotor = -63;
+	leftFrontMotor = -63;
+	rightFrontMotor = -63;
+	rightBackMotor = -63;
+	pros::delay(300);
+	leftBackMotor = 0;
+	leftFrontMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
 	PathFollowing()
 		.withPath({ {117.8, -69.6, M_PI / 2 + M_PI / 4}, {87, -40, 3 * M_PI / 2} }, 1)
 		.withSpeedCheck(2, 1, 250)
@@ -282,7 +292,7 @@ void seventhGoal()
 		.ejectOneBall, NULL, "Eject Controller");
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
-		.withPath({ {64, -62, M_PI}, {40, -51, 3 * M_PI / 2} }, 1)
+		.withPath({ {64, -62, M_PI}, {40, -52, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
@@ -309,7 +319,7 @@ void seventhGoal()
  * Route to score eighth goal
 */
 void eighthGoal()
-{
+{	
 	PathFollowing()
 		.withPath({ {9, -70, M_PI + M_PI / 4}, {18, -61, M_PI + M_PI / 4}, {37, -36, 0} }, 1)
 		.ppMove();
@@ -340,48 +350,50 @@ void eighthGoal()
 */
 void ninthGoal()
 {
-	//leftBackMotor = -63;
-	//leftFrontMotor = -63;
-	//rightFrontMotor = -63;
-	//rightBackMotor = -63;
-	//pros::delay(300);
-	//leftBackMotor = 0;
-	//leftFrontMotor = 0;
-	//rightFrontMotor = 0;
-	//rightBackMotor = 0;
-	//pidTurn(2 * M_PI, 80, 0.025, 100.0, 0.0, 0.0);
-	//// indexerFunctions.poopOneBall((void *) true);
-	//pros::Task poopController(indexerFunctions.poopOneBall, (void *)true, "Poop Controller");
-	//// IndexController().toggleTop(true);
-	//// IndexController().toggleBottom(true);
-	//// upperStack = 100;
-	//// lowerStack = 127;
-	//indexerFunctions.toggleIntakes(127);
-	//pidForward(2 * M_PI, {{37, 20}, {37, 40}}, 63, 0.5, 50, 63, 20, 0, 0, 0, 0, 0, 0, true);
-	//indexerFunctions.shootPowerful(NULL);
-	//IndexController().toggleTop(true);
-	//IndexController().toggleBottom(true);
-	//upperStack = 127;
-	//lowerStack = 127;
-	//indexerFunctions.toggleIntakes(-127);
-	//// pros::delay(2000);
-	//// IndexController().toggleTop(false);
-	//// IndexController().toggleBottom(false);
-	//// upperStack = 127;
-	//// lowerStack = 127;
-	//// pros::delay(250);
-	//// indexerFunctions.toggleIntakes(-127);
-	//// pros::delay(250);
-	//pros::delay(500);
-	//leftBackMotor = -63;
-	//leftFrontMotor = -63;
-	//rightFrontMotor = -63;
-	//rightBackMotor = -63;
-	//pros::delay(750);
-	//leftBackMotor = 0;
-	//leftFrontMotor = 0;
-	//rightFrontMotor = 0;
-	//rightBackMotor = 0;
+	PathFollowing()
+		.withPath({{12, -16, 3*M_PI/2}, {18, -16, 3*M_PI/2}, {32, 8, M_PI/2}}, 1)
+		.ppMove();
+	PathFollowing()
+		.withPath({{32, 8, M_PI/2}, {70, 8, M_PI/2}}, 1)
+		.withGains(25, 50)
+		.ppMove();
+	pros::Task ejectController(EjectController()
+		.setTopRoller(true)
+		.ejectOneBall, NULL, "Eject Controller");
+	
+	PIDController()
+		.withTargetTheta(M_PI)
+		.withLimit(100)
+		.withMaxAngleError(0.025)
+		.withTurnGains(120.0, 0.0, 0.0)
+		.pidTurn();
+	
+	PathFollowing()
+		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
+		.ppMove();
+	
+	PathFollowing()
+		.withPath({{70, 2.5, M_PI}, {70, 8, M_PI}}, 1)
+		.ppMove();
+
+	PathFollowing()
+		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
+		.ppMove();
+	
+	PathFollowing()
+		.withPath({{70, 2.5, M_PI}, {70, 8, M_PI}}, 1)
+		.ppMove();
+
+	PathFollowing()
+		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
+		.ppMove();
+	
+	PathFollowing()
+		.withPath({{70, 2.5, M_PI}, {60, 8, M_PI}}, 1)
+		.ppMove();
+
+	ShootController().shootPowerful(NULL);
+
 }
 
 /**
@@ -413,6 +425,7 @@ void runProgSkills()
 	sixthGoal();
 	seventhGoal();
 	eighthGoal();
+	ninthGoal();
 	leftFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	leftBackMotor.set_brake_mode(MOTOR_BRAKE_COAST);
 	rightFrontMotor.set_brake_mode(MOTOR_BRAKE_COAST);
