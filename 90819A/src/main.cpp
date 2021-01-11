@@ -21,6 +21,12 @@ void initialize()
 	}
 	//Should print about 2000 ms
 	printf("IMU is done calibrating (took %d ms)\n", iter - time);
+
+	//Starts tasks
+	pros::Task displayController(Display().displayPosition, NULL, "Position Display");
+	pros::Task positionController(PositionController().calcPosition, NULL, "Position Tracker");
+	pros::Task indexController(IndexController().indexingTask, NULL, "Ball Tracker");
+
 }
 
 /**
@@ -82,7 +88,7 @@ void autonomous()
 	backEncoder.reset();
 
 	//Run auton according to selection screen
-	switch (display.getAutonCode())
+	switch (Display().getAutonCode())
 	{
 	case 1:
 		break;

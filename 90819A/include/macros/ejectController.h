@@ -4,8 +4,10 @@
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
 #include "api.h"
+#include "init/utility.h"
 #include "init/devices.h"
-#include "init/taskManagement.h"
+#include "macros/indexController.h"
+#include "positioning/positionController.h"
 
 using namespace std;
 

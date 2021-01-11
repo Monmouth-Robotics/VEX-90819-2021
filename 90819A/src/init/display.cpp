@@ -1,24 +1,28 @@
 #include "init/display.h"
 
 //Declares the text object to display auton mode
-lv_obj_t* text;
+lv_obj_t* Display::text;
 
 //Sets default auton mode
-int autonCode = 5;
+int Display::autonCode = 5;
 
 //Declares the text object to display x-coordinate
-lv_obj_t* xText;
+lv_obj_t* Display::xText;
 
 //Declares the text object to display y-coordinate
-lv_obj_t* yText;
+lv_obj_t* Display::yText;
 
 //Declares the text object to display theta
-lv_obj_t* thetaText;
+lv_obj_t* Display::thetaText;
 
 //Stores whether or not position display has been setup
-bool positionDisplaySetup = false;
+bool Display::positionDisplaySetup = false;
 
-lv_style_t* style = &lv_style_plain;
+lv_style_t* Display::style = &lv_style_plain;
+
+Display::Display() {
+	
+}
 
 /**
  * Returns auton code

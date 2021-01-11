@@ -17,16 +17,16 @@ void IntakeController::toggleIntakes(int speed)
 }
 
 void IntakeController::deploy(void* ignore) {
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
+	IndexController().toggleTop(true);
+	IndexController().toggleBottom(true);
 	lowerStack = -63;
 	upperStack = -80;
 	pros::delay(500);
 	// upperStack = -80;
 	// lowerStack = 0;
 	// pros::delay(1000);
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
+	IndexController().toggleTop(false);
+	IndexController().toggleBottom(false);
 	IntakeController().toggleIntakes(127);
 	pros::delay(500);
 }
@@ -38,13 +38,13 @@ void IntakeController::stopIntakesAsync(void* ignore)
 {
 	intakeStatus = false;
 
-	while (indexer.getIntakeColor() != "blue")
+	while (IndexController().getIntakeColor() != "blue")
 	{
 		pros::delay(10);
 	}
 
 	//Waits for intakes to contain red ball
-	while (indexer.getIntakeColor() != "red")
+	while (IndexController().getIntakeColor() != "red")
 	{
 		pros::delay(10);
 	}
@@ -52,7 +52,7 @@ void IntakeController::stopIntakesAsync(void* ignore)
 	intakeStatus = true;
 
 	//Outtakes until intakes no longer contain red ball
-	while (indexer.getIntakeColor() == "red")
+	while (IndexController().getIntakeColor() == "red")
 	{
 		IntakeController().toggleIntakes(-127);
 	}
@@ -72,7 +72,7 @@ void IntakeController::stopIntakesAsyncOne(void* ignore)
 	intakeStatus = false;
 
 	//Waits for intakes to contain one blue ball
-	while (indexer.getIntakeColor() != "blue")
+	while (IndexController().getIntakeColor() != "blue")
 	{
 		pros::delay(10);
 	}

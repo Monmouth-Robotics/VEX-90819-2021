@@ -5,12 +5,13 @@
 #define PROS_USE_LITERALS
 #include "api.h"
 #include "init/devices.h"
-#include "init/taskManagement.h"
 #include "motion/purePursuit/pathFollowing.h"
 #include "motion/pidController.h"
 #include "macros/ejectController.h"
 #include "macros/shootController.h"
 #include "macros/intakeController.h"
+#include "macros/IndexController.h"
+#include "positioning/positionController.h"
 
 using namespace std;
 

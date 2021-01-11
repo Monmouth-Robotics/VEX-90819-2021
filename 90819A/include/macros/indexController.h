@@ -1,5 +1,5 @@
-#ifndef _INDEXING
-#define _INDEXING
+#ifndef _INDEX_CONTROLLER
+#define _INDEX_CONTROLLER
 
 #define PROS_USE_SIMPLE_NAMES
 #define PROS_USE_LITERALS
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Indexing
+class IndexController
 {
 public:
 	static void indexingTask(void* ignore);
@@ -20,6 +20,14 @@ public:
 	static void toggleTop(bool disabled);
 	static void toggleBottom(bool disabled);
 	static void toggleTopPosition(bool disabled);
+private:
+	static char* topBallDetected;
+	static char* bottomBallDetected;
+	static char* backBallDetected;
+	static char* intakeBallColor;
+	static bool topDisabled;
+	static bool topPositionDisabled;
+	static bool bottomDisabled;
 };
 
 #endif
