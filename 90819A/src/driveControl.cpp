@@ -240,13 +240,13 @@ void driveControl()
 		}
 		else if (rightArrowPressed) {
 			if (rightArrowActive) {
-				indexer.toggleBottom(false);
-				indexer.toggleTop(false);
+				IndexController().toggleBottom(false);
+				IndexController().toggleTop(false);
 				rightArrowActive = false;
 			}
 			else {
-				indexer.toggleBottom(true);
-				indexer.toggleTop(true);
+				IndexController().toggleBottom(true);
+				IndexController().toggleTop(true);
 				upperStack = -127;
 				lowerStack = -127;
 				topArrowActive = false;
@@ -259,12 +259,12 @@ void driveControl()
 		}
 		else if (topArrowPressed) {
 			if (topArrowActive) {
-				indexer.toggleBottom(false);
-				indexer.toggleTop(false);
+				IndexController().toggleBottom(false);
+				IndexController().toggleTop(false);
 				topArrowActive = false;
 			}
 			else {
-				indexer.toggleBottom(true);
+				IndexController().toggleBottom(true);
 				lowerStack = -127;
 				rightArrowActive = false;
 				topArrowActive = true;

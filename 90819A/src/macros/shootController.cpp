@@ -10,8 +10,8 @@ ShootController::ShootController() {
 void ShootController::shootPowerful(void* ignore)
 {
 	//disables automated control of top and bottom roller
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
+	IndexController().toggleTop(true);
+	IndexController().toggleBottom(true);
 
 	upperStack = -127;
 	lowerStack = -63;
@@ -19,8 +19,8 @@ void ShootController::shootPowerful(void* ignore)
 
 	pros::delay(250);
 
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
+	IndexController().toggleTop(false);
+	IndexController().toggleBottom(false);
 
 	// upperStack = 127;
 	// lowerStack = 127;
@@ -31,8 +31,8 @@ void ShootController::shootPowerful(void* ignore)
 void ShootController::shootTwoBalls(void* ignore)
 {
 	//Disables automated control of top and bottom rollers
-	indexer.toggleTop(true);
-	indexer.toggleBottom(true);
+	IndexController().toggleTop(true);
+	IndexController().toggleBottom(true);
 	lowerStack = 0;
 	upperStack = 127;
 
@@ -69,8 +69,8 @@ void ShootController::shootTwoBalls(void* ignore)
 	upperStack = 0;
 
 	//Resumes automated control of top and bottom rollers
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
+	IndexController().toggleTop(false);
+	IndexController().toggleBottom(false);
 }
 
 /**
@@ -79,7 +79,7 @@ void ShootController::shootTwoBalls(void* ignore)
 void ShootController::shootOneBall(void* ignore)
 {
 	//Disables automated control of top roller
-	indexer.toggleTop(true);
+	IndexController().toggleTop(true);
 	upperStack = 127;
 
 	//Waits for ball to be located in top indexing position
@@ -95,5 +95,5 @@ void ShootController::shootOneBall(void* ignore)
 	}
 
 	//Resumes automated control of top roller
-	indexer.toggleTop(false);
+	IndexController().toggleTop(false);
 }

@@ -1,18 +1,18 @@
-#include "macros/indexing.h"
+#include "macros/indexController.h"
 
-char* topBallDetected = "";
-char* bottomBallDetected = "";
-char* backBallDetected = "";
-char* intakeBallColor = "";
+char* IndexController::topBallDetected = "";
+char* IndexController::bottomBallDetected = "";
+char* IndexController::backBallDetected = "";
+char* IndexController::intakeBallColor = "";
 
-bool topDisabled = false;
-bool topPositionDisabled = false;
-bool bottomDisabled = false;
+bool IndexController::topDisabled = false;
+bool IndexController::topPositionDisabled = false;
+bool IndexController::bottomDisabled = false;
 
 /**
  * Returns status of top indexing position
 */
-char* Indexing::getTopStatus()
+char* IndexController::getTopStatus()
 {
 	return topBallDetected;
 }
@@ -20,7 +20,7 @@ char* Indexing::getTopStatus()
 /**
  * Returns status of bottom indexing position
 */
-char* Indexing::getBottomStatus()
+char* IndexController::getBottomStatus()
 {
 	return bottomBallDetected;
 }
@@ -28,7 +28,7 @@ char* Indexing::getBottomStatus()
 /**
  * Returns status of back indexing position
 */
-char* Indexing::getBackStatus()
+char* IndexController::getBackStatus()
 {
 	return backBallDetected;
 }
@@ -36,7 +36,7 @@ char* Indexing::getBackStatus()
 /**
  * Returns status of ball in intakes
 */
-char* Indexing::getIntakeColor()
+char* IndexController::getIntakeColor()
 {
 	return intakeBallColor;
 }
@@ -44,7 +44,7 @@ char* Indexing::getIntakeColor()
 /**
  * Toggles usage of top indexing position
 */
-void Indexing::toggleTopPosition(bool disabled)
+void IndexController::toggleTopPosition(bool disabled)
 {
 	topPositionDisabled = disabled;
 }
@@ -52,7 +52,7 @@ void Indexing::toggleTopPosition(bool disabled)
 /**
  * Toggles automatic control of top indexing position
 */
-void Indexing::toggleTop(bool disabled)
+void IndexController::toggleTop(bool disabled)
 {
 	topDisabled = disabled;
 }
@@ -60,7 +60,7 @@ void Indexing::toggleTop(bool disabled)
 /**
  * Toggles automatic control of bottom indexing position
 */
-void Indexing::toggleBottom(bool disabled)
+void IndexController::toggleBottom(bool disabled)
 {
 	bottomDisabled = disabled;
 }
@@ -68,7 +68,7 @@ void Indexing::toggleBottom(bool disabled)
 /**
  * Automates indexing of balls in robot
 */
-void Indexing::indexingTask(void* ignore)
+void IndexController::indexingTask(void* ignore)
 {
 	//Turn on LED for optical sensor
 	opticalSensor.set_led_pwm(100);

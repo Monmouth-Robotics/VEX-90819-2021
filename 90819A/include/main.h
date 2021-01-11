@@ -42,8 +42,9 @@
 	*/
 #include "api.h"
 #include "init/devices.h"
-#include "init/displayInstances.h"
+#include "init/display.h"
 #include "autons/progSkills.h"
+#include "positioning/positionController.h"
 #include "driveControl.h"
 	//#include "okapi/api.hpp"
 	//#include "pros/api_legacy.h"

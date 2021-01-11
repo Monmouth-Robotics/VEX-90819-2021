@@ -64,11 +64,11 @@ void EjectController::ejectOneBall(void* ignore)
 	if (useTopRoller)
 	{
 		//Disables automated control of top and bottom rollers
-		indexer.toggleTop(true);
-		indexer.toggleBottom(true);
+		IndexController().toggleTop(true);
+		IndexController().toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-		while (indexer.getTopStatus() != "") {
+		while (IndexController().getTopStatus() != "") {
 			upperStack = -127;
 			lowerStack = -127;
 		}
@@ -93,7 +93,7 @@ void EjectController::ejectOneBall(void* ignore)
 	else
 	{
 		//Disables automated control of bottom roller
-		indexer.toggleBottom(true);
+		IndexController().toggleBottom(true);
 		upperStack.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 		//Waits until ball is ejected
@@ -112,11 +112,11 @@ void EjectController::ejectOneBall(void* ignore)
 	}
 
 	//Enables use of top indexing position
-	indexer.toggleTopPosition(false);
+	IndexController().toggleTopPosition(false);
 
 	//Resumes automated control of top and bottom rollers
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
+	IndexController().toggleTop(false);
+	IndexController().toggleBottom(false);
 
 	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 	ejectingStatus = true;
@@ -148,11 +148,11 @@ void EjectController::ejectTwoBalls(void* ignore)
 	if (useTopRoller)
 	{
 		//Disables automated control of top and bottom rollers
-		indexer.toggleTop(true);
-		indexer.toggleBottom(true);
+		IndexController().toggleTop(true);
+		IndexController().toggleBottom(true);
 
 		// Reverse upper stack to allow upper ball to be ejected
-		while (indexer.getTopStatus() != "") {
+		while (IndexController().getTopStatus() != "") {
 			upperStack = -127;
 			lowerStack = -127;
 		}
@@ -194,7 +194,7 @@ void EjectController::ejectTwoBalls(void* ignore)
 	else
 	{
 		//Disables automated control of bottom roller
-		indexer.toggleBottom(true);
+		IndexController().toggleBottom(true);
 
 		upperStack.set_brake_mode(MOTOR_BRAKE_COAST);
 
@@ -231,11 +231,11 @@ void EjectController::ejectTwoBalls(void* ignore)
 
 
 	//Enables use of top indexing position
-	indexer.toggleTopPosition(false);
+	IndexController().toggleTopPosition(false);
 
 	//Resumes automated control of top and bottom rollers
-	indexer.toggleTop(false);
-	indexer.toggleBottom(false);
+	IndexController().toggleTop(false);
+	IndexController().toggleBottom(false);
 
 	upperStack.set_brake_mode(MOTOR_BRAKE_HOLD);
 
