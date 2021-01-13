@@ -23,7 +23,9 @@ void firstGoal()
 		.withPath({ {0, 0, 0}, {15, 0, 0} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {15, 0, 0}, {15, 15, 0}, {8, 40, -M_PI / 4} }, 1)
+		.withPath({ {15, 0, 0}, {15, 15, 0}, {7, 41, -M_PI / 4} }, 1)
+		.withGains(25, 175)
+		.withSpeedCheck(3.5, 1, 250)
 		.ppMove();
 
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
@@ -114,21 +116,22 @@ void thirdGoal()
 		.withPath({ {60.5, 33, 0}, {80, 22, M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
+	EjectController()
+		.setTopRoller(true)
+		.withAngle(M_PI/2, 0.08)
+		.ejectOneBall(NULL);
 	PathFollowing()
 		.withPath({ {80, 22, M_PI / 2}, {106, 22, M_PI / 2} }, 1)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
-	EjectController()
-		.setTopRoller(true)
-		.ejectOneBall(NULL);
 	PathFollowing()
-		.withPath({ {106, 20, M_PI / 2}, {100, 39, 0} }, 1)
+		.withPath({ {106, 20, 0}, {100, 39, 0} }, 1)
 		.withSpeedCheck(5, 0.5, 250)
 		.ppMove();
 	IntakeController().toggleIntakes(127);
 	PathFollowing()
 		.withPath({ {100, 37.5, 0}, {112, 32, M_PI / 4}, {119, 39, M_PI / 4} }, 1)
-		.withSpeedCheck(5, 1, 250)
+		.withSpeedCheck(3.5, 1, 250)
 		.ppMove();
 
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller 2");
@@ -199,14 +202,15 @@ void fifthGoal()
 	IndexController().toggleTopPosition(true);
 	IntakeController().toggleIntakes(127);
 
-	PathFollowing()
-		.withPath({ {112, -15, M_PI}, {112, -30, M_PI}, {114, -45, M_PI} }, 1)
-		.withGains(25, 150)
-		.ppMove();
-
 	pros::Task ejectController(EjectController()
 		.setTopRoller(true)
+		.withAngle(M_PI, 0.08)
 		.ejectOneBall, NULL, "Eject Controller");
+
+	PathFollowing()
+		.withPath({ {113, -15, M_PI}, {113, -25, M_PI}, {113, -45, M_PI} }, 1)
+		.withGains(25, 150)
+		.ppMove();
 
 	PathFollowing()
 		.withPath({ {114, -45, M_PI}, {102, -45, M_PI}, {102, -69, M_PI} }, 1)
@@ -214,7 +218,7 @@ void fifthGoal()
 		.withGains(25, 300)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {102, -69, M_PI}, {111, -64, M_PI / 2 + M_PI / 4}, {118, -71, M_PI / 2 + M_PI / 4} }, 1)
+		.withPath({ {102, -69, M_PI}, {111, -64, M_PI / 2 + M_PI / 4}, {119, -72, M_PI / 2 + M_PI / 4} }, 1)
 		.withSpeedCheck(5, 1, 250)
 		.ppMove();
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
@@ -232,10 +236,10 @@ void fifthGoal()
 */
 void sixthGoal()
 {	
-	leftBackMotor = -63;
-	leftFrontMotor = -63;
-	rightFrontMotor = -63;
-	rightBackMotor = -63;
+	leftBackMotor = -80;
+	leftFrontMotor = -80;
+	rightFrontMotor = -80;
+	rightBackMotor = -80;
 	pros::delay(300);
 	leftBackMotor = 0;
 	leftFrontMotor = 0;
@@ -260,7 +264,7 @@ void sixthGoal()
 		.withTurnGains(120.0, 0.0, 0.0)
 		.pidTurn();
 	PathFollowing()
-		.withPath({ {64, -37, M_PI}, {65, -65, M_PI} }, 1)
+		.withPath({ {64, -37, M_PI}, {64, -65, M_PI} }, 1)
 		.withSpeedCheck(5, 1, 250)
 		.ppMove();
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
@@ -277,10 +281,10 @@ void sixthGoal()
 */
 void seventhGoal()
 {
-	leftBackMotor = -63;
-	leftFrontMotor = -63;
-	rightFrontMotor = -63;
-	rightBackMotor = -63;
+	leftBackMotor = -80;
+	leftFrontMotor = -80;
+	rightFrontMotor = -80;
+	rightBackMotor = -80;
 	pros::delay(300);
 	leftBackMotor = 0;
 	leftFrontMotor = 0;
@@ -299,12 +303,14 @@ void seventhGoal()
 		.withPath({ {40, -52, 3 * M_PI / 2}, {24, -52, 3 * M_PI / 2} }, 1)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {24, -50, M_PI}, {28, -71, M_PI} }, 1)
+		.withPath({ {24, -50, M_PI}, {28, -71.5, M_PI} }, 1)
+		.withCoordinateReset(PositionController().getPosition()[0], -71)
+		.withAngleReset(M_PI)
 		.withSpeedCheck(5, 0.5, 250)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {26, -71, M_PI}, {11, -66, M_PI + M_PI / 4}, {7, -72, M_PI + M_PI / 4} }, 1)
-		.withSpeedCheck(5, 1, 250)
+		.withPath({ {26, -71, M_PI}, {11, -66, M_PI + M_PI / 4}, {7, -71, M_PI + M_PI / 4} }, 1)
+		.withSpeedCheck(3.5, 1, 250)
 		.ppMove();
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
 	ShootController().shootTwoBalls(NULL);
@@ -329,15 +335,17 @@ void eighthGoal()
 		.ejectTwoBalls, NULL, "Eject Controller");
 	PathFollowing()
 		.withPath({ {37, -36, 0}, {37, -14, 0} }, 1)
-		.withGains(25, 50)
+		.withGains(25, 25)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {37, -14, 3 * M_PI / 2}, {12, -16, 3 * M_PI / 2} }, 1)
+		.withPath({ {37, -14, 3 * M_PI / 2}, {9, -16, 3 * M_PI / 2} }, 1)
 		.withSpeedCheck(5, 1, 250)
+		.withCoordinateReset(10, PositionController().getPosition()[1])
 		.ppMove();
 
 	// pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
 	ShootController().shootOneBall(NULL);
+	pros::delay(250);
 	IndexController().toggleTopPosition(true);
 	// while (!IntakeController().getIntakeStatus())
 	// {
@@ -351,11 +359,15 @@ void eighthGoal()
 void ninthGoal()
 {
 	PathFollowing()
-		.withPath({{12, -16, 3*M_PI/2}, {18, -16, 3*M_PI/2}, {32, 8, M_PI/2}}, 1)
+		.withPath({{12, -16, 3*M_PI/2}, {20, -16, M_PI+4}, {32, 9, M_PI/2}}, 1)
+		.withGains(25, 150)
+		.withSpeedCheck(0, 0, 5000)
+		.withThresholdErrors(0.5, 0.016)
 		.ppMove();
 	PathFollowing()
-		.withPath({{32, 8, M_PI/2}, {70, 8, M_PI/2}}, 1)
-		.withGains(25, 50)
+		.withPath({{32, 9, M_PI/2}, {66, 8, M_PI/2}}, 1)
+		.withGains(25, 100)
+		.withSpeedCheck(0, 0, 5000)
 		.ppMove();
 	pros::Task ejectController(EjectController()
 		.setTopRoller(true)
@@ -368,31 +380,64 @@ void ninthGoal()
 		.withTurnGains(120.0, 0.0, 0.0)
 		.pidTurn();
 	
+	IntakeController().toggleIntakes(0);
+
 	PathFollowing()
-		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
-		.ppMove();
-	
-	PathFollowing()
-		.withPath({{70, 2.5, M_PI}, {70, 8, M_PI}}, 1)
+		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
 		.ppMove();
 
 	PathFollowing()
-		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
+		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(75, 150)
 		.ppMove();
 	
 	PathFollowing()
-		.withPath({{70, 2.5, M_PI}, {70, 8, M_PI}}, 1)
+		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
 		.ppMove();
 
 	PathFollowing()
-		.withPath({{70, 8, M_PI}, {70, 2.5, M_PI}}, 1)
+		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(75, 150)
 		.ppMove();
 	
 	PathFollowing()
-		.withPath({{70, 2.5, M_PI}, {60, 8, M_PI}}, 1)
+		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
 		.ppMove();
 
+	PathFollowing()
+		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(75, 150)
+		.ppMove();
+
+	
+	leftFrontMotor = 80;
+	leftBackMotor = 80;
+	pros::delay(500);
 	ShootController().shootPowerful(NULL);
+
+	leftFrontMotor = -63;
+	leftBackMotor = -63;
+	rightFrontMotor = -63;
+	rightBackMotor = -63;
+	pros::delay(1000);
+	leftFrontMotor = 0;
+	leftBackMotor = 0;
+	rightFrontMotor = 0;
+	rightBackMotor = 0;
+	// PIDController()
+	// 	.withTargetTheta(M_PI+M_PI/20)
+	// 	.withLimit(100)
+	// 	.withMaxAngleError(0.025)
+	// 	.withTurnGains(120.0, 0.0, 0.0)
+	// 	.pidTurn();
+	// PathFollowing()
+	// 	.withPath({{66, 0, M_PI}, {66, 8, M_PI}, {59, 5, M_PI}}, 1)
+	// 	.withSpeedCheck(0, 0, 5000)
+	// 	.ppMove();
+
 
 }
 
@@ -417,6 +462,7 @@ void runProgSkills()
 	// moveRobot({-4, -1, 50}, 100, 100, 100);
 	PositionController().resetGlobal();
 
+	pros::Task deploy(IntakeController().deploy, NULL, "Robot Deploy");
 	firstGoal();
 	secondGoal();
 	thirdGoal();

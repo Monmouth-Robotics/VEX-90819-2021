@@ -289,7 +289,6 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 	}
 	else
 	{
-		printf("two\n");
 		//Find points of intersection at t1 and t2
 		double t1 = (-b - sqrt(discriminant)) / (2 * a);
 		double t2 = (-b + sqrt(discriminant)) / (2 * a);
@@ -306,7 +305,6 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 		//Expands search radius if both points found are behind the current point in the motion
 		else
 		{
-			printf("seventeen\n");
 			if (closestPoint != pointsList.size() - lookAheadPointsNum - 1)
 			{
 				//Recursive function with a greater number of lookahead points
