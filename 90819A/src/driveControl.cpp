@@ -143,7 +143,7 @@ void driveControl()
 	intakeMotorLeft.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 	pros::Task deploy(IntakeController().deploy, NULL, "Robot Deploy");
-
+	
 	while (true)
 	{
 		//Gets input from controller joysticks
