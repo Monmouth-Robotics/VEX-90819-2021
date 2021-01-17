@@ -11,7 +11,6 @@
 #include "macros/intakeController.h"
 #include "macros/indexController.h"
 
-
 using namespace std;
 
 void driveControl();

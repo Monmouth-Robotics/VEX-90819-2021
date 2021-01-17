@@ -77,9 +77,11 @@ void ShootController::shootTwoBalls(void* ignore)
  * Shoots one ball
 */
 void ShootController::shootOneBall(void* ignore)
-{
+{	
+	IndexController().toggleTopPosition(false);
 	//Disables automated control of top roller
 	IndexController().toggleTop(true);
+	
 	upperStack = 127;
 
 	//Waits for ball to be located in top indexing position
