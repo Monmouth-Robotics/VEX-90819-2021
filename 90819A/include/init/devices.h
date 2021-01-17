@@ -6,6 +6,7 @@
 #include "api.h"
 
 extern pros::Controller controller;
+extern pros::Controller controllerTwo;
 
 extern pros::Motor leftFrontMotor;
 extern pros::Motor leftBackMotor;

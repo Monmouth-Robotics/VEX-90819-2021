@@ -2,6 +2,7 @@
 
 //Controllers
 pros::Controller controller(CONTROLLER_MASTER);
+pros::Controller controllerTwo(CONTROLLER_PARTNER);
 
 //Drivetrain motors
 pros::Motor leftFrontMotor(14, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);

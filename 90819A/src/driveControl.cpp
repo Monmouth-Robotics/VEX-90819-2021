@@ -30,7 +30,7 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 		rightFrontMotor = motorSpeed - turnSpeed - strafeSpeed;
 		rightBackMotor = motorSpeed - turnSpeed + strafeSpeed;
 	}
-	else if (abs(motorSpeed) > 20 && abs(turnSpeed) > 20)
+	else if (abs(motorSpeed) > 30 && abs(turnSpeed) > 30)
 	{
 		leftFrontMotor = motorSpeed + turnSpeed;
 		leftBackMotor = motorSpeed + turnSpeed;
@@ -207,10 +207,10 @@ void driveControl()
 		}
 
 		//Controls ejecting two balls
-		if (controller.get_digital(DIGITAL_L2))
+		if (controllerTwo.get_digital(DIGITAL_L2))
 		{
 			l2Pressed = true;
-			if (controller.get_digital(DIGITAL_LEFT)) {
+			if (controllerTwo.get_digital(DIGITAL_LEFT)) {
 				shiftKeyPressed = true;
 			}
 		}
@@ -221,10 +221,10 @@ void driveControl()
 		}
 
 		//Controls ejecting one ball
-		else if (controller.get_digital(DIGITAL_L1))
+		else if (controllerTwo.get_digital(DIGITAL_L1))
 		{
 			l1Pressed = true;
-			if (controller.get_digital(DIGITAL_LEFT)) {
+			if (controllerTwo.get_digital(DIGITAL_LEFT)) {
 				shiftKeyPressed = true;
 			}
 		}
@@ -233,6 +233,14 @@ void driveControl()
 			ejectOneBallFunction(!(shiftKeyPressed));
 			l1Pressed = false;
 			shiftKeyPressed = false;
+		}
+
+		//toggles top position 
+		if (controllerTwo.get_digital(DIGITAL_DOWN)){
+			IndexController().toggleTopPosition(true);
+		}
+		else if (controllerTwo.get_digital(DIGITAL_UP)){
+			IndexController().toggleTopPosition(false);
 		}
 
 		if (controller.get_digital(DIGITAL_RIGHT)) {
