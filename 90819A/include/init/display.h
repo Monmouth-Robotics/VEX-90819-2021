@@ -6,6 +6,7 @@
 
 #include "api.h"
 #include "positioning/positionController.h"
+#include "macros/indexController.h"
 
 using namespace std;
 
@@ -13,11 +14,14 @@ class Display
 {
 public:
 	Display();
-	static void displayInit(int startCode);
-	static void setAutonCode(int autonNum);
 	static int getAutonCode();
-	static void displayPosition(void* ignore);
+	static void initialize(void* ignore);
+	
 private:
+	static void displayMenu();
+	static void displayAuton();
+	static void displayPosition();
+	static void displayIndex();
 	static lv_res_t btn1_action(lv_obj_t* btn);
 	static lv_res_t btn2_action(lv_obj_t* btn);
 	static lv_res_t btn3_action(lv_obj_t* btn);
@@ -25,13 +29,30 @@ private:
 	static lv_res_t btn5_action(lv_obj_t* btn);
 	static lv_res_t btn6_action(lv_obj_t* btn);
 	static lv_res_t resetButton_action(lv_obj_t* btn);
+	static lv_res_t autonSelect_action(lv_obj_t* btn);
+	static lv_res_t odomSelect_action(lv_obj_t* btn);
+	static lv_res_t indexSelect_action(lv_obj_t* btn);
+	static void setAutonCode(string color, string mode);
 	static lv_obj_t* text;
 	static int autonCode;
 	static lv_obj_t* xText;
 	static lv_obj_t* yText;
 	static lv_obj_t* thetaText;
+	static lv_obj_t* thetaText2;
+	static lv_obj_t* topText;
+	static lv_obj_t* bottomText;
+	static lv_obj_t* intakeText;
+	static lv_obj_t* resetButton;
 	static bool positionDisplaySetup;
+	static bool autonDisplaySetup;
+	static bool indexDisplaySetup;
 	static lv_style_t* style;
+	static int displayMode;
+	static lv_obj_t* tabview;
+	static lv_obj_t* tab1;
+	static lv_obj_t* tab2;
+	static lv_obj_t* tab3;
+	//static pros::Task displayPositionController;
 };
 
 
