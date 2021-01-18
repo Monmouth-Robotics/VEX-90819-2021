@@ -22,7 +22,6 @@ lv_obj_t* Display::intakeText;
 
 
 lv_obj_t* Display::resetButton;
-int Display::displayMode = 1;
 
 //Stores whether or not position display has been setup
 bool Display::positionDisplaySetup = false;
@@ -40,79 +39,18 @@ lv_obj_t* Display::tab3;
 
 
 Display::Display() {
-	//tabview = lv_tabview_create(lv_scr_act(), NULL);
-	//tab1 = lv_tabview_add_tab(tabview, "Auton Selection");
-	//tab2 = lv_tabview_add_tab(tabview, "Odometry");
-	//tab3 = lv_tabview_add_tab(tabview, "Indexing");
+	tabview = lv_tabview_create(lv_scr_act(), NULL);
+	tab1 = lv_tabview_add_tab(tabview, "Auton Selection");
+	tab2 = lv_tabview_add_tab(tabview, "Odometry");
+	tab3 = lv_tabview_add_tab(tabview, "Indexing");
 }
 
 void Display::initialize(void* ignore) {
-	displayMenu();
 	while (true) {
-		if (displayMode == 1) {
-			displayAuton();
-		}
-		else if (displayMode == 2) {
-			displayPosition();
-		}
-		else if (displayMode == 3) {
-			displayIndex();
-		}
+		displayPosition();
+		displayIndex();
 		pros::delay(10);
 	}
-}
-
-void Display::displayMenu() {
-	lv_obj_t* autonSelect = lv_btn_create(lv_scr_act(), NULL);
-	lv_obj_set_pos(autonSelect, 0, 0);
-	lv_obj_set_size(autonSelect, 150, 30);
-	lv_btn_set_action(autonSelect, LV_BTN_ACTION_CLICK, autonSelect_action);
-
-	lv_obj_t* autoSelectLabel = lv_label_create(autonSelect, NULL);
-	lv_label_set_text(autoSelectLabel, "Auton Selection");
-
-	lv_obj_t* odomSelect = lv_btn_create(lv_scr_act(), NULL);
-	lv_obj_set_pos(odomSelect, 150, 0);
-	lv_obj_set_size(odomSelect, 100, 30);
-	lv_btn_set_action(odomSelect, LV_BTN_ACTION_CLICK, odomSelect_action);
-
-	lv_obj_t* odomSelectLabel = lv_label_create(odomSelect, NULL);
-	lv_label_set_text(odomSelectLabel, "Odometry");
-
-	lv_obj_t* indexSelect = lv_btn_create(lv_scr_act(), NULL);
-	lv_obj_set_pos(indexSelect, 250, 0);
-	lv_obj_set_size(indexSelect, 100, 30);
-	lv_btn_set_action(indexSelect, LV_BTN_ACTION_CLICK, indexSelect_action);
-
-	lv_obj_t* indexSelectLabel = lv_label_create(indexSelect, NULL);
-	lv_label_set_text(indexSelectLabel, "Indexing");
-}
-
-lv_res_t Display::autonSelect_action(lv_obj_t* btn)
-{
-	autonDisplaySetup = false;
-	displayMode = 1;
-	lv_obj_clean(lv_scr_act());
-	displayMenu();
-	return LV_RES_OK;
-}
-
-lv_res_t Display::odomSelect_action(lv_obj_t* btn)
-{
-	positionDisplaySetup = false;
-	displayMode = 2;
-	lv_obj_clean(lv_scr_act());
-	displayMenu();
-	return LV_RES_OK;
-}
-
-lv_res_t Display::indexSelect_action(lv_obj_t* btn)
-{
-	indexDisplaySetup = false;
-	displayMode = 3;
-	lv_obj_clean(lv_scr_act());
-	displayMenu();
-	return LV_RES_OK;
 }
 
 /**
@@ -124,69 +62,11 @@ int Display::getAutonCode()
 }
 
 /**
- * Sets auton mode when button press is detected
-*/
-void Display::setAutonCode(string color, string mode)
-{
-
-}
-
-/**
- * Sets auton code to 1 when button 1 is pressed
-*/
-lv_res_t Display::btn1_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
- * Sets auton code to 2 when button 2 is pressed
-*/
-lv_res_t Display::btn2_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
- * Sets auton code to 3 when button 3 is pressed
-*/
-lv_res_t Display::btn3_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
- * Sets auton code to 4 when button 4 is pressed
-*/
-lv_res_t Display::btn4_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
- * Sets auton code to 51 when button 5 is pressed
-*/
-lv_res_t Display::btn5_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
- * Sets auton code to 6 when button 6 is pressed
-*/
-lv_res_t Display::btn6_action(lv_obj_t* btn)
-{
-	return LV_RES_OK;
-}
-
-/**
  * Displays buttons on screen
 */
 void Display::displayAuton()
 {
 	if (!autonDisplaySetup) {
-
-		
 
 		autonDisplaySetup = true;
 	}
@@ -208,33 +88,33 @@ void Display::displayPosition() {
 		style->text.font = &lv_font_dejavu_20;
 
 		//Initializes the text object to display x-coordinate
-		xText = lv_label_create(lv_scr_act(), NULL);
+		xText = lv_label_create(tab2, NULL);
 
 		//Initializes the text object to display y-coordinate
-		yText = lv_label_create(lv_scr_act(), NULL);
+		yText = lv_label_create(tab2, NULL);
 
 		//Initializes the text object to display theta
-		thetaText = lv_label_create(lv_scr_act(), NULL);
-		thetaText2 = lv_label_create(lv_scr_act(), NULL);
+		thetaText = lv_label_create(tab2, NULL);
+		thetaText2 = lv_label_create(tab2, NULL);
 
 		//Sets the x-coordinate text to the top left
-		lv_obj_set_pos(xText, 5, 40);
+		lv_obj_set_pos(xText, 5, 20);
 		lv_label_set_style(xText, style);
 
 		//Sets the y-coordinate text under previous text
-		lv_obj_set_pos(yText, 5, 60);
+		lv_obj_set_pos(yText, 5, 40);
 		lv_label_set_style(yText, style);
 
 		//Sets the theta text under previous text
-		lv_obj_set_pos(thetaText, 5, 80);
+		lv_obj_set_pos(thetaText, 5, 60);
 		lv_label_set_style(thetaText, style);
-		lv_obj_set_pos(thetaText2, 5, 100);
+		lv_obj_set_pos(thetaText2, 5, 80);
 		lv_label_set_style(thetaText2, style);
 
 		//Creates reset button
-		resetButton = lv_btn_create(lv_scr_act(), NULL);
+		resetButton = lv_btn_create(tab2, NULL);
 		//Places reset button on screen at (100, 100)
-		lv_obj_set_pos(resetButton, 200, 150);
+		lv_obj_set_pos(resetButton, 200, 110);
 		//Sets the size of the button to 100px in the x-direction and 50px in the y-direction
 		lv_obj_set_size(resetButton, 100, 50);
 		//Sets the action to run resetPosition() when button is pressed
@@ -270,11 +150,11 @@ void Display::displayIndex() {
 		style->text.color = LV_COLOR_WHITE;
 		style->text.font = &lv_font_dejavu_20;
 
-		topText = lv_label_create(lv_scr_act(), NULL);
+		topText = lv_label_create(tab3, NULL);
 
-		bottomText = lv_label_create(lv_scr_act(), NULL);
+		bottomText = lv_label_create(tab3, NULL);
 
-		intakeText = lv_label_create(lv_scr_act(), NULL);
+		intakeText = lv_label_create(tab3, NULL);
 
 		lv_obj_set_pos(topText, 5, 40);
 		lv_label_set_style(topText, style);
