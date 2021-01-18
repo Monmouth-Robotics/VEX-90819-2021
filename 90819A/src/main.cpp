@@ -98,9 +98,6 @@ void autonomous()
 		//Reference to autons/progSkills.cpp
 		runProgSkills();
 		break;
-	case 3:
-		// Driver Control
-		break;
 	}
 }
 
