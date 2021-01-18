@@ -1,27 +1,20 @@
 #include "init/display.h"
 
-//Declares the text object to display auton mode
-lv_obj_t* Display::text;
-
 //Sets default auton mode
-int Display::autonCode;
+int Display::autonCode = 2;
 
-//Declares the text object to display x-coordinate
+//Declares the text objects
 lv_obj_t* Display::xText;
-
-//Declares the text object to display y-coordinate
 lv_obj_t* Display::yText;
-
-//Declares the text object to display theta
 lv_obj_t* Display::thetaText;
 lv_obj_t* Display::thetaText2;
-
 lv_obj_t* Display::topText;
 lv_obj_t* Display::bottomText;
 lv_obj_t* Display::intakeText;
-
+lv_obj_t* Display::selectAutonText;
 
 lv_obj_t* Display::resetButton;
+lv_obj_t* Display::autonList;
 
 //Stores whether or not position display has been setup
 bool Display::positionDisplaySetup = false;
@@ -64,7 +57,18 @@ int Display::getPrimaryAutonCode()
 
 lv_res_t Display::selectAuton(lv_obj_t* btn)
 {
-	autonCode = lv_roller_get_selected(btn);
+	autonCode = lv_list_get_btn_index(autonList, btn);
+	switch (autonCode) {
+	case 0:
+		lv_label_set_text(selectAutonText, "Selected:\nRed");
+		break;
+	case 1:
+		lv_label_set_text(selectAutonText, "Selected:\nBlue");
+		break;
+	case 2:
+		lv_label_set_text(selectAutonText, "Selected:\nProg");
+		break;
+	}
 	return LV_RES_OK;
 }
 
@@ -74,7 +78,30 @@ lv_res_t Display::selectAuton(lv_obj_t* btn)
 void Display::displayAuton()
 {
 	if (!autonDisplaySetup) {
-		lv_obj_t* roller1 = lv_roller_create(tab1, NULL);
+		selectAutonText = lv_label_create(tab1, NULL);
+		switch (autonCode) {
+		case 0:
+			lv_label_set_text(selectAutonText, "Selected:\nRed");
+			break;
+		case 1:
+			lv_label_set_text(selectAutonText, "Selected:\nBlue");
+			break;
+		case 2:
+			lv_label_set_text(selectAutonText, "Selected:\nProg");
+			break;
+		}
+		lv_obj_set_pos(selectAutonText, 150, 0);
+
+		autonList = lv_list_create(tab1, NULL);
+		lv_obj_set_size(autonList, 130, 150);
+
+		lv_obj_align(autonList, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+		/*Add list elements*/
+		lv_list_add(autonList, SYMBOL_PLAY, "Red", selectAuton);
+		lv_list_add(autonList, SYMBOL_PLAY, "Blue", selectAuton);
+		lv_list_add(autonList, SYMBOL_PLAY, "Prog", selectAuton);
+
+		/*lv_obj_t* roller1 = lv_roller_create(tab1, NULL);
 		lv_roller_set_options(roller1,
 			"Red\n"
 			"Blue\n"
@@ -83,7 +110,7 @@ void Display::displayAuton()
 		lv_roller_set_visible_row_count(roller1, 5);
 		lv_roller_set_action(roller1, selectAuton);
 		lv_obj_set_pos(roller1, 0, 0);
-		lv_roller_set_selected(roller1, 2, true);
+		lv_roller_set_selected(roller1, 2, true);*/
 		autonDisplaySetup = true;
 	}
 }
