@@ -14,7 +14,7 @@ class Display
 {
 public:
 	Display();
-	static int getAutonCode();
+	static int getPrimaryAutonCode();
 	static void initialize(void* ignore);
 	
 private:
@@ -22,7 +22,7 @@ private:
 	static void displayPosition();
 	static void displayIndex();
 	static lv_res_t resetButton_action(lv_obj_t* btn);
-	static void setAutonCode(string color, string mode);
+	static lv_res_t selectAuton(lv_obj_t* btn);
 	static lv_obj_t* text;
 	static int autonCode;
 	static lv_obj_t* xText;

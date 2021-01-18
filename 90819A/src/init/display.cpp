@@ -4,7 +4,7 @@
 lv_obj_t* Display::text;
 
 //Sets default auton mode
-int Display::autonCode = 5;
+int Display::autonCode;
 
 //Declares the text object to display x-coordinate
 lv_obj_t* Display::xText;
@@ -47,6 +47,7 @@ Display::Display() {
 
 void Display::initialize(void* ignore) {
 	while (true) {
+		displayAuton();
 		displayPosition();
 		displayIndex();
 		pros::delay(10);
@@ -56,9 +57,15 @@ void Display::initialize(void* ignore) {
 /**
  * Returns auton code
 */
-int Display::getAutonCode()
+int Display::getPrimaryAutonCode()
 {
 	return autonCode;
+}
+
+lv_res_t Display::selectAuton(lv_obj_t* btn)
+{
+	autonCode = lv_roller_get_selected(btn);
+	return LV_RES_OK;
 }
 
 /**
@@ -67,7 +74,16 @@ int Display::getAutonCode()
 void Display::displayAuton()
 {
 	if (!autonDisplaySetup) {
-
+		lv_obj_t* roller1 = lv_roller_create(tab1, NULL);
+		lv_roller_set_options(roller1,
+			"Red\n"
+			"Blue\n"
+			"Prog\n"
+			"Driver");
+		lv_roller_set_visible_row_count(roller1, 5);
+		lv_roller_set_action(roller1, selectAuton);
+		lv_obj_set_pos(roller1, 0, 0);
+		lv_roller_set_selected(roller1, 2, true);
 		autonDisplaySetup = true;
 	}
 }

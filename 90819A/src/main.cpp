@@ -88,21 +88,18 @@ void autonomous()
 	backEncoder.reset();
 
 	//Run auton according to selection screen
-	switch (Display().getAutonCode())
+	switch (Display().getPrimaryAutonCode())
 	{
+	case 0:
+		break;
 	case 1:
 		break;
 	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
 		//Reference to autons/progSkills.cpp
 		runProgSkills();
 		break;
-	case 6:
+	case 3:
+		// Driver Control
 		break;
 	}
 }
