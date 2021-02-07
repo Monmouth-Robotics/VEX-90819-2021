@@ -44,13 +44,14 @@ void firstGoal()
 void secondGoal()
 {
 	PathFollowing()
-		.withPath({ {9, 39.5, -M_PI / 4}, {25, 25, 0} }, 1)
-		.ppMove();
-	IntakeController().toggleIntakes(127);
-	PathFollowing()
-		.withPath({ {25, 25, 0}, {26, 39, 0} }, 1)
+		.withPath({ {9, 39.5, -M_PI / 4}, {25, 25, 0}, {26, 39, 0} }, 1)
 		.withSpeedCheck(5, 1, 250)
 		.ppMove();
+	IntakeController().toggleIntakes(127);
+	// PathFollowing()
+	// 	.withPath({ {25, 25, 0}, {26, 39, 0} }, 1)
+	// 	.withSpeedCheck(5, 1, 250)
+	// 	.ppMove();
 	IntakeController().toggleIntakes(0);
 	PathFollowing()
 		.withPath({ {26, 38, 0}, {38, 33, M_PI / 2} }, 1)
@@ -309,7 +310,7 @@ void seventhGoal()
 		.withSpeedCheck(5, 0.5, 250)
 		.ppMove();
 	PathFollowing()
-		.withPath({ {26, -71, M_PI}, {11, -66, M_PI + M_PI / 4}, {7, -71, M_PI + M_PI / 4} }, 1)
+		.withPath({ {28, -71.5, M_PI}, {11, -66, M_PI + M_PI / 4}, {7, -71, M_PI + M_PI / 4} }, 1)
 		.withSpeedCheck(3.5, 1, 250)
 		.ppMove();
 	pros::Task intakeTaskController(IntakeController().stopIntakesAsync, NULL, "Intake Controller");
@@ -359,13 +360,13 @@ void eighthGoal()
 void ninthGoal()
 {
 	PathFollowing()
-		.withPath({{12, -16, 3*M_PI/2}, {20, -16, M_PI+4}, {32, 9, M_PI/2}}, 1)
+		.withPath({{12, -16, 3*M_PI/2}, {20, -16, M_PI+4}, {32, 8, M_PI/2}}, 1)
 		.withGains(25, 150)
 		.withSpeedCheck(0, 0, 5000)
 		.withThresholdErrors(0.5, 0.016)
 		.ppMove();
 	PathFollowing()
-		.withPath({{32, 9, M_PI/2}, {66, 8, M_PI/2}}, 1)
+		.withPath({{32, 8, M_PI/2}, {66, 8, M_PI/2}}, 1)
 		.withGains(25, 100)
 		.withSpeedCheck(0, 0, 5000)
 		.ppMove();
@@ -380,43 +381,48 @@ void ninthGoal()
 		.withTurnGains(120.0, 0.0, 0.0)
 		.pidTurn();
 	
+	IntakeController().toggleIntakes(127);
+
+	// PathFollowing()
+	// 	.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
+	// 	.withSpeedCheck(5, 0.5, 250)
+	// 	.withGains(1000, 50)
+	// 	.ppMove();
+	IndexController().toggleTopPosition(true);
+	PathFollowing()
+		.withPath({{66, 6, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(1000, 50)
+		.ppMove();
+	
+	PathFollowing()
+		.withPath({{66, 0, M_PI}, {66, 6, M_PI}}, 1)
+		.withGains(1000, 50)
+		.ppMove();
+
+	PathFollowing()
+		.withPath({{66, 6, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(1000, 50)
+		.ppMove();
+	
+	PathFollowing()
+		.withPath({{66, 0, M_PI}, {66, 6, M_PI}}, 1)
+		.withGains(1000, 50)
+		.ppMove();
+
+	PathFollowing()
+		.withPath({{66, 6, M_PI}, {66, 0, M_PI}}, 1)
+		.withSpeedCheck(5, 0.5, 250)
+		.withGains(1000, 50)
+		.ppMove();
+
 	IntakeController().toggleIntakes(0);
 
-	PathFollowing()
-		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
-		.ppMove();
-
-	PathFollowing()
-		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
-		.withSpeedCheck(5, 0.5, 250)
-		.withGains(75, 150)
-		.ppMove();
-	
-	PathFollowing()
-		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
-		.ppMove();
-
-	PathFollowing()
-		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
-		.withSpeedCheck(5, 0.5, 250)
-		.withGains(75, 150)
-		.ppMove();
-	
-	PathFollowing()
-		.withPath({{66, 0, M_PI}, {66, 12, M_PI}}, 1)
-		.ppMove();
-
-	PathFollowing()
-		.withPath({{66, 12, M_PI}, {66, 0, M_PI}}, 1)
-		.withSpeedCheck(5, 0.5, 250)
-		.withGains(75, 150)
-		.ppMove();
-
-	
 	leftFrontMotor = 80;
 	leftBackMotor = 80;
 	pros::delay(500);
-	ShootController().shootPowerful(NULL);
+	ShootController().shootOneBall(NULL);
 
 	leftFrontMotor = -63;
 	leftBackMotor = -63;
