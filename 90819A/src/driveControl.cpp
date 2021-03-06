@@ -84,47 +84,55 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 /**
  * Creates task to shoot one ball
  */
-// void shootOneBallFunction()
-// {
-// 	pros::Task shootOneBallController(ShootController().shootOneBall, NULL, "Ball Shooter");
-// }
+void shootOneBallFunction()
+{
+	pros::Task shootOneBallController(ShootController().shootOneBall, NULL, "Ball Shooter");
+}
 
 /**
  * Creates task to shoot two balls
  */
-// void shootTwoBallsFunction()
-// {
-// 	pros::Task shootTwoBallsController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
-// }
+void shootTwoBallsFunction()
+{
+	pros::Task shootTwoBallsController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
+}
 
 /**
  * Creates task to shoot powerful
  */
-// void shootPowerfulFunction()
-// {
-// 	pros::Task shootPowerfulController(ShootController().shootPowerful, NULL, "Shoot Powerful");
-// }
+void shootPowerfulFunction()
+{
+	pros::Task shootPowerfulController(ShootController().shootPowerful, NULL, "Shoot Powerful");
+}
 
 /**
  * Creates task to eject one ball
  */
-// void ejectOneBallFunction(bool useTopRoller)
-// {
-// 	pros::Task ejectOneBallController(EjectController()
-// 		.setTopRoller(useTopRoller)
-// 		.ejectOneBall, NULL, "Ball Ejecter");
-// }
+void ejectOneBallFunction(bool useTopRoller)
+{
+	pros::Task ejectOneBallController(EjectController()
+		.setTopRoller(useTopRoller)
+		.ejectOneBall, NULL, "Ball Ejecter");
+}
 
 // /**
 //  * Creates task to eject two balls
 //  */
-// void ejectTwoBallsFunction(bool useTopRoller)
-// {
-// 	pros::Task ejectTwoBallsController(EjectController()
-// 		.setTopRoller(useTopRoller)
-// 		.ejectTwoBalls, NULL, "Ball Ejecter 2");
-// }
+void ejectTwoBallsFunction(bool useTopRoller)
+{
+	pros::Task ejectTwoBallsController(EjectController()
+		.setTopRoller(useTopRoller)
+		.ejectTwoBalls, NULL, "Ball Ejecter 2");
+}
 
+void shootContinuous()
+{
+	while(IndexController().getTopStatus() != "blue"){
+		upperStack = 127;
+		lowerStack = 127;
+		pros::delay(10);
+	}
+}
 /**
  * Takes input from controller joysticks
  * Controls intakes and macro execution using button presses
