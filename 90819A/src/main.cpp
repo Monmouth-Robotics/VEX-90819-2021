@@ -9,23 +9,23 @@
 void initialize()
 {
 	//Calibrate inertial sensor
-	imuLeft.reset();
-	imuRight.reset();
-	int time = pros::millis();
-	int iter = 0;
-	while (imuLeft.is_calibrating() || imuRight.is_calibrating())
-	{
-		printf("IMU calibrating... %d\n", iter);
-		iter += 10;
-		pros::delay(10);
-	}
+	// imuLeft.reset();
+	// imuRight.reset();
+	// int time = pros::millis();
+	// int iter = 0;
+	// while (imuLeft.is_calibrating() || imuRight.is_calibrating())
+	// {
+	// 	printf("IMU calibrating... %d\n", iter);
+	// 	iter += 10;
+	// 	pros::delay(10);
+	// }
 	//Should print about 2000 ms
-	printf("IMU is done calibrating (took %d ms)\n", iter - time);
+	// printf("IMU is done calibrating (took %d ms)\n", iter - time);
 
 	//Starts tasks
 	pros::Task displayController(Display().initialize, NULL, "Display Controller");
 	pros::Task positionController(PositionController().calcPosition, NULL, "Position Tracker");
-	pros::Task indexController(IndexController().indexingTask, NULL, "Ball Tracker");
+	// pros::Task indexController(IndexController().indexingTask, NULL, "Ball Tracker");
 
 }
 
