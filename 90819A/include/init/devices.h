@@ -6,7 +6,6 @@
 #include "api.h"
 
 extern pros::Controller controller;
-extern pros::Controller controllerTwo;
 
 extern pros::Motor leftFrontMotor;
 extern pros::Motor leftBackMotor;
@@ -23,18 +22,11 @@ extern pros::ADIEncoder leftEncoder;
 extern pros::ADIEncoder rightEncoder;
 extern pros::ADIEncoder backEncoder;
 
-extern pros::Optical opticalSensor;
-
-extern pros::ADIUltrasonic ultrasonicTopUpper;
-extern pros::ADIUltrasonic ultrasonicTopLower;
-extern pros::ADIUltrasonic ultrasonicBottomUpper;
-extern pros::ADIUltrasonic ultrasonicBottomLower;
+extern pros::Optical opticalSensorTop;
+extern pros::Optical opticalSensorIntake;
 
 extern pros::Imu imuLeft;
 extern pros::Imu imuRight;
 extern pros::Imu imuCenter;
-
-extern pros::ADIDigitalIn limitSwitch;
-extern pros::ADIDigitalIn limitSwitchTop;
 
 #endif

@@ -2,7 +2,6 @@
 
 //Controllers
 pros::Controller controller(CONTROLLER_MASTER);
-pros::Controller controllerTwo(CONTROLLER_PARTNER);
 
 //Drivetrain motors
 pros::Motor leftFrontMotor(15, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
@@ -28,19 +27,9 @@ pros::Imu imuLeft(0);
 pros::Imu imuRight(0);
 pros::Imu imuCenter(0);
 
-//Ultrasonic range finders
-pros::ADIUltrasonic ultrasonicTopUpper({ {2, 'A', 'B'} });
-pros::ADIUltrasonic ultrasonicTopLower({ {2, 'C', 'D'} });
-pros::ADIUltrasonic ultrasonicBottomUpper({ {2, 'E', 'F'} });
-pros::ADIUltrasonic ultrasonicBottomLower({ {2, 'G', 'H'} });
-
 //Optical sensors
-pros::Optical opticalSensor(0);
-
-//Limit switches
-pros::ADIDigitalIn limitSwitch('D');
-pros::ADIDigitalIn limitSwitchTop('C');
-
+pros::Optical opticalSensorTop(0);
+pros::Optical opticalSensorIntake(0);
 
 
 
