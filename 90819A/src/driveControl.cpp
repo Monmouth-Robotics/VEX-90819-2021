@@ -84,18 +84,10 @@ void moveDrive(int motorSpeed, int turnSpeed, int strafeSpeed)
 /**
  * Creates task to shoot one ball
  */
-// void shootOneBallFunction()
-// {
-// 	pros::Task shootOneBallController(ShootController().shootOneBall, NULL, "Ball Shooter");
-// }
-
-/**
- * Creates task to shoot two balls
- */
-// void shootTwoBallsFunction()
-// {
-// 	pros::Task shootTwoBallsController(ShootController().shootTwoBalls, NULL, "Ball Shooter 2");
-// }
+ void shootFunction()
+ {
+ 	pros::Task shootController(ShootController().shoot, NULL, "Ball Shooter");
+ }
 
 /**
  * Creates task to shoot powerful
