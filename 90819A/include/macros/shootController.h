@@ -13,9 +13,7 @@ class ShootController
 {
 public:
 	ShootController();
-	static void shootPowerful(void* ignore);
-	static void shootTwoBalls(void* ignore);
-	static void shootOneBall(void* ignore);
+	static void shoot(void* ignore);
 };
 
 #endif
