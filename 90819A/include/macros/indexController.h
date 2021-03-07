@@ -13,21 +13,13 @@ class IndexController
 {
 public:
 	static void indexingTask(void* ignore);
-	static char* getTopStatus();
-	static char* getBottomStatus();
-	static char* getBackStatus();
+	static char* getTopColor();
 	static char* getIntakeColor();
-	static void toggleTop(bool disabled);
-	static void toggleBottom(bool disabled);
-	static void toggleTopPosition(bool disabled);
+	static void toggleIndexing(bool disabled);
 private:
-	static char* topBallDetected;
-	static char* bottomBallDetected;
-	static char* backBallDetected;
+	static char* topBallColor;
 	static char* intakeBallColor;
-	static bool topDisabled;
-	static bool topPositionDisabled;
-	static bool bottomDisabled;
+	static bool indexDisabled;
 };
 
 #endif
