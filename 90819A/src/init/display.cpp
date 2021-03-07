@@ -2,6 +2,7 @@
 
 //Sets default auton mode
 int Display::autonCode = 2;
+int Display::autonCode2 = 0;
 
 //Declares the text objects
 lv_obj_t* Display::xText;
@@ -15,6 +16,7 @@ lv_obj_t* Display::selectAutonText;
 
 lv_obj_t* Display::resetButton;
 lv_obj_t* Display::autonList;
+lv_obj_t* Display::autonOptionsList;
 
 //Stores whether or not position display has been setup
 bool Display::positionDisplaySetup = false;
@@ -58,18 +60,59 @@ int Display::getPrimaryAutonCode()
 lv_res_t Display::selectAuton(lv_obj_t* btn)
 {
 	autonCode = lv_list_get_btn_index(autonList, btn);
+	updateText();
+	return LV_RES_OK;
+}
+
+lv_res_t Display::selectAutonOptions(lv_obj_t* btn)
+{
+	autonCode2 = lv_list_get_btn_index(autonOptionsList, btn);
+	updateText();
+	return LV_RES_OK;
+}
+
+void Display::updateText() {
 	switch (autonCode) {
 	case 0:
-		lv_label_set_text(selectAutonText, "Selected:\nRed");
+		switch (autonCode2) {
+		case 0:
+			lv_label_set_text(selectAutonText, "Selected:\nRed 1");
+			break;
+		case 1:
+			lv_label_set_text(selectAutonText, "Selected:\nRed 2");
+			break;
+		case 2:
+			lv_label_set_text(selectAutonText, "Selected:\nRed 3");
+			break;
+		}
 		break;
 	case 1:
-		lv_label_set_text(selectAutonText, "Selected:\nBlue");
+		switch (autonCode2) {
+		case 0:
+			lv_label_set_text(selectAutonText, "Selected:\nBlue 1");
+			break;
+		case 1:
+			lv_label_set_text(selectAutonText, "Selected:\nBlue 2");
+			break;
+		case 2:
+			lv_label_set_text(selectAutonText, "Selected:\nBlue 3");
+			break;
+		}
 		break;
 	case 2:
-		lv_label_set_text(selectAutonText, "Selected:\nProg");
+		switch (autonCode2) {
+		case 0:
+			lv_label_set_text(selectAutonText, "Selected:\nProg 1");
+			break;
+		case 1:
+			lv_label_set_text(selectAutonText, "Selected:\nProg 2");
+			break;
+		case 2:
+			lv_label_set_text(selectAutonText, "Selected:\nProg 3");
+			break;
+		}
 		break;
 	}
-	return LV_RES_OK;
 }
 
 /**
@@ -79,17 +122,9 @@ void Display::displayAuton()
 {
 	if (!autonDisplaySetup) {
 		selectAutonText = lv_label_create(tab1, NULL);
-		switch (autonCode) {
-		case 0:
-			lv_label_set_text(selectAutonText, "Selected:\nRed");
-			break;
-		case 1:
-			lv_label_set_text(selectAutonText, "Selected:\nBlue");
-			break;
-		case 2:
-			lv_label_set_text(selectAutonText, "Selected:\nProg");
-			break;
-		}
+		updateText();
+		lv_obj_align(selectAutonText, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
+
 		lv_obj_set_pos(selectAutonText, 150, 0);
 
 		autonList = lv_list_create(tab1, NULL);
@@ -100,6 +135,15 @@ void Display::displayAuton()
 		lv_list_add(autonList, SYMBOL_PLAY, "Red", selectAuton);
 		lv_list_add(autonList, SYMBOL_PLAY, "Blue", selectAuton);
 		lv_list_add(autonList, SYMBOL_PLAY, "Prog", selectAuton);
+
+		autonOptionsList = lv_list_create(tab1, NULL);
+		lv_obj_set_size(autonOptionsList, 130, 150);
+		lv_obj_align(autonOptionsList, NULL, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+
+		lv_list_add(autonOptionsList, SYMBOL_PLAY, "1", selectAutonOptions);
+		lv_list_add(autonOptionsList, SYMBOL_PLAY, "2", selectAutonOptions);
+		lv_list_add(autonOptionsList, SYMBOL_PLAY, "3", selectAutonOptions);
+
 
 		/*lv_obj_t* roller1 = lv_roller_create(tab1, NULL);
 		lv_roller_set_options(roller1,

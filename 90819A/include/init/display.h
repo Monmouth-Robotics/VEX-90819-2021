@@ -21,9 +21,12 @@ private:
 	static void displayAuton();
 	static void displayPosition();
 	static void displayIndex();
+	static void updateText();
 	static lv_res_t resetButton_action(lv_obj_t* btn);
 	static lv_res_t selectAuton(lv_obj_t* btn);
+	static lv_res_t selectAutonOptions(lv_obj_t* btn);
 	static int autonCode;
+	static int autonCode2;
 	static lv_obj_t* xText;
 	static lv_obj_t* yText;
 	static lv_obj_t* thetaText;
@@ -34,6 +37,7 @@ private:
 	static lv_obj_t* selectAutonText;
 	static lv_obj_t* resetButton;
 	static lv_obj_t* autonList;
+	static lv_obj_t* autonOptionsList;
 	static bool positionDisplaySetup;
 	static bool autonDisplaySetup;
 	static bool indexDisplaySetup;
