@@ -24,9 +24,9 @@ char* IndexController::getIntakeColor()
 /**
  * Toggles automatic control of indexing
 */
-void IndexController::toggleIndexing(bool disabled)
+void IndexController::toggleIndexing(bool enabled)
 {
-	indexDisabled = disabled;
+	indexDisabled = !enabled;
 }
 
 /**
