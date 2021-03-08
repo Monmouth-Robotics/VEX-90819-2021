@@ -15,15 +15,13 @@ class EjectController
 {
 public:
 	EjectController();
-	EjectController& setTopRoller(bool useTopRoller);
 	EjectController& withCoordinates(double targetX, double targetY, double distanceThreshold);
 	EjectController& withAngle(double targetTheta, double angleThreshold);
-	static void ejectOneBall(void* ignore);
-	static void ejectTwoBalls(void* ignore);
+	static void startEjecting(void* ignore);
+	static void stopEjecting();
 	
 private:
 	static bool ejectingStatus;
-	static bool useTopRoller;
 	static bool hasCoordinates;
 	static bool hasAngle;
 	static double targetX;
