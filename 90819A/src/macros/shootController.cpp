@@ -23,5 +23,5 @@ void ShootController::shoot(void* ignore)
 	}
 
 	//Resumes automated control of top roller
-	IndexController().toggleTop(false);
+	IndexController().toggleIndexing(true);
 }

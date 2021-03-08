@@ -255,11 +255,8 @@ void Display::displayIndex() {
 		indexDisplaySetup = true;
 	}
 
-	string topString = ((string)("Top:    ") + (string)(IndexController().getTopStatus()));
+	string topString = ((string)("Top:    ") + (string)(IndexController().getTopColor()));
 	lv_label_set_text(topText, strcpy(new char[topString.length() + 1], topString.c_str()));
-
-	string bottomString = ((string)("Bottom: ") + (string)(IndexController().getBottomStatus()));
-	lv_label_set_text(bottomText, strcpy(new char[bottomString.length() + 1], bottomString.c_str()));
 
 	string intakeString = ((string)("Intake: ") + (string)(IndexController().getIntakeColor()));
 	lv_label_set_text(intakeText, strcpy(new char[intakeString.length() + 1], intakeString.c_str()));

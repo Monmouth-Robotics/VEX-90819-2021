@@ -17,16 +17,14 @@ void IntakeController::toggleIntakes(int speed)
 }
 
 void IntakeController::deploy(void* ignore) {
-	IndexController().toggleTop(true);
-	IndexController().toggleBottom(true);
+	IndexController().toggleIndexing(false);
 	lowerStack = -63;
 	upperStack = -80;
 	pros::delay(500);
 	// upperStack = -80;
 	// lowerStack = 0;
 	// pros::delay(1000);
-	IndexController().toggleTop(false);
-	IndexController().toggleBottom(false);
+	IndexController().toggleIndexing(true);
 	IntakeController().toggleIntakes(127);
 	pros::delay(500);
 }
