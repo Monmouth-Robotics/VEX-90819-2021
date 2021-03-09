@@ -10,23 +10,23 @@
 extern "C" {
 #endif
 
-	/*********************
-	 *      INCLUDES
-	 *********************/
+/*********************
+ *      INCLUDES
+ *********************/
 #include "lv_draw.h"
 
-	 /*********************
-	  *      DEFINES
-	  *********************/
+/*********************
+ *      DEFINES
+ *********************/
 
-	  /**********************
-	   *      TYPEDEFS
-	   **********************/
+/**********************
+ *      TYPEDEFS
+ **********************/
 
-	   /**********************
-		* GLOBAL PROTOTYPES
-		**********************/
-		/*Experimental use for 3D modeling*/
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
+/*Experimental use for 3D modeling*/
 #define USE_LV_TRIANGLE 1
 
 #if USE_LV_TRIANGLE != 0
@@ -36,12 +36,12 @@ extern "C" {
  * @param mask the triangle will be drawn only in this mask
  * @param color color of the triangle
  */
-	void lv_draw_triangle(const lv_point_t* points, const lv_area_t* mask, lv_color_t color);
+void lv_draw_triangle(const lv_point_t * points, const lv_area_t * mask, lv_color_t color);
 #endif
 
-	/**********************
-	 *      MACROS
-	 **********************/
+/**********************
+ *      MACROS
+ **********************/
 
 
 #ifdef __cplusplus
