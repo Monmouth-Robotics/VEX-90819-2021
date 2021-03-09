@@ -10,9 +10,9 @@
 extern "C" {
 #endif
 
-	/*********************
-	 *      INCLUDES
-	 *********************/
+/*********************
+ *      INCLUDES
+ *********************/
 
 #ifdef LV_CONF_INCLUDE_SIMPLE
 #include "lv_conf.h"
@@ -25,9 +25,9 @@ extern "C" {
 #include "lv_mem.h"
 #include "lv_ll.h"
 
-	 /*********************
-	  *      DEFINES
-	  *********************/
+/*********************
+ *      DEFINES
+ *********************/
 
 #define LV_GC_ROOTS(prefix) \
     prefix lv_ll_t _lv_task_ll;      /*Linked list to store the lv_tasks*/ \
@@ -42,8 +42,8 @@ extern "C" {
     prefix void * _lv_task_act;\
     prefix void * _lv_indev_list;\
     prefix void * _lv_disp_list;\
-
-
+    
+    
 #define LV_NO_PREFIX
 #define LV_ROOTS LV_GC_ROOTS(LV_NO_PREFIX)
 
@@ -53,21 +53,21 @@ extern "C" {
 #   endif /* LV_MEM_CUSTOM */    
 #else /* LV_ENABLE_GC */
 #   define LV_GC_ROOT(x) x
-	LV_GC_ROOTS(extern)
+    LV_GC_ROOTS(extern)
 #endif /* LV_ENABLE_GC */
 
 
-		/**********************
-		 *      TYPEDEFS
-		 **********************/
+/**********************
+ *      TYPEDEFS
+ **********************/
 
-		 /**********************
-		  * GLOBAL PROTOTYPES
-		  **********************/
+/**********************
+ * GLOBAL PROTOTYPES
+ **********************/
 
-		  /**********************
-		   *      MACROS
-		   **********************/
+/**********************
+ *      MACROS
+ **********************/
 
 
 #ifdef __cplusplus
