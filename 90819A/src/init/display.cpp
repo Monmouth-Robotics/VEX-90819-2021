@@ -9,6 +9,7 @@ lv_obj_t* Display::xText;
 lv_obj_t* Display::yText;
 lv_obj_t* Display::thetaText;
 lv_obj_t* Display::thetaText2;
+lv_obj_t* Display::thetaText3;
 lv_obj_t* Display::topText;
 lv_obj_t* Display::bottomText;
 lv_obj_t* Display::intakeText;
@@ -52,8 +53,7 @@ void Display::initialize(void* ignore) {
 /**
  * Returns auton code
 */
-int Display::getPrimaryAutonCode()
-{
+int Display::getPrimaryAutonCode() {
 	return autonCode;
 }
 
@@ -166,6 +166,7 @@ lv_res_t Display::resetButton_action(lv_obj_t* btn)
 {
 	PositionController().resetGlobal();
 	PositionController().setTheta(0);
+	PositionController().setThetaOdom(0);
 	return LV_RES_OK;
 }
 
@@ -183,6 +184,7 @@ void Display::displayPosition() {
 		//Initializes the text object to display theta
 		thetaText = lv_label_create(tab2, NULL);
 		thetaText2 = lv_label_create(tab2, NULL);
+		thetaText3 = lv_label_create(tab2, NULL);
 
 		//Sets the x-coordinate text to the top left
 		lv_obj_set_pos(xText, 5, 20);
@@ -197,6 +199,8 @@ void Display::displayPosition() {
 		lv_label_set_style(thetaText, style);
 		lv_obj_set_pos(thetaText2, 5, 80);
 		lv_label_set_style(thetaText2, style);
+		lv_obj_set_pos(thetaText3, 5, 100);
+		lv_label_set_style(thetaText3, style);
 
 		//Creates reset button
 		resetButton = lv_btn_create(tab2, NULL);
@@ -230,6 +234,10 @@ void Display::displayPosition() {
 	//Displays the value of theta
 	string thetaString2 = ((string)("Theta: ") + (string)(to_string(PositionController().getTheta() * 180 / M_PI)) + (string)(" degrees"));
 	lv_label_set_text(thetaText2, strcpy(new char[thetaString2.length() + 1], thetaString2.c_str()));
+
+	//Displays the value of theta
+	string thetaString3 = ((string)("Theta Odom: ") + (string)(to_string(PositionController().getThetaOdom() * 180 / M_PI)) + (string)(" degrees"));
+	lv_label_set_text(thetaText3, strcpy(new char[thetaString3.length() + 1], thetaString3.c_str()));
 }
 
 void Display::displayIndex() {

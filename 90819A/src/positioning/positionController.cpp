@@ -1,8 +1,8 @@
 #include "positioning/positionController.h"
 
 double PositionController::WHEEL_DIAMETER = 2.75;
-double PositionController::DISTANCE_TO_LEFT_ENCODER = 5.375;
-double PositionController::DISTANCE_TO_RIGHT_ENCODER = 5.375;
+double PositionController::DISTANCE_TO_LEFT_ENCODER = 6.125;
+double PositionController::DISTANCE_TO_RIGHT_ENCODER = 6.125;
 double PositionController::DISTANCE_TO_BACK_ENCODER = 6.0625;
 
 double PositionController::previousLeftEncoderDegrees = 0;
@@ -28,6 +28,7 @@ double PositionController::backEncoderDistance = 0;
 double PositionController::deltaTheta = 0;
 double PositionController::polarTheta = 0;
 double PositionController::theta = 0;
+double PositionController::thetaOdom = 0;
 
 double PositionController::robotSpeed = 0;
 
@@ -62,6 +63,14 @@ PositionController::PositionController(){
 double PositionController::getTheta()
 {
 	return theta;
+}
+
+/**
+ * Returns robot heading, measured with encoders
+ */
+double PositionController::getThetaOdom()
+{
+	return thetaOdom;
 }
 
 /**
@@ -135,6 +144,17 @@ void PositionController::calcPosition(void* ignore)
 
 		//Calculates change in heading during previous cycle
 		deltaTheta = (leftEncoderDistance - rightEncoderDistance) / (DISTANCE_TO_LEFT_ENCODER + DISTANCE_TO_RIGHT_ENCODER);
+
+		thetaOdom += deltaTheta;
+
+		while (thetaOdom > M_PI * 2)
+		{
+			thetaOdom -= M_PI * 2;
+		}
+		while (thetaOdom < 0)
+		{
+			thetaOdom += M_PI * 2;
+		}
 
 		//Uses delta theta to calculate relative changes in x and y
 		if (deltaTheta != 0)
@@ -224,6 +244,10 @@ void PositionController::setTheta(double newTheta)
 	while (inertCenterOffset < 0) {
 		inertCenterOffset += 2 * M_PI;
 	}
+}
+
+void PositionController::setThetaOdom(double newTheta){
+	thetaOdom = newTheta;
 }
 
 /**

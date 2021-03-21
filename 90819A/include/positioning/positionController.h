@@ -20,8 +20,10 @@ public:
 	vector<double> getPosition();
 	void resetGlobal();
 	double getTheta();
+	double getThetaOdom();
 	double getSpeed();
 	void setTheta(double newTheta);
+	void setThetaOdom(double newTheta);
 	void setPosition(double x, double y);
 
 private:
@@ -53,6 +55,7 @@ private:
 	static double deltaTheta;
 	static double polarTheta;
 	static double theta;
+	static double thetaOdom;
 
 	static double robotSpeed;
 

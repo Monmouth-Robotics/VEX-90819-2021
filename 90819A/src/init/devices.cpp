@@ -19,7 +19,7 @@ pros::Motor intakeMotorRight(11, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 
 //Shaft encoders
 pros::ADIEncoder leftEncoder('A', 'B', true);
-pros::ADIEncoder rightEncoder('G', 'H', true);
+pros::ADIEncoder rightEncoder('G', 'H', false);
 pros::ADIEncoder backEncoder('E', 'F', true);
 
 //Inertial sensors

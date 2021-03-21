@@ -31,6 +31,7 @@ private:
 	static lv_obj_t* yText;
 	static lv_obj_t* thetaText;
 	static lv_obj_t* thetaText2;
+	static lv_obj_t* thetaText3;
 	static lv_obj_t* topText;
 	static lv_obj_t* bottomText;
 	static lv_obj_t* intakeText;
