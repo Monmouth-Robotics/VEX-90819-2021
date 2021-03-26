@@ -32,8 +32,8 @@ double PositionController::thetaOdom = 0;
 
 double PositionController::robotSpeed = 0;
 
-vector<double> PositionController::positionVector = { 0, 0 };
-vector<double> PositionController::newVector = { 0, 0 };
+vector<double> PositionController::positionVector = {0, 0};
+vector<double> PositionController::newVector = {0, 0};
 
 vector<double> PositionController::testVector(1000, -1);
 vector<double> PositionController::leftVector(1000, 999999);
@@ -53,8 +53,8 @@ double PositionController::inertRightOffset = 0;
 double PositionController::inertCenter = 0;
 double PositionController::inertCenterOffset = 0;
 
-PositionController::PositionController(){
-	
+PositionController::PositionController()
+{
 }
 
 /**
@@ -92,9 +92,8 @@ double PositionController::getSpeed()
 /**
  * Calculates robot position using odometry algorithm
  */
-void PositionController::calcPosition(void* ignore)
+void PositionController::calcPosition(void *ignore)
 {
-
 	while (true)
 	{
 		//Gets raw values from encoders
@@ -102,7 +101,7 @@ void PositionController::calcPosition(void* ignore)
 		rightEncoderDegrees = rightEncoder.get_value();
 		backEncoderDegrees = backEncoder.get_value();
 
-		// printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees);
+		printf("Encoders: %.3f, %.3f, %.3f\n", leftEncoderDegrees, rightEncoderDegrees, backEncoderDegrees);
 
 		//Finds the amount of degrees turned since last reading
 		leftEncoderDegreesDifference = leftEncoderDegrees - previousLeftEncoderDegrees;
@@ -124,7 +123,7 @@ void PositionController::calcPosition(void* ignore)
 		inertRight = fmod((abs(imuRight.get_heading()) * M_PI / 180 + inertRightOffset), (2 * M_PI));
 		inertCenter = fmod((abs(imuCenter.get_heading()) * M_PI / 180 + inertCenterOffset), (2 * M_PI));
 		//Checks if calibration in complete
-		if (inertLeft != INFINITY && inertRight != INFINITY && inertCenter != INFINITY)
+		if (!(isnan(inertLeft) || isnan(inertRight) || isnan(inertCenter)))
 		{
 			//Calculates average of inertial readings
 			theta = headingAverageBeta(inertLeft, inertRight, inertCenter);
@@ -182,7 +181,7 @@ void PositionController::calcPosition(void* ignore)
 		positionVector[0] = positionVector[0] + newX;
 		positionVector[1] = positionVector[1] + newY;
 
-		//printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
+		printf("Coordinates: %.3f, %.3f, %.3f\n", positionVector[0], positionVector[1], theta * 180 / M_PI);
 		pros::delay(10);
 	}
 }
@@ -217,8 +216,8 @@ void PositionController::resetGlobal()
 	rightEncoderDistance = 0;
 	backEncoderDistance = 0;
 
-	positionVector = { 0, 0 };
-	newVector = { 0, 0 };
+	positionVector = {0, 0};
+	newVector = {0, 0};
 
 	x = 0;
 	y = 0;
@@ -235,18 +234,22 @@ void PositionController::setTheta(double newTheta)
 	inertLeftOffset = newTheta - inertLeft + inertLeftOffset;
 	inertRightOffset = newTheta - inertRight + inertRightOffset;
 	inertCenterOffset = newTheta - inertCenter + inertCenterOffset;
-	while (inertLeftOffset < 0) {
+	while (inertLeftOffset < 0)
+	{
 		inertLeftOffset += 2 * M_PI;
 	}
-	while (inertRightOffset < 0) {
+	while (inertRightOffset < 0)
+	{
 		inertRightOffset += 2 * M_PI;
 	}
-	while (inertCenterOffset < 0) {
+	while (inertCenterOffset < 0)
+	{
 		inertCenterOffset += 2 * M_PI;
 	}
 }
 
-void PositionController::setThetaOdom(double newTheta){
+void PositionController::setThetaOdom(double newTheta)
+{
 	thetaOdom = newTheta;
 }
 
@@ -255,5 +258,5 @@ void PositionController::setThetaOdom(double newTheta){
  */
 void PositionController::setPosition(double x, double y)
 {
-	positionVector = { x,y };
+	positionVector = {x, y};
 }
