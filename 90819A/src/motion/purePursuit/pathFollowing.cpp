@@ -14,11 +14,11 @@ PathFollowing::PathFollowing()
 	thresholdError = 0.5;
 	angleThreshold = 0.024;
 	kPDistance = 25;
-	kPAngle = 300;
+	kPAngle = 50;
 	minPower = 30;
-	speedCheckDistance = 2;
-	speedCheckSpeed = 1;
-	speedCheckTime = 250;
+	speedCheckDistance = 0;
+	speedCheckSpeed = 0;
+	speedCheckTime = 1000000000000;
 	coordinateReset = false;
 	angleReset = false;
 }
@@ -225,7 +225,7 @@ void PathFollowing::moveRobot(vector<double> errors, double distanceError, doubl
 }
 
 vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vector<double>> pointsList, int closestPoint, int lookAheadPointsNum, double lookAheadDistance)
-{	
+{
 	//Starting point of the line segment
 
 	vector<double> E = {0.0, 0.0};
@@ -235,11 +235,13 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 	//End point of the line segment
 	vector<double> L = {0.0, 0.0};
 
-	if (closestPoint + lookAheadPointsNum < pointsList.size()){
+	if (closestPoint + lookAheadPointsNum < pointsList.size())
+	{
 		L = {pointsList[closestPoint + lookAheadPointsNum][0], pointsList[closestPoint + lookAheadPointsNum][1]};
 	}
-	else{
-		L = {pointsList[pointsList.size()-1][0], pointsList[pointsList.size()-1][1]};
+	else
+	{
+		L = {pointsList[pointsList.size() - 1][0], pointsList[pointsList.size() - 1][1]};
 	}
 
 	//Center of the drawn circle, representing the robot position
@@ -320,7 +322,7 @@ vector<double> PathFollowing::findLookAheadPoint(double x, double y, vector<vect
 }
 
 void PathFollowing::ppMove()
-{	
+{
 	double speedCheckCount = 0;
 	double distanceError = 999999;
 	double angleError = 999999;
@@ -372,21 +374,19 @@ void PathFollowing::ppMove()
 			}
 		}
 
-
 		//Calculate lookahead point if the last point is not within the default search radius
 		if (closestPoint < pointsList.size() - 1 - lookAheadPointsNum)
-		{	
+		{
 			lookAheadPoint = findLookAheadPoint(x, y, pointsList, closestPoint, lookAheadPointsNum, spacing * lookAheadPointsNum);
 		}
 
 		//Use last point as lookahead point if the last point is within the default search radius
 		else
-		{	
+		{
 			lookAheadPoint = pointsList[pointsList.size() - 1];
 		}
 		// vector<double> errorArg1 = {0.0};
 		// errorArg1 = PositionController().getPosition();
-
 
 		if (distanceError < speedCheckDistance && PositionController().getSpeed() < speedCheckSpeed)
 		{
@@ -403,6 +403,10 @@ void PathFollowing::ppMove()
 			break;
 		}
 
+		if (limitSwitchLeft.get_value() == 1 || limitSwitchRight.get_value == 1)
+		{
+			break;
+		}
 		errors = getErrors({x, y, PositionController().getTheta()}, lookAheadPoint);
 		angleError = errors[2];
 		// printf("Errors: %.3f, %.3f, %.3f\n", errors[0], errors[1], errors[2]);
@@ -421,15 +425,15 @@ void PathFollowing::ppMove()
 	rightFrontMotor = 0;
 	rightBackMotor = 0;
 
-	 if (coordinateReset)
-	 {
-	 	PositionController().setPosition(resetX, resetY);
-	 }
+	if (coordinateReset)
+	{
+		PositionController().setPosition(resetX, resetY);
+	}
 
-	 if (angleReset)
-	 {
-	 	PositionController().setTheta(resetTheta);
-	 }
+	if (angleReset)
+	{
+		PositionController().setTheta(resetTheta);
+	}
 	//Exits loop if lookahead point and closest point align with the last point of the path
 	// if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1] && (closestPoint == pointsList.size() - 1))
 	// {

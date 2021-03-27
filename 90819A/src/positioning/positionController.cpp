@@ -3,7 +3,8 @@
 double PositionController::WHEEL_DIAMETER = 2.75;
 double PositionController::DISTANCE_TO_LEFT_ENCODER = 6.125;
 double PositionController::DISTANCE_TO_RIGHT_ENCODER = 6.125;
-double PositionController::DISTANCE_TO_BACK_ENCODER = 6.0625;
+double PositionController::DISTANCE_TO_BACK_ENCODER = 4
+;
 
 double PositionController::previousLeftEncoderDegrees = 0;
 double PositionController::previousRightEncoderDegrees = 0;

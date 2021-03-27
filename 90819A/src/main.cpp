@@ -26,6 +26,7 @@ void initialize()
 	//Starts tasks
 	pros::Task displayController(Display().initialize, NULL, "Display Controller");
 	pros::Task positionController(PositionController().calcPosition, NULL, "Position Tracker");
+
 	// pros::Task indexController(IndexController().indexingTask, NULL, "Ball Tracker");
 }
 

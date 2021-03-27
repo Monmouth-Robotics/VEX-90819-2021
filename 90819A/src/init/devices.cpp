@@ -30,3 +30,7 @@ pros::Imu imuCenter(9);
 //Optical sensors
 pros::Optical opticalSensorTop(0);
 pros::Optical opticalSensorIntake(0);
+
+//Limit switches
+pros::ADIDigitalIn limitSwitchLeft('E');
+pros::ADIDigitalIn limitSwitchRight('F');
