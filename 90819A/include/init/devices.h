@@ -29,6 +29,6 @@ extern pros::Imu imuLeft;
 extern pros::Imu imuRight;
 extern pros::Imu imuCenter;
 
-extern pros::ADIDigitalIn limitSwitchLeft('E');
-extern pros::ADIDigitalIn limitSwitchRight('F');
+extern pros::ADIDigitalIn limitSwitchLeft;
+extern pros::ADIDigitalIn limitSwitchRight;
 #endif

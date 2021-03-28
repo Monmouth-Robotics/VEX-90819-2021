@@ -403,7 +403,7 @@ void PathFollowing::ppMove()
 			break;
 		}
 
-		if (limitSwitchLeft.get_value() == 1 || limitSwitchRight.get_value == 1)
+		if (limitSwitchLeft.get_value() == 1 || limitSwitchRight.get_value() == 1)
 		{
 			break;
 		}
