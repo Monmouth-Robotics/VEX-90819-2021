@@ -23,6 +23,7 @@ lv_obj_t* Display::autonOptionsList;
 bool Display::positionDisplaySetup = false;
 bool Display::autonDisplaySetup = false;
 bool Display::indexDisplaySetup = false;
+bool Display::tabviewSetup = false;
 
 lv_style_t* Display::style = &lv_style_plain;
 
@@ -35,10 +36,13 @@ lv_obj_t* Display::tab3;
 
 
 Display::Display() {
-	tabview = lv_tabview_create(lv_scr_act(), NULL);
-	tab1 = lv_tabview_add_tab(tabview, "Auton Selection");
-	tab2 = lv_tabview_add_tab(tabview, "Odometry");
-	tab3 = lv_tabview_add_tab(tabview, "Indexing");
+	if (!tabviewSetup) {
+		tabview = lv_tabview_create(lv_scr_act(), NULL);
+		tab2 = lv_tabview_add_tab(tabview, "Odometry");
+		tab1 = lv_tabview_add_tab(tabview, "Auton Selection");
+		tab3 = lv_tabview_add_tab(tabview, "Indexing");
+		tabviewSetup = true;
+	}
 }
 
 void Display::initialize(void* ignore) {

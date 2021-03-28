@@ -42,6 +42,7 @@ private:
 	static bool positionDisplaySetup;
 	static bool autonDisplaySetup;
 	static bool indexDisplaySetup;
+	static bool tabviewSetup;
 	static lv_style_t* style;
 	static lv_obj_t* tabview;
 	static lv_obj_t* tab1;
