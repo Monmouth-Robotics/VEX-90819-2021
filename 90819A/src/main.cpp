@@ -38,7 +38,7 @@ void initialize()
 void disabled()
 {
 	//Reset position to (0,0,0)
-	PositionController().resetGlobal();
+	//PositionController().resetGlobal();
 }
 
 /**
