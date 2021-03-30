@@ -434,7 +434,8 @@ void PathFollowing::ppMove()
 	{
 		PositionController().setTheta(resetTheta);
 	}
-	//Exits loop if lookahead point and closest point align with the last point of the path
+
+		//Exits loop if lookahead point and closest point align with the last point of the path
 	// if (lookAheadPoint[0] == pointsList[pointsList.size() - 1][0] && lookAheadPoint[1] == pointsList[pointsList.size() - 1][1] && (closestPoint == pointsList.size() - 1))
 	// {
 	//     break;
