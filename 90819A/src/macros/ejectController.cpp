@@ -106,6 +106,8 @@ void EjectController::eject(void* ignore)
 		}
 	}
 
+	IntakeController().toggleIntakes(-127);
+
 	//Resumes automated indexing
 	IndexController().toggleIndexing(true);
 }

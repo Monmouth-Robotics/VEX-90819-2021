@@ -7,6 +7,7 @@
 #include "init/utility.h"
 #include "init/devices.h"
 #include "macros/indexController.h"
+#include "macros/intakeController.h"
 #include "positioning/positionController.h"
 
 using namespace std;
