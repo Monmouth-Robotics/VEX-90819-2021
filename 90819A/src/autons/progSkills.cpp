@@ -240,7 +240,7 @@ void seventhGoal()
 	// rightBackMotor = 0;
 	// IntakeController().toggleIntakes(127);
 	// pros::Task ejectController(EjectController()
-	// 							   .startEjecting,
+	// 							   .eject,
 	// 						   NULL, "Eject Controller");
 	// IntakeController().toggleIntakes(127);
 	// PathFollowing()
@@ -290,7 +290,7 @@ void eighthGoal()
 	// 	.ppMove();
 	// IntakeController().toggleIntakes(127);
 	// pros::Task ejectController(EjectController()
-	// 							   .startEjecting,
+	// 							   .eject,
 	// 						   NULL, "Eject Controller");
 	// PathFollowing()
 	// 	.withPath({{37, -36, 0}, {37, -14, 0}}, 1)
@@ -329,7 +329,7 @@ void ninthGoal()
 		.withSpeedCheck(0, 0, 5000)
 		.ppMove();
 	pros::Task ejectController(EjectController()
-								   .startEjecting,
+								   .eject,
 							   NULL, "Eject Controller");
 
 	PIDController()

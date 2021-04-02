@@ -15,20 +15,29 @@ class EjectController
 {
 public:
 	EjectController();
-	EjectController& withCoordinates(double targetX, double targetY, double distanceThreshold);
-	EjectController& withAngle(double targetTheta, double angleThreshold);
-	static void startEjecting(void* ignore);
+	EjectController& withStartCoordinates(double targetStartX, double targetStartY, double distanceStartThreshold);
+	EjectController& withStartAngle(double targetStartTheta, double angleStartThreshold);
+	EjectController& withEndCoordinates(double targetEndX, double targetEndY, double distanceEndThreshold);
+	EjectController& withEndAngle(double targetEndTheta, double angleEndThreshold);
+	static void eject(void* ignore);
 	static void stopEjecting();
-	
+
 private:
 	static bool ejectingStatus;
-	static bool hasCoordinates;
-	static bool hasAngle;
-	static double targetX;
-	static double targetY;
-	static double targetTheta;
-	static double distanceThreshold;
-	static double angleThreshold;
+	static bool hasStartCoordinates;
+	static bool hasStartAngle;
+	static bool hasEndCoordinates;
+	static bool hasEndAngle;
+	static double targetStartX;
+	static double targetStartY;
+	static double targetStartTheta;
+	static double targetEndX;
+	static double targetEndY;
+	static double targetEndTheta;
+	static double distanceStartThreshold;
+	static double angleStartThreshold;
+	static double distanceEndThreshold;
+	static double angleEndThreshold;
 };
 
 #endif
